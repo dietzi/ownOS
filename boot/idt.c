@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "idt.h"
+#include "console.h"
 
 void handle_interrupt(struct cpu_state* cpu)
 {
