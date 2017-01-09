@@ -2,7 +2,7 @@
 .global _idt_load
 .extern _idtp
 _idt_load:
-    lidt [_idtp]
+    lidt [idtp]
     ret
 .global _isr0
 .global _isr1
