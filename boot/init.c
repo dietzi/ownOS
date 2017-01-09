@@ -15,7 +15,7 @@ struct {
 void init(void)
 {
 	clearscreen();
-    initScreen;
+    initScreen();
     init_gdt();
     // Master-PIC initialisieren
     outb(0x20, 0x11); // Initialisierungsbefehl fuer den PIC
@@ -42,8 +42,9 @@ void init(void)
 	int i;
 	
 	for(i=0;i<30;i++) {
-		char c1[0];
-		c1[0]=(char)i;
+		char c1[1];
+		c1[0]=(char)"a";
+		c1[1]=(char)i;
 		kprintf(c1);
 	}
 	

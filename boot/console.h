@@ -56,13 +56,15 @@ void kprintf(const char string[])
     }
 	row+=1;
 	col=0;
-	if(row>25) {
-		for(i=0;i<2000;i++) {
-			char* video1 = (char*) 0xb8000;
-			video[i*2]=video[i*2+2];
-			video[i*2+1]=video[i*2+3];
+	if(row>24) {
+		int j;
+		for(i=0;i<25;i++) {
+			for(j=0;j<80;j++) {
+				video[i*j*2]=video[(i+1)*j*2];
+				video[i*j*2+1]=video[(i+1)*j*2+3];
+			}
 		}
-		row=25;
+		row=24;
 		for(i=0;i<80;i++) {
 			video[row*80*i*2]=0;
 			video[row*80*i*2+1]=0x07;
