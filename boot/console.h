@@ -55,11 +55,6 @@ void kprintf(const char string[])
 	}
 }
 
-void kprintf(const char string[],uint32_t arg) {
-	kprintf(string);
-	kprintf(arg);
-}
-
 void clearscreen()
 {
 
