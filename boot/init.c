@@ -21,6 +21,14 @@ void init(void)
     outb(0xa1, 0x0);
     
     kprintf("Activating interrupts");
+	struct {
+		uint16_t limit;
+		void* pointer;
+	} __attribute__((packed)) idtp = {
+		.limit = IDT_ENTRIES * 8 - 1,
+		.pointer = idt,
+	};
+
 	asm volatile("lidt %0" : : "m" (idtp));
     //asm volatile("sti");
 	kprintf("Raising interrupt");

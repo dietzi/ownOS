@@ -37,12 +37,4 @@ struct IDTDescr{
 };
 
 static uint64_t idt[IDT_ENTRIES];
-
-struct {
-    uint16_t limit;
-    void* pointer;
-} __attribute__((packed)) idtp = {
-    .limit = IDT_ENTRIES * 8 - 1,
-    .pointer = idt,
-};
 #endif
