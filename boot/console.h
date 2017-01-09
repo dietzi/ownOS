@@ -3,6 +3,9 @@ typedef __builtin_va_list       va_list;
 #define va_arg(ap, type)        __builtin_va_arg(ap, type)
 #define va_end(ap)              __builtin_va_end(ap)
 
+int row=0;
+int col=0;
+
 static inline void outb(unsigned short port, unsigned char data)
 {
     asm volatile ("outb %0, %1" : : "a" (data), "Nd" (port));
@@ -17,21 +20,44 @@ void displaycursor(int row,int col)
   outb(0x3D5,tmp);
 }
 
-void kprintf(const char string[], int row, int col)
+void kprintf(const char string[])
 {
     int i;
     
     char* video = (char*) 0xb8000;
+	
+	char iString[]="ownOS > ";
  
+    for (i = 0; iString[i] != '\0'; i++) {
+        int pos=row*80+i;
+        // Zeichen i in den Videospeicher kopieren
+        video[pos * 2] = iString[i];
+ 
+        // 0x07 = Hellgrau auf Schwarz
+        video[pos * 2 + 1] = 0x07;
+		col+=1;
+        displaycursor(row,col);
+    }
     for (i = 0; string[i] != '\0'; i++) {
-        int pos=row*80+col+i;
+        int pos=row*80+i;
         // Zeichen i in den Videospeicher kopieren
         video[pos * 2] = string[i];
  
         // 0x07 = Hellgrau auf Schwarz
         video[pos * 2 + 1] = 0x07;
-        displaycursor(row,col+i+1);
+		col+=1;
+        displaycursor(row,col);
     }
+	row+=1;
+	col=0;
+	if(row>25) {
+		
+	}
+}
+
+void kprintf(const char string[],uint32_t arg) {
+	kprintf(string);
+	kprintf(arg);
 }
 
 void clearscreen()
@@ -66,7 +92,7 @@ void clearscreen()
 void stopCPU() {
     while(1) {
       // Prozessor anhalten
-      kprintf("Stopping CPU",20,0);
+      kprintf("Stopping CPU");
       asm volatile("cli; hlt");
     }
 }

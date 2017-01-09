@@ -20,7 +20,7 @@ void init(void)
     outb(0x21, 0x0);
     outb(0xa1, 0x0);
     
-    kprintf("Raising interrupt",3,0);
+    kprintf("Raising interrupt");
     asm volatile("sti");
     //asm volatile("int $0x0");
     while(1);
@@ -29,6 +29,6 @@ void init(void)
 
 void int_handler(void)
 {
-    kprintf("Ein Interrupt!\n",4,0);
+    kprintf("Ein Interrupt!\n");
     while(1);
 }
