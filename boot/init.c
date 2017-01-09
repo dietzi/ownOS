@@ -2,6 +2,16 @@
 
 #define IDT_ENTRIES 255
 
+static uint64_t idt[IDT_ENTRIES];
+
+struct {
+	uint16_t limit;
+	void* pointer;
+} __attribute__((packed)) idtp = {
+	.limit = IDT_ENTRIES * 8 - 1,
+	.pointer = idt,
+};
+
 void init(void)
 {
     clearscreen();
@@ -24,17 +34,6 @@ void init(void)
 	
 	kprintf("Loading IDT");
 	
-	static uint64_t idt[IDT_ENTRIES];
- 
-	// ...
-	 
-	struct {
-		uint16_t limit;
-		void* pointer;
-	} __attribute__((packed)) idtp = {
-		.limit = IDT_ENTRIES * 8 - 1,
-		.pointer = idt,
-	};
 	asm volatile("lidt %0" : : "m" (idtp));
 	
 	kprintf("Raising interrupt");
