@@ -37,9 +37,7 @@ struct IDTDescr{
 };
 
 static uint64_t idt[IDT_ENTRIES];
- 
-// ...
- 
+
 struct {
     uint16_t limit;
     void* pointer;
@@ -47,5 +45,4 @@ struct {
     .limit = IDT_ENTRIES * 8 - 1,
     .pointer = idt,
 };
-asm volatile("lidt %0" : : "m" (idtp));
 #endif

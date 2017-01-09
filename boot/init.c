@@ -21,7 +21,9 @@ void init(void)
     outb(0xa1, 0x0);
     
     kprintf("Activating interrupts");
+	asm volatile("lidt %0" : : "m" (idtp));
     //asm volatile("sti");
+	kprintf("Raising interrupt");
     asm volatile("int $0x0");
     while(1);
     stopCPU();
