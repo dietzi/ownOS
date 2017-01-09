@@ -28,16 +28,6 @@ void kprintf(const char string[])
 	
 	const char iString[]="ownOS> ";
  
-    for (i = 0; iString[i] != '\0'; i++) {
-        int pos=row*80+col;
-        // Zeichen i in den Videospeicher kopieren
-        video[pos * 2] = iString[i];
- 
-        // 0x07 = Grün auf Schwarz
-        video[pos * 2 + 1] = 0x02;
-		col+=1;
-        displaycursor(row,col);
-    }
     for (i = 0; string[i] != '\0'; i++) {
         int pos=row*80+col;
         // Zeichen i in den Videospeicher kopieren
@@ -51,8 +41,21 @@ void kprintf(const char string[])
 	row+=1;
 	col=0;
 	if(row>25) {
-		
+		for(i=0;i<4000;i++) {
+			char* video1 = (char*) 0xb8000;
+			video1[i]=video[i];
+		}
 	}
+    for (i = 0; iString[i] != '\0'; i++) {
+        int pos=row*80+col;
+        // Zeichen i in den Videospeicher kopieren
+        video[pos * 2] = iString[i];
+ 
+        // 0x07 = Grün auf Schwarz
+        video[pos * 2 + 1] = 0x02;
+		col+=1;
+        displaycursor(row,col);
+    }
 }
 
 void clearscreen()

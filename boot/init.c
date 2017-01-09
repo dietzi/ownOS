@@ -36,8 +36,17 @@ void init(void)
 	
 	asm volatile("lidt %0" : : "m" (idtp));
 	
+	kprintf("Generating testing stuff");
+	
+	int i;
+	
+	for(i=0;i<30;i++) {
+		char c1=(char)i;
+		kprintf(c1);
+	}
+	
 	kprintf("Raising interrupt");
-    asm volatile("sti");
+    //asm volatile("sti");
     //asm volatile("int $0x0");
     while(1);
     stopCPU();
