@@ -38,7 +38,7 @@ _stop:
 // weil der Stack nach unten waechst
 
 idtr:
-	.quad 0
+	.quad 79
 	.long 0
 
 .section .bss

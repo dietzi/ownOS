@@ -1,5 +1,7 @@
 #include "includes.h"
 
+#define IDT_ENTRIES 255
+
 void init(void)
 {
     clearscreen();
@@ -19,9 +21,21 @@ void init(void)
     // Alle IRQs aktivieren (demaskieren)
     outb(0x21, 0x0);
     outb(0xa1, 0x0);
-    
-	kprintf("Activating interrupts");
-	__asm__("lidt (idtr)");
+	
+	kprintf("Loading IDT");
+	
+	static uint64_t idt[IDT_ENTRIES];
+ 
+	// ...
+	 
+	struct {
+		uint16_t limit;
+		void* pointer;
+	} __attribute__((packed)) idtp = {
+		.limit = IDT_ENTRIES * 8 - 1,
+		.pointer = idt,
+	};
+	asm volatile("lidt %0" : : "m" (idtp));
 	
 	kprintf("Raising interrupt");
     asm volatile("sti");

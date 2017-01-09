@@ -5,8 +5,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define IDT_ENTRIES 1
-
 struct cpu_state {
     // Von Hand gesicherte Register
     uint32_t   eax;
