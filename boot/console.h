@@ -29,7 +29,7 @@ void kprintf(const char string[])
 	const char iString[]="ownOS > ";
  
     for (i = 0; iString[i] != '\0'; i++) {
-        int pos=row*80+i;
+        int pos=row*80+col;
         // Zeichen i in den Videospeicher kopieren
         video[pos * 2] = iString[i];
  
@@ -39,7 +39,7 @@ void kprintf(const char string[])
         displaycursor(row,col);
     }
     for (i = 0; string[i] != '\0'; i++) {
-        int pos=row*80+col+i;
+        int pos=row*80+col;
         // Zeichen i in den Videospeicher kopieren
         video[pos * 2] = string[i];
  
