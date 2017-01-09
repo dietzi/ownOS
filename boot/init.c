@@ -20,9 +20,9 @@ void init(void)
     outb(0x21, 0x0);
     outb(0xa1, 0x0);
     
-    kprintf("Raising interrupt");
-    //asm volatile("sti");
-    asm volatile("int $0x0");
+    kprintf("Activating interrupts");
+    sm volatile("sti");
+    //asm volatile("int $0x0");
     while(1);
     stopCPU();
 }
