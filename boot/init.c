@@ -21,10 +21,10 @@ void init(void)
     outb(0xa1, 0x0);
     
 	kprintf("Activating interrupts");
-	__asm__("lidt [lidt]");
+	__asm__("lidt (idtr)");
 	
 	kprintf("Raising interrupt");
-    //asm volatile("sti");
+    asm volatile("sti");
     //asm volatile("int $0x0");
     while(1);
     stopCPU();
