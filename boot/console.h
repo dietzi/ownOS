@@ -26,15 +26,15 @@ void kprintf(const char string[])
     
     char* video = (char*) 0xb8000;
 	
-	const char iString[]="ownOS > ";
+	const char iString[]="ownOS> ";
  
     for (i = 0; iString[i] != '\0'; i++) {
         int pos=row*80+col;
         // Zeichen i in den Videospeicher kopieren
         video[pos * 2] = iString[i];
  
-        // 0x07 = Hellgrau auf Schwarz
-        video[pos * 2 + 1] = 0x07;
+        // 0x07 = Grün auf Schwarz
+        video[pos * 2 + 1] = 0x02;
 		col+=1;
         displaycursor(row,col);
     }
