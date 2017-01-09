@@ -41,7 +41,8 @@ void init(void)
 	int i;
 	
 	for(i=0;i<30;i++) {
-		char c1=(char)i;
+		char c1[];
+		c1[0]=(char)i;
 		kprintf(c1);
 	}
 	

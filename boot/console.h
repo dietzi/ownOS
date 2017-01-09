@@ -45,6 +45,7 @@ void kprintf(const char string[])
 			char* video1 = (char*) 0xb8000;
 			video1[i]=video[i];
 		}
+		row=25;
 	}
     for (i = 0; iString[i] != '\0'; i++) {
         int pos=row*80+col;
