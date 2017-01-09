@@ -20,6 +20,23 @@ void displaycursor(int row,int col)
   outb(0x3D5,tmp);
 }
 
+void initScreen() {
+	int i;
+    char* video = (char*) 0xb8000;
+	const char iString[]="ownOS> ";
+
+	for (i = 0; iString[i] != '\0'; i++) {
+        int pos=0;
+        // Zeichen i in den Videospeicher kopieren
+        video[pos * 2] = iString[i];
+ 
+        // 0x07 = Grün auf Schwarz
+        video[pos * 2 + 1] = 0x02;
+		col+=1;
+    }
+	displaycursor(row,col);
+}
+
 void kprintf(const char string[])
 {
     int i;
@@ -36,16 +53,20 @@ void kprintf(const char string[])
         // 0x07 = Hellgrau auf Schwarz
         video[pos * 2 + 1] = 0x07;
 		col+=1;
-        displaycursor(row,col);
     }
 	row+=1;
 	col=0;
 	if(row>25) {
-		for(i=0;i<4000;i++) {
+		for(i=0;i<2000;i++) {
 			char* video1 = (char*) 0xb8000;
-			video1[i]=video[i];
+			video[i*2]=video[i*2+2];
+			video[i*2+1]=video[i*2+3];
 		}
 		row=25;
+		for(i=0;i<80;i++) {
+			video[row*80*i*2]=0;
+			video[row*80*i*2+1]=0x07;
+		}
 	}
     for (i = 0; iString[i] != '\0'; i++) {
         int pos=row*80+col;
@@ -55,8 +76,8 @@ void kprintf(const char string[])
         // 0x07 = Grün auf Schwarz
         video[pos * 2 + 1] = 0x02;
 		col+=1;
-        displaycursor(row,col);
     }
+	displaycursor(row,col);
 }
 
 void clearscreen()
