@@ -5,8 +5,6 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#include "mem.h"
-
 struct cpu_state {
     // Von Hand gesicherte Register
     uint32_t   eax;

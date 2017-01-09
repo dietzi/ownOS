@@ -21,7 +21,7 @@ void init(void)
     outb(0xa1, 0x0);
     
     kprintf("Raising interrupt");
-    asm volatile("sti");
+    //asm volatile("sti");
     //asm volatile("int $0x0");
     while(1);
     stopCPU();
