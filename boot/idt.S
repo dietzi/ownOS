@@ -1,3 +1,4 @@
+.code32
 .macro intr_stub nr
 .global intr_stub_\nr
 intr_stub_\nr:
