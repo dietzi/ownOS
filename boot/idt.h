@@ -5,6 +5,8 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define IDT_ENTRIES 1
+
 struct cpu_state {
     // Von Hand gesicherte Register
     uint32_t   eax;
@@ -33,4 +35,17 @@ struct IDTDescr{
    uint8_t type_attr; // type and attributes, see below
    uint16_t offset_2; // offset bits 16..31
 };
+
+static uint64_t idt[IDT_ENTRIES];
+ 
+// ...
+ 
+struct {
+    uint16_t limit;
+    void* pointer;
+} __attribute__((packed)) idtp = {
+    .limit = IDT_ENTRIES * 8 - 1,
+    .pointer = idt,
+};
+asm volatile("lidt %0" : : "m" (idtp));
 #endif
