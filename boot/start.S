@@ -22,7 +22,6 @@
 _start:
     // Stack initialisieren
     mov $kernel_stack, %esp
-	lidt [idtr]
     // C-Code aufrufen
     call init
  
