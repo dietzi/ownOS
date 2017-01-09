@@ -20,19 +20,9 @@ void init(void)
     outb(0x21, 0x0);
     outb(0xa1, 0x0);
     
-    kprintf("Activating interrupts");
-	struct {
-		uint16_t limit;
-		void* pointer;
-	} __attribute__((packed)) idtp = {
-		.limit = IDT_ENTRIES * 8 - 1,
-		.pointer = idt,
-	};
-
-	asm volatile("lidt %0" : : "m" (idtp));
-    //asm volatile("sti");
 	kprintf("Raising interrupt");
-    asm volatile("int $0x0");
+    //asm volatile("sti");
+    //asm volatile("int $0x0");
     while(1);
     stopCPU();
 }

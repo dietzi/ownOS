@@ -22,7 +22,7 @@
 _start:
     // Stack initialisieren
     mov $kernel_stack, %esp
- 
+	lidt [idtr]
     // C-Code aufrufen
     call init
  
@@ -37,6 +37,10 @@ _stop:
  
 // 10 kB Stack fuer den Kernel. Das Label steht hinter dem freien Speicher,
 // weil der Stack nach unten waechst
+
+idtr:
+	dw 0
+	dd 0
 
 .section .bss
 .space 10240
