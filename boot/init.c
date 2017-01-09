@@ -20,8 +20,6 @@ void init(void)
     outb(0x21, 0x0);
     outb(0xa1, 0x0);
     
-    idt_install();
-    
     kprintf("Raising interrupt",3,0);
     asm volatile("sti");
     //asm volatile("int $0x0");
@@ -33,27 +31,4 @@ void int_handler(void)
 {
     kprintf("Ein Interrupt!\n",4,0);
     while(1);
-}
-
-void handle_interrupt(struct cpu_state* cpu)
-{
-    if (cpu->intr <= 0x1f) {
-        kprintf("Exception ",5,0);
-        kprintf((char*)cpu->intr,5,11);
-        kprintf("Kernel angehalten!\n", 6,0);
-        
-        // Hier den CPU-Zustand ausgeben
- 
-        while(1) {
-            // Prozessor anhalten
-            asm volatile("cli; hlt");
-        }
-    } else {
-      if (cpu->intr >= 0x20 && cpu->intr <= 0x2f) {
-        if (cpu->intr >= 0x28) {
-            outb(0xa0, 0x20);
-        }
-        outb(0x20, 0x20);
-      }
-    }
 }
