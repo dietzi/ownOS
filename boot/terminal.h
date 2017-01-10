@@ -99,9 +99,10 @@ void terminal_scroll() {
 			terminal_buffer[i*(j*2)+1]=terminal_buffer[(i+1)*(j*2)+1];
 		}
 	}*/
+	uint16_t* video = (uint16_t*) 0xB8000;
 	for(int i = 0; i < VGA_HEIGHT; i++){
 		for (int m = 0; m < VGA_WIDTH; m++){
-			terminal_buffer[i * VGA_WIDTH + m] = terminal_buffer[(i + 1) * VGA_WIDTH + m];
+			video[i * VGA_WIDTH + m] = video[(i + 1) * VGA_WIDTH + m];
 		}
 	}
 	terminal_row=24;
