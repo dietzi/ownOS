@@ -42,8 +42,13 @@ void init(void)
 	
 	int i;
 	
-	for(i=0;i<10;i++) {
-		char* c1="a";
+	for(i=0;i<30;i++) {
+		char* c1;
+		if(i%2=0) {
+			c1="a";
+		} else {
+			c1="b";
+		}
 		terminal_writestring(c1);
 	}
 	

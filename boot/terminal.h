@@ -102,6 +102,9 @@ void terminal_scroll() {
 	}
 	terminal_row=24;
 	terminal_column=0;
+	for(int i=0;i<80;i++) {
+		terminal_writestring(" ");
+	}
 	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	terminal_write("ownOS> ",strlen("ownOS> "));
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
