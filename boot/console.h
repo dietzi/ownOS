@@ -17,23 +17,6 @@ void displaycursor(int row,int col)
   outb(0x3D5,tmp);
 }
 
-void initScreen() {
-	int i;
-    char* video = (char*) 0xb8000;
-	const char iString[]="ownOS> ";
-
-	for (i = 0; iString[i] != '\0'; i++) {
-        int pos=0;
-        // Zeichen i in den Videospeicher kopieren
-        video[pos * 2] = iString[i];
- 
-        // 0x07 = Grün auf Schwarz
-        video[pos * 2 + 1] = 0x02;
-		col+=1;
-    }
-	displaycursor(row,col);
-}
-
 void clearscreen()
 {
 

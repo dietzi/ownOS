@@ -44,7 +44,7 @@ void init(void)
 	
 	for(i=0;i<30;i++) {
 		char* c1;
-		if(i%2=0) {
+		if(i%2==0) {
 			c1="a";
 		} else {
 			c1="b";
