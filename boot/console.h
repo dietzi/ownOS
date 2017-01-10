@@ -60,14 +60,14 @@ void kprintf(const char string[])
 		int j;
 		for(i=0;i<25;i++) {
 			for(j=0;j<80;j++) {
-				video[i*j*2]=video[(i+1)*j*2];
-				video[i*j*2+1]=video[(i+1)*j*2+3];
+				video[(i*80)+(j*2)]=video[((i+1)*80)+(j*2)];
+				video[(i*80)+(j*2)+1]=video[((i+1)*80)+(j*2)+1];
 			}
 		}
 		row=24;
 		for(i=0;i<80;i++) {
-			video[row*80*i*2]=0;
-			video[row*80*i*2+1]=0x07;
+			video[row*80+(i*2)]=0;
+			video[row*80+(i*2+1)]=0x07;
 		}
 	}
     for (i = 0; iString[i] != '\0'; i++) {
@@ -75,7 +75,7 @@ void kprintf(const char string[])
         // Zeichen i in den Videospeicher kopieren
         video[pos * 2] = iString[i];
  
-        // 0x07 = Grün auf Schwarz
+        // 0x02 = Grün auf Schwarz
         video[pos * 2 + 1] = 0x02;
 		col+=1;
     }
