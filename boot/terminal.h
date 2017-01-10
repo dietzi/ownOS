@@ -94,7 +94,7 @@ void terminal_write(const char* data, size_t size) {
 }
 
 void terminal_scroll() {
-	for(int i=0;i<25;i++) {
+	for(int i=0;i<24;i++) {
 		for(int j=0;j<80;i++) {
 			terminal_buffer[i*(j*2)]=terminal_buffer[(i+1)*(j*2)];
 			terminal_buffer[i*(j*2)+1]=terminal_buffer[(i+1)*(j*2)+1];
@@ -105,6 +105,7 @@ void terminal_scroll() {
 	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	terminal_write("ownOS> ",strlen("ownOS> "));
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
+	displaycursor(terminal_row,terminal_column);
 }
  
 void terminal_writestring(const char* data) {
