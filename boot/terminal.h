@@ -80,8 +80,9 @@ void terminal_putchar(char c) {
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 		if (++terminal_column == VGA_WIDTH) {
 			terminal_column = 0;
+			terminal_row++;
 			if (++terminal_row == VGA_HEIGHT)
-				terminal_row = 0;
+				terminal_scroll();
 		}
 	}
 }
@@ -89,7 +90,21 @@ void terminal_putchar(char c) {
 void terminal_write(const char* data, size_t size) {
 	for (size_t i = 0; i < size; i++)
 		terminal_putchar(data[i]);
-	displaycursor(terminal_row,terminal_column+1);
+	displaycursor(terminal_row,terminal_column);
+}
+
+void terminal_scroll() {
+	for(int i=0;i<25;i++) {
+		for(int j=0;j<80;i++) {
+			terminal_buffer[i*(j*2)]=terminal_buffer[(i+1)*(j*2)];
+			terminal_buffer[i*(j*2)+1]=terminal_buffer[(i+1)*(j*2)+1];
+		}
+	}
+	terminal_row=24;
+	terminal_column=0;
+	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
+	terminal_write("ownOS> ",strlen("ownOS> "));
+	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 }
  
 void terminal_writestring(const char* data) {
@@ -98,15 +113,4 @@ void terminal_writestring(const char* data) {
 	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	terminal_write("ownOS> ",strlen("ownOS> "));
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-}
- 
-#if defined(__cplusplus)
-extern "C" /* Use C linkage for kernel_main. */
-#endif
-void kernel_main(void) {
-	/* Initialize terminal interface */
-	terminal_initialize();
- 
-	/* Newline support is left as an exercise. */
-	terminal_writestring("Hello, kernel World!\n");
 }
