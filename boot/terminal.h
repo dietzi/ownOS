@@ -100,16 +100,16 @@ void terminal_scroll() {
 			terminal_buffer[i*(j*2)+1]=terminal_buffer[(i+1)*(j*2)+1];
 		}
 	}*/
-	uint16_t* video = (uint16_t*) 0xB8000;
 	for(int i = 0; i < VGA_HEIGHT; i++){
 		for (int m = 0; m < VGA_WIDTH; m++){
-			video[i * VGA_WIDTH + m] = video[(i + 1) * VGA_WIDTH + m];
+			terminal_buffer[i * VGA_WIDTH + (m*2)] = terminal_buffer[(i + 1) * VGA_WIDTH + (m*2)];
+			terminal_buffer[i * VGA_WIDTH + (m*2) + 1] = terminal_buffer[(i + 1) * VGA_WIDTH + (m*2) + 1];
 		}
 	}
 	terminal_row=24;
 	terminal_column=0;
 	for(int i=0;i<80;i++) {
-		terminal_writestring(" ");
+		terminal_putentryat(" ", terminal_color, i, terminal_row);
 	}
 	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	terminal_write("ownOS> ",strlen("ownOS> "));
