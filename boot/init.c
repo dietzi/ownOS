@@ -37,21 +37,7 @@ void init(void)
 	terminal_writestring("Loading IDT");
 	
 	asm volatile("lidt %0" : : "m" (idtp));
-	
-	terminal_writestring("Generating testing stuff");
-	
-	int i;
-	
-	for(i=0;i<30;i++) {
-		char* c1;
-		if(i%2==0) {
-			c1="a";
-		} else {
-			c1="b";
-		}
-		terminal_writestring(c1);
-	}
-	
+
 	terminal_writestring("Raising interrupt");
     //asm volatile("sti");
     //asm volatile("int $0x0");
