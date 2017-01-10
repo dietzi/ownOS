@@ -93,10 +93,15 @@ void terminal_write(const char* data, size_t size) {
 }
 
 void terminal_scroll() {
-	for(int i=0;i<24;i++) {
+	/*for(int i=0;i<24;i++) {
 		for(int j=0;j<80;i++) {
 			terminal_buffer[i*(j*2)]=terminal_buffer[(i+1)*(j*2)];
 			terminal_buffer[i*(j*2)+1]=terminal_buffer[(i+1)*(j*2)+1];
+		}
+	}*/
+	for(int i = 0; i < VGA_HEIGHT; i++){
+		for (int m = 0; m < VGA_WIDTH; m++){
+			terminal_buffer[i * VGA_WIDTH + m] = terminal_buffer[(i + 1) * VGA_WIDTH + m];
 		}
 	}
 	terminal_row=24;
