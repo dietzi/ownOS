@@ -58,6 +58,9 @@ void terminal_initialize(void) {
 			terminal_buffer[index] = vga_entry(' ', terminal_color);
 		}
 	}
+	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
+	terminal_write("ownOS> ",strlen("ownOS> "));
+	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 }
  
 void terminal_setcolor(uint8_t color) {
@@ -86,14 +89,15 @@ void terminal_putchar(char c) {
 void terminal_write(const char* data, size_t size) {
 	for (size_t i = 0; i < size; i++)
 		terminal_putchar(data[i]);
+	displaycursor(terminal_row,terminal_column+1);
 }
  
 void terminal_writestring(const char* data) {
+	terminal_write(data, strlen(data));
+	terminal_write("\n",strlen("\n"));
 	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	terminal_write("ownOS> ",strlen("ownOS> "));
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-	terminal_write(data, strlen(data));
-	terminal_write("\n",strlen("\n"));
 }
  
 #if defined(__cplusplus)

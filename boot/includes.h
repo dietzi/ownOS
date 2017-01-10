@@ -2,5 +2,6 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "console.h"
+#include "terminal.h"
 #include "gdt.h"
 #include "idt.h"

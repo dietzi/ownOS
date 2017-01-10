@@ -43,9 +43,7 @@ void init(void)
 	int i;
 	
 	for(i=0;i<10;i++) {
-		char c1[1];
-		c1[0]="a";
-		c1[1]=(char)i;
+		char* c1=i+32;
 		terminal_writestring(c1);
 	}
 	
