@@ -1,10 +1,3 @@
-#ifndef IDT_H
-#define IDT_H
-
-#include <stdbool.h>
-#include <stddef.h>
-#include <stdint.h>
-
 struct cpu_state {
     // Von Hand gesicherte Register
     uint32_t   eax;
@@ -48,4 +41,3 @@ void handle_interrupt(struct cpu_state* cpu)
 		terminal_writestring("Interrupt!");
     }
 }
-#endif
