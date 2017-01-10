@@ -25,4 +25,5 @@ struct cpu_state {
     uint32_t   esp;
     uint32_t   ss;
 };
+
 #endif

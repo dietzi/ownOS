@@ -37,6 +37,10 @@ void init(void)
 	terminal_writestring("Loading IDT");
 	
 	asm volatile("lidt %0" : : "m" (idtp));
+	
+	terminal_writestring("IDT loadet");
+	terminal_writestring("IDT0:");
+	terminal_writestring(idt[0]);
 
 	terminal_writestring("Raising interrupt");
     //asm volatile("sti");

@@ -1,5 +1,4 @@
 .code32
-@TRY_BEGIN ErrorHandler
 .section multiboot
 #define MB_MAGIC 0x1badb002
 #define MB_FLAGS 0x0
@@ -41,10 +40,7 @@ _stop:
 idtr:
 	.quad 79
 	.long 0
-@TRY_EXCEPT ErrorHandler
-	cli
-	hlt
-@TRY_END ErrorHandler
+
 .section .bss
 .space 10240
 kernel_stack:
