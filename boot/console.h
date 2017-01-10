@@ -114,7 +114,7 @@ void clearscreen()
 void stopCPU() {
     while(1) {
       // Prozessor anhalten
-      kprintf("Stopping CPU");
+      terminal_writestring("Stopping CPU");
       asm volatile("cli; hlt");
     }
 }

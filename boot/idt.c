@@ -6,8 +6,8 @@
 void handle_interrupt(struct cpu_state* cpu)
 {
     if (cpu->intr <= 0x1f) {
-        kprintf("Exception:");
-		kprintf((char*)cpu->intr);
+        terminal_writestring("Exception:");
+		terminal_writestring((char*)cpu->intr);
  
         // Hier den CPU-Zustand ausgeben
  

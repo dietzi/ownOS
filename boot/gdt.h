@@ -34,12 +34,12 @@ void load_gdt()
 	asm volatile("lgdt %0" : : "m" (gdtp));
 	asm volatile("mov $0x10, %%ax;mov %%ax, %%ds;mov %%ax, %%es;mov %%ax, %%fs;mov %%ax, %%gs;mov %%ax, %%ss;" : : );
 	asm volatile("ljmp $0x8, $.1;.1:;" : : );
-	kprintf("GDT loaded");
+	terminal_writestring("GDT loaded");
 }
 
 void init_gdt(void)
 {
-    kprintf("initializing GDT");
+    terminal_writestring("initializing GDT");
     set_entry(0, 0, 0, 0);
     set_entry(1, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
         GDT_FLAG_CODESEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT);
@@ -49,6 +49,7 @@ void init_gdt(void)
         GDT_FLAG_CODESEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
     set_entry(4, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
         GDT_FLAG_DATASEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
-    kprintf("GDT initialized. Loading GDT");
+    terminal_writestring("GDT initialized");
+	terminal_writestring("Loading GDT");
     load_gdt();
 }

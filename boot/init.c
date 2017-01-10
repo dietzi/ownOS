@@ -33,11 +33,11 @@ void init(void)
     outb(0x21, 0x0);
     outb(0xa1, 0x0);
 	
-	kprintf("Loading IDT");
+	terminal_writestring("Loading IDT");
 	
 	asm volatile("lidt %0" : : "m" (idtp));
 	
-	kprintf("Generating testing stuff");
+	terminal_writestring("Generating testing stuff");
 	
 	int i;
 	
@@ -45,10 +45,10 @@ void init(void)
 		char c1[1];
 		c1[0]=(char)"a";
 		c1[1]=(char)i;
-		kprintf(c1);
+		terminal_writestring(c1);
 	}
 	
-	kprintf("Raising interrupt");
+	terminal_writestring("Raising interrupt");
     //asm volatile("sti");
     //asm volatile("int $0x0");
     while(1);
@@ -57,6 +57,6 @@ void init(void)
 
 void int_handler(void)
 {
-    kprintf("Ein Interrupt!\n");
+    terminal_writestring("Ein Interrupt!\n");
     while(1);
 }
