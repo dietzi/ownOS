@@ -14,8 +14,6 @@ struct {
 
 void init(void)
 {
-	//clearscreen();
-    //initScreen();
 	terminal_initialize();
     init_gdt();
     // Master-PIC initialisieren
@@ -38,12 +36,12 @@ void init(void)
 	
 	asm volatile("lidt %0" : : "m" (idtp));
 	
-	terminal_writestring("IDT loadet");
-	terminal_writestring("IDT0:");
-	terminal_writestring(idt[0]);
+	terminal_writestring("IDT loaded");
+	terminal_writestring("IDT's:");
+	for(int i=0;i<10;i++) terminal_writestring(idt[i]);
 
-	terminal_writestring("Raising interrupt");
-    //asm volatile("sti");
+	terminal_writestring("Activating interrupts");
+    asm volatile("sti");
     //asm volatile("int $0x0");
     while(1);
     stopCPU();

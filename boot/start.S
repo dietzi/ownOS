@@ -21,6 +21,7 @@
 .global _start
 _start:
     // Stack initialisieren
+	cli
     mov $kernel_stack, %esp
     // C-Code aufrufen
     call init
