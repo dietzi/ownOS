@@ -1,21 +1,9 @@
 /* Surely you will remove the processor conditionals and this comment
    appropriately depending on whether or not you use C++. */
-#if !defined(__cplusplus)
 #include <stdbool.h> /* C doesn't have booleans by default. */
-#endif
 #include <stddef.h>
 #include <stdint.h>
- 
-/* Check if the compiler thinks we are targeting the wrong operating system. */
-#if defined(__linux__)
-#error "You are not using a cross-compiler, you will most certainly run into trouble"
-#endif
- 
-/* This tutorial will only work for the 32-bit ix86 targets. */
-#if !defined(__i386__)
-#error "This tutorial needs to be compiled with a ix86-elf compiler"
-#endif
- 
+  
 /* Hardware text mode color constants. */
 enum vga_color {
 	VGA_COLOR_BLACK = 0,
@@ -82,6 +70,9 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
 }
  
 void terminal_putchar(char c) {
+	if(char=='\n') {
+		terminal_row++;
+	}
 	terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 	if (++terminal_column == VGA_WIDTH) {
 		terminal_column = 0;
@@ -96,7 +87,9 @@ void terminal_write(const char* data, size_t size) {
 }
  
 void terminal_writestring(const char* data) {
+	terminal_write("ownOS> ",strlen("ownOS> "));
 	terminal_write(data, strlen(data));
+	terminal_write("\n",strlen("\n"));
 }
  
 #if defined(__cplusplus)
