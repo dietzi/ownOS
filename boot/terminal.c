@@ -123,3 +123,54 @@ void terminal_writestring(const char* data) {
 	terminal_write("ownOS> ",strlen("ownOS> "));
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 }
+
+static inline void outb(unsigned short port, unsigned char data)
+{
+    asm volatile ("outb %0, %1" : : "a" (data), "Nd" (port));
+}
+
+void displaycursor(int row,int col)
+{
+  unsigned short tmp=row*80+col;
+  outb(0x3D4,14);
+  outb(0x3D5,tmp >> 8);
+  outb(0x3D4,15);
+  outb(0x3D5,tmp);
+}
+
+void clearscreen()
+{
+
+	char* video = (char*) 0xb8000;
+
+	int i;
+
+	//char* video = (char*) 0xb8000;
+
+ 
+	// C-Strings haben ein Nullbyte als Abschluss
+
+	for (i = 0; i<2000; i++) {
+
+
+        	// Zeichen i in den Videospeicher kopieren
+
+        	video[i * 2] = 0;
+
+ 
+        	// 0x07 = Hellgrau auf Schwarz
+
+        	video[i * 2 + 1] = 0x07;
+
+    }
+
+
+}
+
+void stopCPU() {
+    while(1) {
+      // Prozessor anhalten
+      terminal_writestring("Stopping CPU");
+      asm volatile("cli; hlt");
+    }
+}
