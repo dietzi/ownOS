@@ -1,15 +1,10 @@
 #include "includes.h"
 
 /**
- * Liste mit den PIDs die benachrichtitg werden wollen, bei Tastendruecken
- */
-static list_t* callback_list;
-
-/**
  * Wird Benutzt um Meldungen ueber ungueltige Scancodes waehrend der
  * Initialisierungsphase zu verhindern
  */
-static bool init_done = FALSE;
+static bool init_done = false;
 
 /**
  * IRQ-Hander
@@ -54,7 +49,7 @@ void keyboard_init(void)
 
     // Tastatur aktivieren
     send_kbd_command(0xF4);
-    init_done = TRUE;
+    init_done = true;
 }
 
 /**
@@ -63,10 +58,10 @@ void keyboard_init(void)
 void kbd_irq_handler() {
     uint8_t scancode;
     uint8_t keycode = 0;
-    bool break_code = FALSE;
+    bool break_code = false;
 
     // Status-Variablen fuer das Behandeln von e0- und e1-Scancodes
-    static bool     e0_code = FALSE;
+    static bool     e0_code = false;
     // Wird auf 1 gesetzt, sobald e1 gelesen wurde, und auf 2, sobald das erste
     // Datenbyte gelesen wurde
     static int      e1_code = 0;
@@ -85,7 +80,7 @@ void kbd_irq_handler() {
         (e1_code || (scancode != 0xE1)) &&
         (e0_code || (scancode != 0xE0)))
     {
-        break_code = TRUE;
+        break_code = true;
         scancode &= ~0x80;
     }
 
@@ -93,13 +88,13 @@ void kbd_irq_handler() {
         // Fake shift abfangen
         // Siehe: http://www.win.tue.nl/~aeb/linux/kbd/scancodes-1.html#ss1.6
         if ((scancode == 0x2A) || (scancode == 0x36)) {
-            e0_code = FALSE;
+            e0_code = false;
             return;
         }
 
         // Fertiger e0-Scancode
         keycode = translate_scancode(1, scancode);
-        e0_code = FALSE;
+        e0_code = false;
     } else if (e1_code == 2) {
         // Fertiger e1-Scancode
         // Zweiten Scancode in hoeherwertiges Byte packen
@@ -112,7 +107,7 @@ void kbd_irq_handler() {
         e1_code++;
     } else if (scancode == 0xE0) {
         // Anfang eines e0-Codes
-        e0_code = TRUE;
+        e0_code = true;
     } else if (scancode == 0xE1) {
         // Anfang eines e1-Codes
         e1_code = 1;
