@@ -28,8 +28,8 @@ void init(void)
 	//asm volatile("lidt %0" : : "m" (idtp));
 	
 	//terminal_writestring("IDT loaded");
-	terminal_writestring("IDT's:");
-	for(int i=0;i<10;i++) terminal_writestring(idt[i]);
+	//terminal_writestring("IDT's:");
+	//for(int i=0;i<10;i++) terminal_writestring(idt[i]);
 
 	terminal_writestring("Activating interrupts");
     asm volatile("sti");
