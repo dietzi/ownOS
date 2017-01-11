@@ -33,7 +33,7 @@ void keyboard_init(void)
     while ((inb(0x64) & 0x1)) {
         inb(0x60);
     }
-
+/*
     // Leds alle ausloeschen
     send_kbd_command(0xED);
     outb(0x60, 0);
@@ -41,7 +41,7 @@ void keyboard_init(void)
     // Schnellste Wiederholrate
     send_kbd_command(0xF3);
     outb(0x60, 0);
-
+*/
     // Tastatur aktivieren
     send_kbd_command(0xF4);
     init_done = true;
