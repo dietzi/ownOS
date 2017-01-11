@@ -15,10 +15,6 @@
 // Init ist eine Funktion aus init.c
 .extern init
  
-idt:
-	.word 2048
-	.int 0x0
- 
 // _start muss global sein, damit der Linker es findet und als Einsprungspunkt
 // benutzen kann (alle Labels, die nicht global sind, sind nur in dieser Datei
 // sichtbar)
@@ -28,7 +24,6 @@ _start:
 	cli
     mov $kernel_stack, %esp
     // C-Code aufrufen
-	lidt idt
     call init
  
     // Falls wir jemals aus init zurueckkommen sollten, sperren wir die Interrupts und

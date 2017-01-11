@@ -1,16 +1,5 @@
 #include "includes.h"
 
-#define IDT_ENTRIES 255
-
-static uint64_t idt[IDT_ENTRIES];
-
-struct {
-	uint16_t limit;
-	void* pointer;
-} __attribute__((packed)) idtp = {
-	.limit = IDT_ENTRIES * 8 - 1,
-	.pointer = idt,
-};
 
 void init(void)
 {
@@ -32,11 +21,13 @@ void init(void)
     outb(0x21, 0x0);
     outb(0xa1, 0x0);
 	
-	terminal_writestring("Loading IDT");
+	init_idt();
 	
-	asm volatile("lidt %0" : : "m" (idtp));
+	//terminal_writestring("Loading IDT");
 	
-	terminal_writestring("IDT loaded");
+	//asm volatile("lidt %0" : : "m" (idtp));
+	
+	//terminal_writestring("IDT loaded");
 	terminal_writestring("IDT's:");
 	for(int i=0;i<10;i++) terminal_writestring(idt[i]);
 
