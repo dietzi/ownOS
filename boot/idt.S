@@ -1,89 +1,155 @@
 .code32
-.macro intr_stub nr
-.global intr_stub_\nr
-intr_stub_\nr:
-    pushl $0
-    pushl $\nr
-    jmp intr_common_handler
-.endm
- 
-.macro intr_stub_error_code nr
-.global intr_stub_\nr
-intr_stub_\nr:
-    pushl $\nr
-    jmp intr_common_handler
-.endm
- 
-// Exceptions
-intr_stub 0
-intr_stub 1
-intr_stub 2
-intr_stub 3
-intr_stub 4
-intr_stub 5
-intr_stub 6
-intr_stub 7
-intr_stub_error_code 8
-intr_stub 9
-intr_stub_error_code 10
-intr_stub_error_code 11
-intr_stub_error_code 12
-intr_stub_error_code 13
-intr_stub_error_code 14
-intr_stub 15
-intr_stub 16
-intr_stub_error_code 17
-intr_stub 18
- 
-// IRQs
-intr_stub 32
-intr_stub 33
-intr_stub 34
-intr_stub 35
-intr_stub 36
-intr_stub 37
-intr_stub 38
-intr_stub 39
-intr_stub 40
-intr_stub 41
-intr_stub 42
-intr_stub 43
-intr_stub 44
-intr_stub 45
-intr_stub 46
-intr_stub 47
+.section .text
+.global load_idt
 
- 
-// Syscall
-intr_stub 48
+.type load_idt, @function
+    # void load_idt(idt_ptr_t *)
+load_idt:
+    movl	4(%esp),%eax
+    lidt	(%eax)
+    ret
 
-.extern handle_interrupt
-intr_common_handler:
-    // CPU-Zustand sichern
-    push %ebp
-    push %edi
-    push %esi
-    push %edx
-    push %ecx
-    push %ebx
-    push %eax
- 
-    // Handler aufrufen
-    push %esp
-    call handle_interrupt
-    add $4, %esp
- 
-    // CPU-Zustand wiederherstellen
-    pop %eax
-    pop %ebx
-    pop %ecx
-    pop %edx
-    pop %esi
-    pop %edi
-    pop %ebp
- 
-    // Fehlercode und Interruptnummer vom Stack nehmen
+.size load_idt, . - load_idt
+
+# Macro for interrupt handler which does not push an error (we push a dummy val)
+.macro isr_noerr num
+.global isr\num
+isr\num:
+    cli
+    push	$0
+    push	$\num
+    jmp	isr_stub
+.endm
+
+# Macro for interrupt handler which pushes an error
+.macro isr_err num
+.global isr\num
+isr\num:
+    cli
+    push	$\num
+    jmp	isr_stub
+.endm
+
+isr_noerr 0
+isr_noerr 1
+isr_noerr 2
+isr_noerr 3
+isr_noerr 4
+isr_noerr 5
+isr_noerr 6
+isr_noerr 7
+isr_err 8
+isr_noerr 9
+isr_err 10
+isr_err 11
+isr_err 12
+isr_err 13
+isr_err 14
+isr_noerr 15
+isr_noerr 16
+isr_noerr 17
+isr_noerr 18
+isr_noerr 19
+isr_noerr 20
+isr_noerr 21
+isr_noerr 22
+isr_noerr 23
+isr_noerr 24
+isr_noerr 25
+isr_noerr 26
+isr_noerr 27
+isr_noerr 28
+isr_noerr 29
+isr_noerr 30
+isr_noerr 31
+
+
+.extern isr_handler
+isr_stub:
+    pusha
+
+    mov     %ds, %ax
+    pushl	%eax
+    movl	%eax, %esi
+
+    movw	$0x10, %ax
+    movw	%ax, %ds
+    movw	%ax, %es
+    movw	%ax, %fs
+    movw	%ax, %gs
+
+    call	isr_handler
+
+    pop	%eax
+    movl	%esi, %eax
+
+    mov	%ax, %ds
+    movw	%ax, %ds
+    movw	%ax, %es
+    movw	%ax, %fs
+    movw	%ax, %gs
+
+    popa
+    add	$8, %esp
+    sti
+    iret
+
+
+
+# Interrupt Request Handlers
+
+.macro irq num, map
+.global irq\num
+irq\num:
+    cli
+    push	$0
+    push	$\map
+    jmp	irq_stub
+.endm
+
+
+irq 0, 32
+irq 1, 33
+irq 2, 34
+irq 3, 35
+irq 4, 36
+irq 5, 37
+irq 6, 38
+irq 7, 39
+irq 8, 40
+irq 9, 41
+irq 10, 42
+irq 11, 43
+irq 12, 44
+irq 13, 45
+irq 14, 46
+irq 15, 47
+
+.extern irq_handler
+irq_stub:
+    pusha
+
+    mov	%ds, %ax
+    pushl	%eax
+    movl	%eax, %esi
+
+    movw	$0x10, %ax
+    movw	%ax, %ds
+    movw	%ax, %es
+    movw	%ax, %fs
+    movw	%ax, %gs
+
+    call	irq_handler
+
+    pop	%ebx
+    movl	%esi, %ebx
+
+    movw	%bx, %ds
+    movw	%bx, %es
+    movw	%bx, %fs
+    movw	%bx, %gs
+
+    popa
     add $8, %esp
- 
-    // Ruecksprung zum unterbrochenen Code
+    sti
     iret
