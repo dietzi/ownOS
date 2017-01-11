@@ -124,7 +124,7 @@ void terminal_writestring(const char* data) {
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 }
 
-static inline void outb(unsigned short port, unsigned char data)
+void outb(unsigned short port, unsigned char data)
 {
     asm volatile ("outb %0, %1" : : "a" (data), "Nd" (port));
 }

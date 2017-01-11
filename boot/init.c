@@ -1,6 +1,5 @@
 #include "includes.h"
 
-
 void init(void)
 {
 	terminal_initialize();
