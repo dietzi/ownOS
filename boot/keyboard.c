@@ -7,11 +7,6 @@
 static bool init_done = false;
 
 /**
- * IRQ-Hander
- */
-static void kbd_irq_handler();
-
-/**
  * Tastendruck an wartende Prozesse senden
  *
  * @param keycode Der zu sendende Keycode
@@ -24,7 +19,7 @@ static void send_key_event(uint8_t keycode, bool release);
  */
 static void send_kbd_command(uint8_t command)
 {
-    while ((inb(0x64) & 0x6) != 0x4) yield();
+    while ((inb(0x64) & 0x6) != 0x4) {}
     outb(0x60, command);
 }
 
@@ -50,6 +45,7 @@ void keyboard_init(void)
     // Tastatur aktivieren
     send_kbd_command(0xF4);
     init_done = true;
+	terminal_writestring("Keyboard initialized");
 }
 
 /**
