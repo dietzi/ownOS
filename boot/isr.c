@@ -29,7 +29,7 @@ void isr_handler(registers_t regs)
 
 void irq_handler(registers_t regs)
 {
-	if(regs.int_no == 21) {
+	if(regs.int_no == 1) {
 		terminal_writestring("IRQ 21");
 		kbd_irq_handler();
 	} else {
