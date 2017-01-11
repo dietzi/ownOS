@@ -35,6 +35,9 @@ void irq_handler(registers_t regs)
 		itoa(regs.int_no,*result,10);
 		terminal_writestring(*result);
 	}
+	if(regs.int_no == 21) {
+		kbd_irq_handler();
+	}
     //If int_no >= 40, we must reset the slave as well as the master
     if(regs.int_no >= 40)
     {

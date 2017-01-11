@@ -5,3 +5,4 @@ void displaycursor(int,int);
 void clearscreen();
 void stopCPU();
 char * itoa (int, char, int);
+unsigned char inb(unsigned short);

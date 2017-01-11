@@ -32,6 +32,8 @@ void init(void)
 
 	terminal_writestring("Activating interrupts");
     asm volatile("sti");
+	terminal_writestring("Initializing keyboard");
+	keyboard_init();
     //asm volatile("int $0x0");
     while(1);
     stopCPU();
