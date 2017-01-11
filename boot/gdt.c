@@ -34,7 +34,7 @@ static void set_entry(int i, unsigned int base, unsigned int limit, int flags)
 void load_gdt()
 {
 	asm volatile("lgdt %0" : : "m" (gdtp));
-	asm volatile("mov $0x10, %ax;mov %ax, %ds;mov %ax, %es;mov %ax, %fs;mov %ax, %gs;mov %ax, %ss;" : : );
+	asm volatile("mov $0x10, %%ax;mov %%ax, %%ds;mov %%ax, %%es;mov %%ax, %%fs;mov %%ax, %%gs;mov %%ax, %%ss;" : : );
 	asm volatile("ljmp $0x8, $.1;.1:ret;" : : );
 	terminal_writestring("GDT loaded");
 }
