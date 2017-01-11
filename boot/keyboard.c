@@ -52,6 +52,7 @@ void keyboard_init(void)
  * IRQ-Hander
  */
 void kbd_irq_handler() {
+	terminal_writestring("Handling keyboard");
     uint8_t scancode;
     uint8_t keycode = 0;
     bool break_code = false;
@@ -115,6 +116,7 @@ void kbd_irq_handler() {
     if (keycode != 0) {
         send_key_event(keycode, break_code);
     }
+	terminal_writestring("Keyboard handled");
 }
 
 /**
