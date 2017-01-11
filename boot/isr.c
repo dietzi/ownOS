@@ -29,26 +29,28 @@ void isr_handler(registers_t regs)
 
 void irq_handler(registers_t regs)
 {
-	if(regs.int_no != 32) {
-		terminal_writestring("IRQ");
-		char *result;
-		itoa(regs.int_no,*result,10);
-		terminal_writestring(*result);
-	}
 	if(regs.int_no == 21) {
+		terminal_writestring("IRQ 21");
 		kbd_irq_handler();
+	} else {
+		if(regs.int_no != 32) {
+			terminal_writestring("IRQ");
+			char *result;
+			itoa(regs.int_no,*result,10);
+			terminal_writestring(*result);
+		}
+		//If int_no >= 40, we must reset the slave as well as the master
+		if(regs.int_no >= 40)
+		{
+			//reset slave
+			outb(SLAVE_COMMAND, PIC_RESET);
+		}
+
+		outb(MASTER_COMMAND, PIC_RESET);
+
+		if(interrupt_handlers[regs.int_no])
+		{
+			interrupt_handlers[regs.int_no](regs);
+		}
 	}
-    //If int_no >= 40, we must reset the slave as well as the master
-    if(regs.int_no >= 40)
-    {
-        //reset slave
-        outb(SLAVE_COMMAND, PIC_RESET);
-    }
-
-    outb(MASTER_COMMAND, PIC_RESET);
-
-    if(interrupt_handlers[regs.int_no])
-    {
-        interrupt_handlers[regs.int_no](regs);
-    }
 }
