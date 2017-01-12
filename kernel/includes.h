@@ -6,5 +6,4 @@
 #include "idt.h"
 #include "defines.h"
 #include "isr.h"
-#include "keycode.h"
 #include "keyboard.h"
