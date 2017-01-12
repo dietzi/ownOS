@@ -38,6 +38,9 @@ void irq_handler(registers_t regs)
 		itoa(regs.int_no,*result,10);
 		terminal_writestring(*result);
 	}
+	if(regs.int_no == IRQ0) {
+		handle_multitasking(regs);
+	}
 	if(regs.int_no == IRQ1) {
 		kbd_irq_handler();
 	}

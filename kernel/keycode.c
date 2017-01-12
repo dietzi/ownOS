@@ -228,6 +228,10 @@ char codeToChar(uint8_t keycode,bool shift,bool shiftG,bool strg,bool alt,bool a
 			else return (char)'´';
 			break;
 		
+		case 28:
+			return (char)'\n';
+			break;
+			
 		default:
 			break;
 	}

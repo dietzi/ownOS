@@ -22,6 +22,8 @@ void init(void)
     outb(0x21, 0x0);
     outb(0xa1, 0x0);
 
+	terminal_writestring("Initializing multitasking");
+	init_multitasking();
 	terminal_writestring("Initializing keyboard");
 	keyboard_init();
 	terminal_writestring("Activating interrupts");
