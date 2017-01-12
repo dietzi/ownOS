@@ -225,6 +225,9 @@ uint8_t translate_scancode(int set, uint16_t scancode)
 
     if (keycode == 0) {
         terminal_writestring("kbc: Unbekannter Scancode");
+		char *result;
+		itoa(scancode,*result,10);
+		terminal_writestring(*result);
     }
 
     return keycode;
