@@ -194,7 +194,7 @@ static void send_key_event(uint8_t keycode, bool release)
 				break;
 		}
 		//terminal_writestring("Gedrueckt:");
-		//terminal_writestring(*result);
+		terminal_writestring(*result);
 	}
 }
 
