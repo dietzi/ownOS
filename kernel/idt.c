@@ -61,6 +61,35 @@ extern void isr28();
 extern void isr29();
 extern void isr30();
 extern void isr31();
+extern void isr32();
+extern void isr33();
+extern void isr34();
+extern void isr35();
+extern void isr36();
+extern void isr37();
+extern void isr38();
+extern void isr39();
+extern void isr40();
+extern void isr41();
+extern void isr42();
+extern void isr43();
+extern void isr44();
+extern void isr45();
+extern void isr46();
+extern void isr47();
+extern void isr48();
+extern void isr49();
+extern void isr50();
+extern void isr51();
+extern void isr52();
+extern void isr53();
+extern void isr54();
+extern void isr55();
+extern void isr56();
+extern void isr57();
+extern void isr58();
+extern void isr59();
+extern void isr60();
 
 
 // IRQ Handlers
@@ -127,6 +156,35 @@ void init_idt()
     idt_set_gate(29, (uint32_t)isr29, 0x08, 0x8E);
     idt_set_gate(30, (uint32_t)isr30, 0x08, 0x8E);
     idt_set_gate(31, (uint32_t)isr31, 0x08, 0x8E);
+    idt_set_gate(32, (uint32_t)isr32, 0x08, 0x8E);
+    idt_set_gate(33, (uint32_t)isr33, 0x08, 0x8E);
+    idt_set_gate(34, (uint32_t)isr34, 0x08, 0x8E);
+    idt_set_gate(35, (uint32_t)isr35, 0x08, 0x8E);
+    idt_set_gate(36, (uint32_t)isr36, 0x08, 0x8E);
+    idt_set_gate(37, (uint32_t)isr37, 0x08, 0x8E);
+    idt_set_gate(38, (uint32_t)isr38, 0x08, 0x8E);
+    idt_set_gate(39, (uint32_t)isr39, 0x08, 0x8E);
+    idt_set_gate(40, (uint32_t)isr40, 0x08, 0x8E);
+    idt_set_gate(41, (uint32_t)isr41, 0x08, 0x8E);
+    idt_set_gate(42, (uint32_t)isr42, 0x08, 0x8E);
+    idt_set_gate(43, (uint32_t)isr43, 0x08, 0x8E);
+    idt_set_gate(44, (uint32_t)isr44, 0x08, 0x8E);
+    idt_set_gate(45, (uint32_t)isr45, 0x08, 0x8E);
+    idt_set_gate(46, (uint32_t)isr46, 0x08, 0x8E);
+    idt_set_gate(47, (uint32_t)isr47, 0x08, 0x8E);
+    idt_set_gate(48, (uint32_t)isr48, 0x08, 0x8E);
+    idt_set_gate(49, (uint32_t)isr49, 0x08, 0x8E);
+    idt_set_gate(50, (uint32_t)isr50, 0x08, 0x8E);
+    idt_set_gate(51, (uint32_t)isr51, 0x08, 0x8E);
+    idt_set_gate(52, (uint32_t)isr52, 0x08, 0x8E);
+    idt_set_gate(53, (uint32_t)isr53, 0x08, 0x8E);
+    idt_set_gate(54, (uint32_t)isr54, 0x08, 0x8E);
+    idt_set_gate(55, (uint32_t)isr55, 0x08, 0x8E);
+    idt_set_gate(56, (uint32_t)isr56, 0x08, 0x8E);
+    idt_set_gate(57, (uint32_t)isr57, 0x08, 0x8E);
+    idt_set_gate(58, (uint32_t)isr58, 0x08, 0x8E);
+    idt_set_gate(59, (uint32_t)isr59, 0x08, 0x8E);
+    idt_set_gate(60, (uint32_t)isr60, 0x08, 0x8E);
 
 
     // IRQ entries
