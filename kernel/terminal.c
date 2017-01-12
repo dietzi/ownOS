@@ -2,6 +2,8 @@
 #include <stddef.h>
 #include <stdint.h>
   
+#define SYSCALL_PM_REQUEST_PORT 9
+
 /* Hardware text mode color constants. */
 enum vga_color {
 	VGA_COLOR_BLACK = 0,

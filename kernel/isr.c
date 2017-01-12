@@ -17,6 +17,9 @@ void isr_handler(registers_t regs)
     {
         //printf("General Protection Fault. Code: %d", regs.err_code);
         terminal_writestring("General Protection Fault!");
+		char *result;
+		itoa(regs.err_code,*result,10);
+		terminal_writestring(*result);
     }
 
     if(interrupt_handlers[regs.int_no])
