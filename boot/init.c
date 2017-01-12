@@ -4,6 +4,8 @@ void init(void)
 {
 	terminal_initialize();
     init_gdt();
+	init_idt();
+	
     // Master-PIC initialisieren
     outb(0x20, 0x11); // Initialisierungsbefehl fuer den PIC
     outb(0x21, 0x20); // Interruptnummer fuer IRQ 0
@@ -19,21 +21,11 @@ void init(void)
     // Alle IRQs aktivieren (demaskieren)
     outb(0x21, 0x0);
     outb(0xa1, 0x0);
-	
-	init_idt();
-	
-	//terminal_writestring("Loading IDT");
-	
-	//asm volatile("lidt %0" : : "m" (idtp));
-	
-	//terminal_writestring("IDT loaded");
-	//terminal_writestring("IDT's:");
-	//for(int i=0;i<10;i++) terminal_writestring(idt[i]);
 
-	terminal_writestring("Activating interrupts");
-    asm volatile("sti");
 	terminal_writestring("Initializing keyboard");
 	keyboard_init();
+	terminal_writestring("Activating interrupts");
+    asm volatile("sti");
     //asm volatile("int $0x0");
     while(1);
     stopCPU();

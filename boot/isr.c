@@ -29,7 +29,7 @@ void isr_handler(registers_t regs)
 
 void irq_handler(registers_t regs)
 {
-	if(regs.int_no != 32) {
+	if(regs.int_no != 1132) {
 		terminal_writestring("IRQ");
 		char *result;
 		itoa(regs.int_no,*result,10);
