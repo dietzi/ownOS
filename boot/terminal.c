@@ -205,3 +205,17 @@ char * itoa (int value, char *result, int base)
     }
     return result;
 }
+
+bool request_ports(uint32_t port, uint32_t length) {
+    uint32_t eax;
+    asm(
+        "push %2;"
+        "push %1;"
+        "mov %3, %%eax;"
+        "int $0x30;"
+        "add $0x8, %%esp;"
+    : "=a" (eax) : "g" (port), "g" (length), "i" (SYSCALL_PM_REQUEST_PORT));
+    
+    return eax;
+}
+  

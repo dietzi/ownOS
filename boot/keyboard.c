@@ -28,6 +28,8 @@ static void send_kbd_command(uint8_t command)
  */
 void keyboard_init(void)
 {
+	request_ports(0x60, 1);
+	request_ports(0x64, 1);
     // So, mal hoeren was uns die Tastatur noch so alles zu erzaehlen hat von
     // eventuell gedrueckten Tasten waerend dem Booten.
     while ((inb(0x64) & 0x1)) {

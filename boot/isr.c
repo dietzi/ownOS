@@ -29,13 +29,13 @@ void isr_handler(registers_t regs)
 
 void irq_handler(registers_t regs)
 {
-	if(regs.int_no != 1132) {
+	if(regs.int_no != IRQ0) {
 		terminal_writestring("IRQ");
 		char *result;
 		itoa(regs.int_no,*result,10);
 		terminal_writestring(*result);
 	}
-	if(regs.int_no == 21 || regs.int_no == 32) {
+	if(regs.int_no == IRQ1) {
 		terminal_writestring("IRQ Keyboard");
 		kbd_irq_handler();
 	} else {
