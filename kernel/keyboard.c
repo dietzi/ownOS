@@ -23,6 +23,12 @@ static void send_kbd_command(uint8_t command)
     outb(0x60, command);
 }
 
+bool strg=false;
+bool alt=false;
+bool shift=false;
+bool shiftG=false;
+bool altGR=false;
+
 /**
  * Tastaturtreiber initialisieren
  */
@@ -54,7 +60,6 @@ void keyboard_init(void)
  * IRQ-Hander
  */
 void kbd_irq_handler() {
-	terminal_writestring("Handling keyboard");
     uint8_t scancode;
     uint8_t keycode = 0;
     bool break_code = false;
@@ -118,8 +123,14 @@ void kbd_irq_handler() {
     if (keycode != 0) {
         send_key_event(keycode, break_code);
     }
-    outb(0x20, 0x20);
-	terminal_writestring("Keyboard handled");
+}
+
+char codeToChar(uint8_t keycode) {
+	switch (keycode) {
+		case 30:
+			if(shift || shiftG) return (char)"A";
+			else return (char)"a";
+	}
 }
 
 /**
@@ -137,11 +148,48 @@ static void send_key_event(uint8_t keycode, bool release)
 	char *result;
 	itoa(keycode,*result,10);
     if(release) {
-		terminal_writestring("Gedrueckt:");
-		terminal_writestring(*result);
+		switch (keycode) {
+			case 42:
+				shift=false;
+				break;
+			
+			case 29:
+				strg=false;
+				break;
+			
+			case 56:
+				alt=false;
+				break;
+				
+			case default:
+				terminal_putchar(codeToChar(keycode));
+		}
+		//terminal_writestring("Losgelassen:");
+		//terminal_writestring(*result);
 	} else {
-		terminal_writestring("Losgelassen:");
-		terminal_writestring(*result);
+		switch (keycode) {
+			case 42:
+				shift=true;
+				break;
+			
+			case 58:
+				if(shiftG) {
+					shiftG=true;
+				} else {
+					shiftG=false;
+				}
+				break;
+			
+			case 29:
+				strg=true;
+				break;
+			
+			case 56:
+				alt=true;
+				break;
+		}
+		//terminal_writestring("Gedrueckt:");
+		//terminal_writestring(*result);
 	}
 }
 
