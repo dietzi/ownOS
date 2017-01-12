@@ -2,7 +2,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-char codeToChar(uint8_t keycode) {
+char codeToChar(uint8_t keycode,bool shift,bool shiftG,bool strg,bool alt,bool altGR) {
 	switch (keycode) {
 		case 30:
 			if(shift || shiftG) return (char)'A';
