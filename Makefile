@@ -8,7 +8,7 @@ ASFLAGS = -m32
 CFLAGS = -w -m32 -Wall -g -fno-stack-protector -nostdinc -I /usr/include/
 LDFLAGS = -melf_i386 -Tkernel.ld
 
-kernel: $(OBJS)
+kernel2: $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^
 
 %.o: %.c
