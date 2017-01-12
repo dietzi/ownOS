@@ -22,7 +22,7 @@ static uint8_t stack_b[4096];
  * ohne dass ihm andere Tasks Dinge ueberschreiben. Ausserdem braucht ein Task
  * einen Einsprungspunkt.
  */
-struct registers* init_task(uint8_t* stack, void* entry)
+struct registers* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
 {
     /*
      * CPU-Zustand fuer den neuen Task festlegen
