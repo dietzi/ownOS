@@ -128,8 +128,12 @@ void kbd_irq_handler() {
 char codeToChar(uint8_t keycode) {
 	switch (keycode) {
 		case 30:
-			if(shift || shiftG) return (char)"A";
-			else return (char)"a";
+			if(shift || shiftG) return (char)'A';
+			else return (char)'a';
+			break;
+			
+		default:
+			break;
 	}
 }
 
@@ -162,7 +166,8 @@ static void send_key_event(uint8_t keycode, bool release)
 				break;
 				
 			default:
-				terminal_putchar(codeToChar(keycode));
+				terminal_key(codeToChar(keycode));
+				break;
 		}
 		//terminal_writestring("Losgelassen:");
 		//terminal_writestring(*result);

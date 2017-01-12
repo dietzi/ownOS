@@ -7,4 +7,4 @@ void stopCPU();
 char * itoa (int, char, int);
 unsigned char inb(unsigned short);
 bool request_ports(uint32_t, uint32_t);
-void terminal_putchar(char);
+void terminal_key(char);

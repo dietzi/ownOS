@@ -86,7 +86,12 @@ void terminal_putchar(char c) {
 		}
 	}
 }
- 
+
+void terminal_key(char c) {
+	terminal_putchar(c);
+	displaycursor(terminal_row,terminal_column);
+}
+
 void terminal_write(const char* data, size_t size) {
 	for (size_t i = 0; i < size; i++)
 		terminal_putchar(data[i]);
