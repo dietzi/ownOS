@@ -118,7 +118,7 @@ void kbd_irq_handler() {
     if (keycode != 0) {
         send_key_event(keycode, break_code);
     }
-    send_kbd_command(0xF4);
+    outb(0x20, 0x20);
 	terminal_writestring("Keyboard handled");
 }
 
