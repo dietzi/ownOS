@@ -35,7 +35,7 @@ void irq_handler(registers_t regs)
 		itoa(regs.int_no,*result,10);
 		terminal_writestring(*result);
 	}
-	if(regs.int_no == 1 || regs.int_no == 12) {
+	if(regs.int_no == 21 || regs.int_no == 32) {
 		terminal_writestring("IRQ Keyboard");
 		kbd_irq_handler();
 	} else {
