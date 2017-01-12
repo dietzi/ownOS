@@ -161,7 +161,7 @@ static void send_key_event(uint8_t keycode, bool release)
 				alt=false;
 				break;
 				
-			case default:
+			default:
 				terminal_putchar(codeToChar(keycode));
 		}
 		//terminal_writestring("Losgelassen:");
