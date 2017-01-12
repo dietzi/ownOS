@@ -5,7 +5,7 @@ CC = gcc
 LD = ld
 
 ASFLAGS = -m32
-CFLAGS = -m32 -Wall -g -fno-stack-protector -nostdinc -I /usr/include/
+CFLAGS = -w -m32 -Wall -g -fno-stack-protector -nostdinc -I /usr/include/
 LDFLAGS = -melf_i386 -Tkernel.ld
 
 kernel: $(OBJS)
