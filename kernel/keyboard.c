@@ -23,12 +23,6 @@ static void send_kbd_command(uint8_t command)
     outb(0x60, command);
 }
 
-bool strg=false;
-bool alt=false;
-bool shift=false;
-bool shiftG=false;
-bool altGR=false;
-
 /**
  * Tastaturtreiber initialisieren
  */
