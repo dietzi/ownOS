@@ -57,7 +57,7 @@ void init_gdt()
     gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); //User mode code segment
     gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); //User mode data segment
 
-    terminal_writestring("Flushing GDT.\n");
+    terminal_writestring("Flushing GDT");
     load_gdt(&gdt_ptr);
 }
 
