@@ -74,6 +74,35 @@ isr_noerr 28
 isr_noerr 29
 isr_noerr 30
 isr_noerr 31
+isr_noerr 32
+isr_noerr 33
+isr_noerr 34
+isr_noerr 35
+isr_noerr 36
+isr_noerr 37
+isr_noerr 38
+isr_noerr 39
+isr_noerr 40
+isr_noerr 41
+isr_noerr 42
+isr_noerr 43
+isr_noerr 44
+isr_noerr 45
+isr_noerr 46
+isr_noerr 47
+isr_noerr 48
+isr_noerr 49
+isr_noerr 50
+isr_noerr 51
+isr_noerr 52
+isr_noerr 53
+isr_noerr 54
+isr_noerr 55
+isr_noerr 56
+isr_noerr 57
+isr_noerr 58
+isr_noerr 59
+isr_noerr 60
 
 
 .extern isr_handler
