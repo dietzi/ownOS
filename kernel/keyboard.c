@@ -125,18 +125,6 @@ void kbd_irq_handler() {
     }
 }
 
-char codeToChar(uint8_t keycode) {
-	switch (keycode) {
-		case 30:
-			if(shift || shiftG) return (char)'A';
-			else return (char)'a';
-			break;
-			
-		default:
-			break;
-	}
-}
-
 /**
  * Tastendruck an wartende Prozesse senden
  *
@@ -191,6 +179,9 @@ static void send_key_event(uint8_t keycode, bool release)
 			
 			case 56:
 				alt=true;
+				break;
+				
+			default:
 				break;
 		}
 		//terminal_writestring("Gedrueckt:");
