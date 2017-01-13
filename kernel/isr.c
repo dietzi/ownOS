@@ -29,20 +29,20 @@ void isr_handler(registers_t regs)
     }
 }
 
-struct cpu_state* handle_interrupt(struct cpu_state* cpu)
+/*struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 {
 	terminal_writestring("Handling interrupt");
     struct cpu_state* new_cpu = cpu;
 
-	//if(cpu->intr != 0x32 && cpu->intr != 0x33) {
+	if(cpu->intr != 0x32 && cpu->intr != 0x33) {
 		terminal_writestring("IRQ");
 		char *result;
 		itoa(cpu->intr,*result,10);
 		terminal_writestring(*result);
-	///}
-    /*if (cpu->intr == 0x32) {
+	}
+    if (cpu->intr == 0x32) {
         new_cpu=handle_multitasking(cpu);
-    }*/
+    }
 	if(cpu->intr == 0x33) {
 		kbd_irq_handler();
 	}
@@ -54,9 +54,9 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 		outb(0x20, 0x20);
 	}	
     return new_cpu;
-}
+}*/
 
-struct registers_t irq_handler(registers_t regs)
+void irq_handler(registers_t regs)
 {
 	if(regs.int_no != IRQ0 && regs.int_no != IRQ1) {
 		terminal_writestring("IRQ");
@@ -85,5 +85,4 @@ struct registers_t irq_handler(registers_t regs)
 	{
 		interrupt_handlers[regs.int_no](regs);
 	}
-	return regs;
 }
