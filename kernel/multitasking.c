@@ -88,7 +88,7 @@ void init_multitasking(void)
  * Prozessorzustand wird als Parameter uebergeben und gespeichert, damit er
  * beim naechsten Aufruf des Tasks wiederhergestellt werden kann
  */
-struct registers* schedule(struct registers_t* cpu)
+struct registers_t* schedule(struct registers_t* cpu)
 {
     /*
      * Wenn schon ein Task laeuft, Zustand sichern. Wenn nicht, springen wir
@@ -110,7 +110,7 @@ struct registers* schedule(struct registers_t* cpu)
     return cpu;
 }
 
-struct registers* handle_multitasking(struct registers_t* cpu)
+struct registers_t* handle_multitasking(struct registers_t* cpu)
 {
     struct registers_t* new_cpu = cpu;
     new_cpu = schedule(cpu);

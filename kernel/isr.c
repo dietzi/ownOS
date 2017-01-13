@@ -30,7 +30,7 @@ void isr_handler(registers_t regs)
 }
 
 
-void irq_handler(registers_t regs)
+void irq_handler(registers_t* regs)
 {
 	if(regs.int_no != IRQ0 && regs.int_no != IRQ1) {
 		terminal_writestring("IRQ");
