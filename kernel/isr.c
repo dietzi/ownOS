@@ -31,6 +31,7 @@ void isr_handler(registers_t regs)
 
 struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 {
+	terminal_writestring("Handling interrupt");
     struct cpu_state* new_cpu = cpu;
 
 	if(cpu->intr != 0x32 && cpu->intr != 0x33) {
@@ -46,14 +47,12 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 		kbd_irq_handler();
 	}
 
-	if(cpu->intr >= 0x40)
-	{
-		//reset slave
-		outb(SLAVE_COMMAND, PIC_RESET);
-	}
-
-	outb(MASTER_COMMAND, PIC_RESET);
-	
+	if (cpu->intr >= 0x20 && cpu->intr <= 0x2f) {
+		if (cpu->intr >= 0x28) {
+			outb(0xa0, 0x20);
+		}
+		outb(0x20, 0x20);
+	}	
     return new_cpu;
 }
 
