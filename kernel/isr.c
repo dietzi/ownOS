@@ -33,10 +33,27 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 {
     struct cpu_state* new_cpu = cpu;
 
+	if(cpu->intr != 0x32 && cpu->intr != 0x33) {
+		terminal_writestring("IRQ");
+		char *result;
+		itoa(regs.int_no,*result,10);
+		terminal_writestring(*result);
+	}
     if (cpu->intr == 0x32) {
         new_cpu=handle_multitasking(cpu);
     }
+	if(cpu->intr == 0x33) {
+		kbd_irq_handler();
+	}
 
+	if(cpu->intr >= 0x40)
+	{
+		//reset slave
+		outb(SLAVE_COMMAND, PIC_RESET);
+	}
+
+	outb(MASTER_COMMAND, PIC_RESET);
+	
     return new_cpu;
 }
 

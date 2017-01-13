@@ -185,8 +185,8 @@ irq\num:
     cli
     push	$0
     push	$\map
-    jmp	irq_stub
 	jmp intr_common_handler
+    jmp	irq_stub
 .endm
 
 
