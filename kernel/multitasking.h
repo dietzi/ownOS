@@ -1,2 +1,2 @@
 void init_multitasking(void);
-struct registers_t* handle_multitasking(struct registers_t*);
+struct cpu_state* handle_multitasking(struct cpu_state*);

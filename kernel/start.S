@@ -186,7 +186,6 @@ irq\num:
     push	$0
     push	$\map
 	jmp intr_common_handler
-    jmp	irq_stub
 .endm
 
 
