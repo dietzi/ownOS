@@ -173,7 +173,7 @@ irq\num:
     cli
     push	$0
     push	$\map
-	jmp intr_common_handler
+	jmp irq_stub
 .endm
 
 
@@ -194,35 +194,6 @@ irq 13, 45
 irq 14, 46
 irq 15, 47
 
-.extern handle_interrupt
-intr_common_handler:
-    pusha
-
-    mov	%ds, %ax
-    pushl	%eax
-    movl	%eax, %esi
-
-    movw	$0x10, %ax
-    movw	%ax, %ds
-    movw	%ax, %es
-    movw	%ax, %fs
-    movw	%ax, %gs
-
-    call	handle_interrupt
-	
-    pop	%ebx
-    movl	%esi, %ebx
-
-    movw	%bx, %ds
-    movw	%bx, %es
-    movw	%bx, %fs
-    movw	%bx, %gs
-
-    popa
-    add $8, %esp
-    sti
-    iret
-	
 .extern irq_handler
 irq_stub:
     pusha
