@@ -62,6 +62,75 @@ isr_noerr 28
 isr_noerr 29
 isr_noerr 30
 isr_noerr 31
+isr_noerr 32
+isr_noerr 33
+isr_noerr 34
+isr_noerr 35
+isr_noerr 36
+isr_noerr 37
+isr_noerr 38
+isr_noerr 39
+isr_noerr 40
+isr_noerr 41
+isr_noerr 42
+isr_noerr 43
+isr_noerr 44
+isr_noerr 45
+isr_noerr 46
+isr_noerr 47
+isr_noerr 48
+isr_noerr 49
+isr_noerr 50
+isr_noerr 51
+isr_noerr 52
+isr_noerr 53
+isr_noerr 54
+isr_noerr 55
+isr_noerr 56
+isr_noerr 57
+isr_noerr 58
+isr_noerr 59
+isr_noerr 60
+isr_noerr 61
+isr_noerr 62
+isr_noerr 63
+isr_noerr 64
+isr_noerr 65
+isr_noerr 66
+isr_noerr 67
+isr_noerr 68
+isr_noerr 69
+isr_noerr 70
+isr_noerr 71
+isr_noerr 72
+isr_noerr 73
+isr_noerr 74
+isr_noerr 75
+isr_noerr 76
+isr_noerr 77
+isr_noerr 78
+isr_noerr 79
+isr_noerr 80
+isr_noerr 81
+isr_noerr 82
+isr_noerr 83
+isr_noerr 84
+isr_noerr 85
+isr_noerr 86
+isr_noerr 87
+isr_noerr 88
+isr_noerr 89
+isr_noerr 90
+isr_noerr 91
+isr_noerr 92
+isr_noerr 93
+isr_noerr 94
+isr_noerr 95
+isr_noerr 96
+isr_noerr 97
+isr_noerr 98
+isr_noerr 99
+isr_noerr 100
 
 
 .extern isr_handler
@@ -104,7 +173,7 @@ irq\num:
     cli
     push	$0
     push	$\map
-    jmp	irq_stub
+	jmp intr_common_handler
 .endm
 
 
@@ -125,6 +194,35 @@ irq 13, 45
 irq 14, 46
 irq 15, 47
 
+.extern handle_interrupt
+intr_common_handler:
+    pusha
+
+    mov	%ds, %ax
+    pushl	%eax
+    movl	%eax, %esi
+
+    movw	$0x10, %ax
+    movw	%ax, %ds
+    movw	%ax, %es
+    movw	%ax, %fs
+    movw	%ax, %gs
+
+    call	handle_interrupt
+	
+    pop	%ebx
+    movl	%esi, %ebx
+
+    movw	%bx, %ds
+    movw	%bx, %es
+    movw	%bx, %fs
+    movw	%bx, %gs
+
+    popa
+    add $8, %esp
+    sti
+    iret
+	
 .extern irq_handler
 irq_stub:
     pusha
@@ -140,7 +238,7 @@ irq_stub:
     movw	%ax, %gs
 
     call	irq_handler
-
+	
     pop	%ebx
     movl	%esi, %ebx
 
@@ -153,3 +251,25 @@ irq_stub:
     add $8, %esp
     sti
     iret
+
+.global load_gdt
+
+.type load_gdt, @function
+    # void load_gdt(gdt_ptr_t * gdt_ptr)
+load_gdt:
+    movl    4(%esp), %eax
+    lgdt	(%eax)
+
+    # 0x10 is the offset in the GDT to our data segment
+    movw	$0x10, %ax
+    movw	%ax, %ds
+    movw	%ax, %es
+    movw	%ax, %fs
+    movw	%ax, %gs
+    movw	%ax, %ss
+    ljmp	$0x08, $.flush  # Long jump to our new code segment
+.flush:
+    ret
+
+
+.size load_gdt, . - load_gdt
