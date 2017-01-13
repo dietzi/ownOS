@@ -114,7 +114,7 @@ struct registers* handle_multitasking(struct registers* cpu)
     struct registers* new_cpu = cpu;
 
     new_cpu = schedule(cpu);
-	tss[1] = (uint32_t) (new_cpu + 1);
+	//tss[1] = (uint32_t) (new_cpu + 1);
  
     return new_cpu;
 }
