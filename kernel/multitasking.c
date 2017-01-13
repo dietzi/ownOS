@@ -3,14 +3,14 @@
 void task_a(void)
 {
     while (1) {
-        kprintf("A");
+        terminal_writestring("A");
     }
 }
  
 void task_b(void)
 {
     while (1) {
-        kprintf("B");
+        terminal_writestring("B");
     }
 }
 
@@ -67,6 +67,12 @@ static struct registers* task_states[2];
  
 void init_multitasking(void)
 {
+	set_entry(5, (uint32_t) tss, sizeof(tss),
+		GDT_FLAG_TSS | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
+ 
+    // Taskregister neu laden
+    asm volatile("ltr %%ax" : : "a" (5 << 3));
+	
     task_states[0] = init_task(stack_a, user_stack_a, task_a);
     task_states[1] = init_task(stack_b, user_stack_b, task_b);
 }
