@@ -220,9 +220,7 @@ irq_stub:
     movw	%ax, %fs
     movw	%ax, %gs
 
-	push	%esp
     call	irq_handler
-	mov %eax, %esp
 	
     pop	%ebx
     movl	%esi, %ebx

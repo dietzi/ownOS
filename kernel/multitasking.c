@@ -77,6 +77,7 @@ void init_multitasking(void)
  */
 struct cpu_state* schedule(struct cpu_state* cpu)
 {
+	terminal_writestring("Doing schedule");
     /*
      * Wenn schon ein Task laeuft, Zustand sichern. Wenn nicht, springen wir
      * gerade zum ersten Mal in einen Task. Diesen Prozessorzustand brauchen
@@ -94,12 +95,13 @@ struct cpu_state* schedule(struct cpu_state* cpu)
  
     /* Prozessorzustand des neuen Tasks aktivieren */
     cpu = task_states[current_task];
- 
+	terminal_writestring("Schedule end");
     return cpu;
 }
 
 struct registers_t* handle_multitasking(struct registers_t* cpu)
 {
+	terminal_writestring("IRQ handled by multitasking");
     struct registers_t* new_cpu = cpu;
     new_cpu = schedule(cpu);
 	//tss[1] = (uint32_t) (new_cpu + 1);
