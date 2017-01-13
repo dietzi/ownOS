@@ -112,8 +112,8 @@ struct registers* schedule(struct registers* cpu)
 
 struct registers* handle_multitasking(struct registers* cpu)
 {
-    struct registers* new_cpu = cpu;
 	terminal_writestring("Handling IRQ");
+    struct registers* new_cpu = cpu;
     new_cpu = schedule(cpu);
 	//tss[1] = (uint32_t) (new_cpu + 1);
  

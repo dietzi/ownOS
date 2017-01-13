@@ -39,6 +39,7 @@ void irq_handler(registers_t regs)
 		terminal_writestring(*result);
 	}
 	if(regs.int_no == IRQ0) {
+		terminal_writestring("IRQ0");
 		handle_multitasking(regs);
 	}
 	if(regs.int_no == IRQ1) {
