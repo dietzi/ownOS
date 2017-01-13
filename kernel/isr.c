@@ -56,8 +56,10 @@ void isr_handler(registers_t regs)
     return new_cpu;
 }*/
 
-struct registers* irq_handler(registers_t regs)
+struct cpu_state* irq_handler(registers_t regs)
 {
+	struct cpu_state* cpu;
+	
 	if(regs.int_no != IRQ0 && regs.int_no != IRQ1) {
 		terminal_writestring("IRQ");
 		char *result;
@@ -67,7 +69,7 @@ struct registers* irq_handler(registers_t regs)
 	if(regs.int_no == IRQ0) {
 		//struct cpu_state * cpu=(struct cpu_state *)regs;
 
-		struct registers* cpu = handle_multitasking(&regs);
+		cpu = handle_multitasking(&regs);
 	}
 	if(regs.int_no == IRQ1) {
 		kbd_irq_handler();
