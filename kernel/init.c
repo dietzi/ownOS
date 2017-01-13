@@ -8,8 +8,8 @@ void init(void)
 	
 	terminal_writestring("Initializing keyboard");
 	keyboard_init();
-	//terminal_writestring("Initializing multitasking");
-	//init_multitasking();
+	terminal_writestring("Initializing multitasking");
+	init_multitasking();
 	terminal_writestring("Activating interrupts");
 	
     // Master-PIC initialisieren

@@ -82,6 +82,7 @@ struct cpu_state* schedule(struct cpu_state* cpu)
      * gerade zum ersten Mal in einen Task. Diesen Prozessorzustand brauchen
      * wir spaeter nicht wieder.
      */
+	terminal_writestring("Changing task");
     if (current_task >= 0) {
         task_states[current_task] = cpu;
     }
@@ -94,6 +95,7 @@ struct cpu_state* schedule(struct cpu_state* cpu)
  
     /* Prozessorzustand des neuen Tasks aktivieren */
     cpu = task_states[current_task];
+	terminal_writestring("Schedule end");
     return cpu;
 }
 
