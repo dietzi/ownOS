@@ -24,13 +24,13 @@ static uint8_t user_stack_b[4096];
  * ohne dass ihm andere Tasks Dinge ueberschreiben. Ausserdem braucht ein Task
  * einen Einsprungspunkt.
  */
-struct registers* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
+struct registers_t* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
 {
     /*
      * CPU-Zustand fuer den neuen Task festlegen
      */
 	terminal_writestring("Initializing task");
-    struct registers new_state = {
+    struct registers_t new_state = {
         .eax = 0,
         .ebx = 0,
         .ecx = 0,
@@ -59,7 +59,7 @@ struct registers* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
      * worden. So kann man dem Interrupthandler den neuen Task unterschieben
      * und er stellt einfach den neuen Prozessorzustand "wieder her".
      */
-    struct registers* state = (void*) (stack + 4096 - sizeof(new_state));
+    struct registers_t* state = (void*) (stack + 4096 - sizeof(new_state));
     *state = new_state;
 	terminal_writestring("Task initialized");
     return state;
@@ -68,7 +68,7 @@ struct registers* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
 static uint32_t tss[32] = { 0, 0, 0x10 };
 static int current_task = -1;
 static int num_tasks = 2;
-static struct registers* task_states[2];
+static struct registers_t* task_states[2];
  
 void init_multitasking(void)
 {
@@ -88,7 +88,7 @@ void init_multitasking(void)
  * Prozessorzustand wird als Parameter uebergeben und gespeichert, damit er
  * beim naechsten Aufruf des Tasks wiederhergestellt werden kann
  */
-struct registers* schedule(struct registers* cpu)
+struct registers* schedule(struct registers_t* cpu)
 {
     /*
      * Wenn schon ein Task laeuft, Zustand sichern. Wenn nicht, springen wir
@@ -110,9 +110,9 @@ struct registers* schedule(struct registers* cpu)
     return cpu;
 }
 
-struct registers* handle_multitasking(struct registers* cpu)
+struct registers* handle_multitasking(struct registers_t* cpu)
 {
-    struct registers* new_cpu = cpu;
+    struct registers_t* new_cpu = cpu;
     new_cpu = schedule(cpu);
 	//tss[1] = (uint32_t) (new_cpu + 1);
  
