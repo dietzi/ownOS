@@ -93,6 +93,7 @@ struct registers* schedule(struct registers* cpu)
      * gerade zum ersten Mal in einen Task. Diesen Prozessorzustand brauchen
      * wir spaeter nicht wieder.
      */
+	terminal_writestring("Start schedule");
     if (current_task >= 0) {
         task_states[current_task] = cpu;
     }
@@ -105,14 +106,14 @@ struct registers* schedule(struct registers* cpu)
  
     /* Prozessorzustand des neuen Tasks aktivieren */
     cpu = task_states[current_task];
- 
+	terminal_writestring("End schedule");
     return cpu;
 }
 
 struct registers* handle_multitasking(struct registers* cpu)
 {
     struct registers* new_cpu = cpu;
-
+	terminal_writestring("Handling IRQ");
     new_cpu = schedule(cpu);
 	//tss[1] = (uint32_t) (new_cpu + 1);
  
