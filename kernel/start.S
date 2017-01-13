@@ -218,9 +218,11 @@ intr_common_handler:
     push %eax
  
     // Handler aufrufen
-    push %esp
+    //push %esp
     call handle_interrupt
-    mov %eax, %esp
+    //mov %eax, %esp
+ 
+	add $4, %esp
  
     // CPU-Zustand wiederherstellen
     pop %eax
