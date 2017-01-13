@@ -38,7 +38,8 @@ void irq_handler(registers_t regs)
 		terminal_writestring(*result);
 	}
 	if(regs.int_no == IRQ0) {
-		struct cpu_type* cpu;
+		terminal_writestring("Handling IRQ0");
+		struct cpu_state* cpu;
 		cpu->eax = regs.eax;
 		cpu->ebx = regs.ebx;
 		cpu->ecx = regs.ecx;
@@ -54,7 +55,7 @@ void irq_handler(registers_t regs)
 		cpu->esp = regs.useresp;
 		cpu->ss = regs.ss;
 		
-		terminal_writestring("IRQ0");
+		terminal_writestring("IRQ0 handled");
 		handle_multitasking(cpu);
 	}
 	if(regs.int_no == IRQ1) {
