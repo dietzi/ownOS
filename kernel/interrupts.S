@@ -177,22 +177,22 @@ irq\num:
 .endm
 
 
-irq 0, 32
-irq 1, 33
-irq 2, 34
-irq 3, 35
-irq 4, 36
-irq 5, 37
-irq 6, 38
-irq 7, 39
-irq 8, 40
-irq 9, 41
-irq 10, 42
-irq 11, 43
-irq 12, 44
-irq 13, 45
-irq 14, 46
-irq 15, 47
+irq 0, 20
+irq 1, 21
+irq 2, 22
+irq 3, 23
+irq 4, 24
+irq 5, 25
+irq 6, 26
+irq 7, 27
+irq 8, 28
+irq 9, 29
+irq 10, 30
+irq 11, 31
+irq 12, 32
+irq 13, 33
+irq 14, 34
+irq 15, 35
 
 .extern handle_interrupt
 irq_stub:
