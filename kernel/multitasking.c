@@ -82,11 +82,9 @@ struct cpu_state* schedule(struct cpu_state* cpu)
      * gerade zum ersten Mal in einen Task. Diesen Prozessorzustand brauchen
      * wir spaeter nicht wieder.
      */
-	terminal_writestring((char)cpu);
     if (current_task >= 0) {
         task_states[current_task] = cpu;
     }
-	terminal_writestring((char)cpu);
     /*
      * Naechsten Task auswaehlen. Wenn alle durch sind, geht es von vorne los
      */

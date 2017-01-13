@@ -29,7 +29,7 @@ void isr_handler(registers_t regs)
     }
 }
 
-/*struct cpu_state* handle_interrupt(struct cpu_state* cpu)
+struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 {
 	terminal_writestring("Handling interrupt");
     struct cpu_state* new_cpu = cpu;
@@ -54,7 +54,7 @@ void isr_handler(registers_t regs)
 		outb(0x20, 0x20);
 	}	
     return new_cpu;
-}*/
+}
 
 struct cpu_state* irq_handler(registers_t regs)
 {
