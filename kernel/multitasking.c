@@ -72,7 +72,6 @@ static struct registers* task_states[2];
  
 void init_multitasking(void)
 {
-	terminal_writestring("Initializing multitasking");
 	/*gdt_set_gate(5, (uint32_t) tss, sizeof(tss),
 		GDT_FLAG_TSS | GDT_FLAG_PRESENT, GDT_FLAG_RING3);
 	terminal_writestring("GDT changed");
