@@ -9,7 +9,11 @@ typedef struct registers
 } registers_t;
 
 struct cpu_state {
-    // Von Hand gesicherte Register
+    uint32_t ds;                             // Data segment selector
+    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Pushed by pusha.
+    uint32_t intr, error;               // Interrupt number and error code (if applicable)
+    uint32_t eip, cs, eflags, esp, ss;   // Pushed by the processor automatically.
+/*    // Von Hand gesicherte Register
     uint32_t   eax;
     uint32_t   ebx;
     uint32_t   ecx;
@@ -26,7 +30,7 @@ struct cpu_state {
     uint32_t   cs;
     uint32_t   eflags;
     uint32_t   esp;
-    uint32_t   ss;
+    uint32_t   ss;*/
 };
 
 // This intentionally accepts a *COPY* of the registers.

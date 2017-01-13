@@ -34,12 +34,12 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 	terminal_writestring("Handling interrupt");
     struct cpu_state* new_cpu = cpu;
 
-	if(cpu->intr != 0x32 && cpu->intr != 0x33) {
+	//if(cpu->intr != 0x32 && cpu->intr != 0x33) {
 		terminal_writestring("IRQ");
 		char *result;
 		itoa(cpu->intr,*result,10);
 		terminal_writestring(*result);
-	}
+	//}
     /*if (cpu->intr == 0x32) {
         new_cpu=handle_multitasking(cpu);
     }*/
