@@ -75,10 +75,10 @@ void init_multitasking(void)
 	terminal_writestring("Initializing multitasking");
 	/*gdt_set_gate(5, (uint32_t) tss, sizeof(tss),
 		GDT_FLAG_TSS | GDT_FLAG_PRESENT, GDT_FLAG_RING3);
-	terminal_writestring("GDT changed");*/
+	terminal_writestring("GDT changed");
     // Taskregister neu laden
     asm volatile("ltr %%ax" : : "a" (5 << 3));
-	terminal_writestring("Register reloaded");
+	terminal_writestring("Register reloaded");*/
     task_states[0] = init_task(stack_a, user_stack_a, task_a);
     task_states[1] = init_task(stack_b, user_stack_b, task_b);
 	terminal_writestring("Multitasking initialized");
@@ -96,7 +96,6 @@ struct registers* schedule(struct registers* cpu)
      * gerade zum ersten Mal in einen Task. Diesen Prozessorzustand brauchen
      * wir spaeter nicht wieder.
      */
-	terminal_writestring("Start schedule");
     if (current_task >= 0) {
         task_states[current_task] = cpu;
     }
@@ -109,13 +108,11 @@ struct registers* schedule(struct registers* cpu)
  
     /* Prozessorzustand des neuen Tasks aktivieren */
     cpu = task_states[current_task];
-	terminal_writestring("End schedule");
     return cpu;
 }
 
 struct registers* handle_multitasking(struct registers* cpu)
 {
-	terminal_writestring("Handling IRQ");
     struct registers* new_cpu = cpu;
     new_cpu = schedule(cpu);
 	//tss[1] = (uint32_t) (new_cpu + 1);

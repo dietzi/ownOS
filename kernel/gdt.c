@@ -1,5 +1,6 @@
 #include "includes.h"
 
+#define GDTENTRIES 5
 // This structure contains the value of one GDT entry.
 // We use the attribute 'packed' to tell GCC not to change
 // any of the alignment in the structure.
@@ -29,7 +30,7 @@ extern void load_gdt(gdt_ptr_t * gdt_ptr);
 // Internal function prototypes.
 void gdt_set_gate(int32_t,uint32_t,uint32_t,uint8_t,uint8_t);
 
-gdt_entry_t gdt_entries[5];
+gdt_entry_t gdt_entries[GDTENTRIES];
 gdt_ptr_t   gdt_ptr;
 //idt_entry_t idt_entries[256];
 //idt_ptr_t   idt_ptr;
@@ -37,7 +38,7 @@ gdt_ptr_t   gdt_ptr;
 
 void init_gdt()
 {
-    gdt_ptr.limit = (sizeof(gdt_entry_t)*5) - 1;
+    gdt_ptr.limit = (sizeof(gdt_entry_t)*GDTENTRIES) - 1;
     gdt_ptr.base = (uint32_t)&gdt_entries;
 
     /*
