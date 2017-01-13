@@ -29,6 +29,17 @@ void isr_handler(registers_t regs)
     }
 }
 
+struct cpu_state* handle_interrupt(struct cpu_state* cpu)
+{
+    struct cpu_state* new_cpu = cpu;
+
+    if (cpu->intr == 0x32) {
+        new_cpu=handle_multitasking(cpu);
+    }
+
+    return new_cpu;
+}
+
 void irq_handler(registers_t regs)
 {
 	if(regs.int_no != IRQ0 && regs.int_no != IRQ1) {
@@ -37,7 +48,7 @@ void irq_handler(registers_t regs)
 		itoa(regs.int_no,*result,10);
 		terminal_writestring(*result);
 	}
-	if(regs.int_no == IRQ0) {
+	/*if(regs.int_no == IRQ0) {
 		struct cpu_state* cpu;
 		cpu->eax = regs.eax;
 		cpu->ebx = regs.ebx;
@@ -55,7 +66,7 @@ void irq_handler(registers_t regs)
 		cpu->ss = regs.ss;
 		
 		handle_multitasking(cpu);
-	}
+	}*/
 	if(regs.int_no == IRQ1) {
 		kbd_irq_handler();
 	}

@@ -186,6 +186,7 @@ irq\num:
     push	$0
     push	$\map
     jmp	irq_stub
+	jmp intr_common_handler
 .endm
 
 
@@ -206,6 +207,37 @@ irq 13, 45
 irq 14, 46
 irq 15, 47
 
+.extern handle_interrupt
+intr_common_handler:
+    // CPU-Zustand sichern
+    push %ebp
+    push %edi
+    push %esi
+    push %edx
+    push %ecx
+    push %ebx
+    push %eax
+ 
+    // Handler aufrufen
+    push %esp
+    call handle_interrupt
+    mov %eax, %esp
+ 
+    // CPU-Zustand wiederherstellen
+    pop %eax
+    pop %ebx
+    pop %ecx
+    pop %edx
+    pop %esi
+    pop %edi
+    pop %ebp
+ 
+    // Fehlercode und Interruptnummer vom Stack nehmen
+    add $8, %esp
+ 
+    // Ruecksprung zum unterbrochenen Code
+    iret
+	
 .extern irq_handler
 irq_stub:
     pusha
