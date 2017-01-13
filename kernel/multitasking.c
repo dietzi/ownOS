@@ -16,7 +16,9 @@ void task_b(void)
 
 static uint8_t stack_a[4096];
 static uint8_t stack_b[4096];
- 
+static uint8_t user_stack_a[4096];
+static uint8_t user_stack_b[4096];
+
 /*
  * Jeder Task braucht seinen eigenen Stack, auf dem er beliebig arbeiten kann,
  * ohne dass ihm andere Tasks Dinge ueberschreiben. Ausserdem braucht ein Task
@@ -65,8 +67,8 @@ static struct registers* task_states[2];
  
 void init_multitasking(void)
 {
-    task_states[0] = init_task(stack_a, task_a);
-    task_states[1] = init_task(stack_b, task_b);
+    task_states[0] = init_task(stack_a, user_stack_a, task_a);
+    task_states[1] = init_task(stack_b, user_stack_b, task_b);
 }
  
 /*
