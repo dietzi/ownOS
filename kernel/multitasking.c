@@ -29,6 +29,7 @@ struct registers* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
     /*
      * CPU-Zustand fuer den neuen Task festlegen
      */
+	terminal_writestring("Initializing task");
     struct registers new_state = {
         .eax = 0,
         .ebx = 0,
@@ -60,7 +61,7 @@ struct registers* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
      */
     struct registers* state = (void*) (stack + 4096 - sizeof(new_state));
     *state = new_state;
- 
+	terminal_writestring("Task initialized");
     return state;
 }
 
@@ -71,6 +72,7 @@ static struct registers* task_states[2];
  
 void init_multitasking(void)
 {
+	terminal_writestring("Initializing multitasking");
 	gdt_set_gate(5, (uint32_t) tss, sizeof(tss),
 		GDT_FLAG_TSS | GDT_FLAG_PRESENT, GDT_FLAG_RING3);
  
@@ -79,6 +81,7 @@ void init_multitasking(void)
 	
     task_states[0] = init_task(stack_a, user_stack_a, task_a);
     task_states[1] = init_task(stack_b, user_stack_b, task_b);
+	terminal_writestring("Multitasking initialized");
 }
  
 /*
