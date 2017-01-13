@@ -24,13 +24,12 @@ static uint8_t user_stack_b[4096];
  * ohne dass ihm andere Tasks Dinge ueberschreiben. Ausserdem braucht ein Task
  * einen Einsprungspunkt.
  */
-struct registers_t* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
+struct cpu_state* init_task(uint8_t* stack, void* entry)
 {
     /*
      * CPU-Zustand fuer den neuen Task festlegen
      */
-	terminal_writestring("Initializing task");
-    struct registers new_state = {
+    struct cpu_state new_state = {
         .eax = 0,
         .ebx = 0,
         .ecx = 0,
@@ -38,14 +37,10 @@ struct registers_t* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
         .esi = 0,
         .edi = 0,
         .ebp = 0,
-        //.esp = (uint32_t) user_stack + 4096,
+        //.esp = unbenutzt (kein Ring-Wechsel)
         .eip = (uint32_t) entry,
  
-        /* Ring-3-Segmentregister 
-        .cs  = 0x18 | 0x03,
-        .ss  = 0x20 | 0x03,*/
- 
-		/* Ring-0-Segmentregister */
+        /* Ring-0-Segmentregister */
         .cs  = 0x08,
         //.ss  = unbenutzt (kein Ring-Wechsel)
  
@@ -59,28 +54,20 @@ struct registers_t* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
      * worden. So kann man dem Interrupthandler den neuen Task unterschieben
      * und er stellt einfach den neuen Prozessorzustand "wieder her".
      */
-    struct registers* state = (void*) (stack + 4096 - sizeof(new_state));
+    struct cpu_state* state = (void*) (stack + 4096 - sizeof(new_state));
     *state = new_state;
-	terminal_writestring("Task initialized");
+ 
     return state;
 }
 
-static uint32_t tss[32] = { 0, 0, 0x10 };
 static int current_task = -1;
 static int num_tasks = 2;
-static struct registers_t* task_states[2];
+static struct cpu_state* task_states[2];
  
 void init_multitasking(void)
 {
-	/*gdt_set_gate(5, (uint32_t) tss, sizeof(tss),
-		GDT_FLAG_TSS | GDT_FLAG_PRESENT, GDT_FLAG_RING3);
-	terminal_writestring("GDT changed");
-    // Taskregister neu laden
-    asm volatile("ltr %%ax" : : "a" (5 << 3));
-	terminal_writestring("Register reloaded");*/
-    task_states[0] = init_task(stack_a, user_stack_a, task_a);
-    task_states[1] = init_task(stack_b, user_stack_b, task_b);
-	terminal_writestring("Multitasking initialized");
+    task_states[0] = init_task(stack_a, task_a);
+    task_states[1] = init_task(stack_b, task_b);
 }
  
 /*
@@ -88,7 +75,7 @@ void init_multitasking(void)
  * Prozessorzustand wird als Parameter uebergeben und gespeichert, damit er
  * beim naechsten Aufruf des Tasks wiederhergestellt werden kann
  */
-struct registers_t* schedule(struct registers_t* cpu)
+struct cpu_state* schedule(struct cpu_state* cpu)
 {
     /*
      * Wenn schon ein Task laeuft, Zustand sichern. Wenn nicht, springen wir
@@ -107,10 +94,11 @@ struct registers_t* schedule(struct registers_t* cpu)
  
     /* Prozessorzustand des neuen Tasks aktivieren */
     cpu = task_states[current_task];
+ 
     return cpu;
 }
 
-struct registers_t* handle_multitasking(struct registers_t cpu)
+struct registers_t* handle_multitasking(struct registers_t* cpu)
 {
     struct registers_t* new_cpu = cpu;
     new_cpu = schedule(cpu);

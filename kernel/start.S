@@ -207,6 +207,7 @@ irq 14, 46
 irq 15, 47
 
 .extern irq_handler
+.extern handle_interrupt
 irq_stub:
     pusha
 
@@ -221,6 +222,7 @@ irq_stub:
     movw	%ax, %gs
 
 	push	%esp
+	call handle_interrupt
     call	irq_handler
 	mov %eax, %esp
 	

@@ -29,6 +29,13 @@ void isr_handler(registers_t regs)
     }
 }
 
+void handle_interrupt(struct cpu_state* cpu)
+{
+	if (cpu->intr == 0x20) {
+		terminal_writestring("IRQ0");
+		handle_multitasking(cpu);
+	}
+}
 
 void irq_handler(registers_t regs)
 {
@@ -38,10 +45,10 @@ void irq_handler(registers_t regs)
 		itoa(regs.int_no,*result,10);
 		terminal_writestring(*result);
 	}
-	if(regs.int_no == IRQ0) {
+	/*if(regs.int_no == IRQ0) {
 		terminal_writestring("IRQ0");
 		handle_multitasking(regs);
-	}
+	}*/
 	if(regs.int_no == IRQ1) {
 		kbd_irq_handler();
 	}
