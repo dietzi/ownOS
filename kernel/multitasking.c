@@ -38,7 +38,7 @@ struct registers* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
         .esi = 0,
         .edi = 0,
         .ebp = 0,
-        .esp = (uint32_t) user_stack + 4096,
+        //.esp = (uint32_t) user_stack + 4096,
         .eip = (uint32_t) entry,
  
         /* Ring-3-Segmentregister 
