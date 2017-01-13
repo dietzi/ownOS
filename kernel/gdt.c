@@ -61,16 +61,6 @@ void init_gdt()
     load_gdt(&gdt_ptr);
 }
 
-static void set_entry(int i, unsigned int base, unsigned int limit, int flags)
-{
-    gdt_entries[i] = limit & 0xffffLL;
-    gdt_entries[i] |= (base & 0xffffffLL) << 16;
-    gdt_entries[i] |= (flags & 0xffLL) << 40;
-    gdt_entries[i] |= ((limit >> 16) & 0xfLL) << 48;
-    gdt_entries[i] |= ((flags >> 8 )& 0xffLL) << 52;
-    gdt_entries[i] |= ((base >> 24) & 0xffLL) << 56;
-}
-
 static void gdt_set_gate(int32_t entry, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
 {
     gdt_entries[entry].base_low = (base & 0xFFFF);
