@@ -34,6 +34,7 @@ void handle_interrupt(struct cpu_state* cpu)
 	if (cpu->intr == 0x20) {
 		terminal_writestring("IRQ0");
 		handle_multitasking(cpu);
+		outb(MASTER_COMMAND, PIC_RESET);
 	}
 }
 
