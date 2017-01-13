@@ -11,4 +11,4 @@
 #define GDT_FLAG_32_BIT  0x400
 
 void init_gdt(void);
-static void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
+void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);

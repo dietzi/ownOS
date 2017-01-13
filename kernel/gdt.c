@@ -27,7 +27,7 @@ typedef struct gdt_ptr_struct gdt_ptr_t;
 extern void load_gdt(gdt_ptr_t * gdt_ptr);
 
 // Internal function prototypes.
-static void gdt_set_gate(int32_t,uint32_t,uint32_t,uint8_t,uint8_t);
+void gdt_set_gate(int32_t,uint32_t,uint32_t,uint8_t,uint8_t);
 
 gdt_entry_t gdt_entries[5];
 gdt_ptr_t   gdt_ptr;
@@ -61,7 +61,7 @@ void init_gdt()
     load_gdt(&gdt_ptr);
 }
 
-static void gdt_set_gate(int32_t entry, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
+void gdt_set_gate(int32_t entry, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
 {
     gdt_entries[entry].base_low = (base & 0xFFFF);
     gdt_entries[entry].base_middle = (base >> 16) & 0xFF;

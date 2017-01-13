@@ -40,9 +40,13 @@ struct registers* init_task(uint8_t* stack, uint8_t* user_stack, void* entry)
         .esp = (uint32_t) user_stack + 4096,
         .eip = (uint32_t) entry,
  
-        /* Ring-0-Segmentregister */
+        /* Ring-3-Segmentregister 
         .cs  = 0x18 | 0x03,
-        .ss  = 0x20 | 0x03,
+        .ss  = 0x20 | 0x03,*/
+ 
+		/* Ring-0-Segmentregister */
+        .cs  = 0x08,
+        //.ss  = unbenutzt (kein Ring-Wechsel)
  
         /* IRQs einschalten (IF = 1) */
         .eflags = 0x202,
