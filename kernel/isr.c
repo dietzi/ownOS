@@ -31,11 +31,15 @@ void isr_handler(registers_t regs)
 
 void handle_interrupt(struct cpu_state* cpu)
 {
-	if (cpu->intr == 0x20) {
+	terminal_writestring('' + cpu->intr);
+	/*if (cpu->intr == 0x20) {
 		terminal_writestring("IRQ0");
 		handle_multitasking(cpu);
-		outb(MASTER_COMMAND, PIC_RESET);
+	}*/
+	if (cpu->intr > 0x28) {
+		outb(SLAVE_COMMAND, PIC_RESET);
 	}
+	outb(MASTER_COMMAND, PIC_RESET);
 }
 
 void irq_handler(registers_t regs)
