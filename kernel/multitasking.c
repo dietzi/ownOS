@@ -73,12 +73,12 @@ static struct registers* task_states[2];
 void init_multitasking(void)
 {
 	terminal_writestring("Initializing multitasking");
-	gdt_set_gate(5, (uint32_t) tss, sizeof(tss),
+	/*gdt_set_gate(5, (uint32_t) tss, sizeof(tss),
 		GDT_FLAG_TSS | GDT_FLAG_PRESENT, GDT_FLAG_RING3);
- 
+	terminal_writestring("GDT changed");*/
     // Taskregister neu laden
     asm volatile("ltr %%ax" : : "a" (5 << 3));
-	
+	terminal_writestring("Register reloaded");
     task_states[0] = init_task(stack_a, user_stack_a, task_a);
     task_states[1] = init_task(stack_b, user_stack_b, task_b);
 	terminal_writestring("Multitasking initialized");
