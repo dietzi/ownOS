@@ -35,22 +35,24 @@ bool altGR=false;
  */
 void keyboard_init(void)
 {
-	request_ports(0x60, 1);
-	request_ports(0x64, 1);
+	//asm volatile("xchg %bx, %bx");
+	//request_ports(0x60, 1);
+	//request_ports(0x64, 1);
     // So, mal hoeren was uns die Tastatur noch so alles zu erzaehlen hat von
     // eventuell gedrueckten Tasten waerend dem Booten.
+	
     while ((inb(0x64) & 0x1)) {
         inb(0x60);
     }
-/*
+	
     // Leds alle ausloeschen
     send_kbd_command(0xED);
-    outb(0x60, 0);
-
+    send_kbd_command(0);
+	
     // Schnellste Wiederholrate
     send_kbd_command(0xF3);
-    outb(0x60, 0);
-*/
+    send_kbd_command(0);
+	
     // Tastatur aktivieren
     send_kbd_command(0xF4);
     init_done = true;
@@ -139,7 +141,8 @@ void kbd_irq_handler() {
 static void send_key_event(uint8_t keycode, bool release)
 {
 	char *result;
-	itoa(keycode,*result,10);
+	char cc;
+	*result=itoa(keycode,10);
     if(release) {
 		switch (keycode) {
 			case 42:
@@ -155,7 +158,12 @@ static void send_key_event(uint8_t keycode, bool release)
 				break;
 				
 			default:
-				terminal_key(codeToChar(keycode,shift,shiftG,strg,alt,altGR));
+				cc=codeToChar(keycode,shift,shiftG,strg,alt,altGR);
+				if(cc=="\n") {
+					terminal_writestring("\n");
+				} else {
+					terminal_key(cc);
+				}
 				break;
 		}
 		//terminal_writestring("Losgelassen:");
@@ -273,7 +281,7 @@ uint8_t translate_scancode(int set, uint16_t scancode)
         terminal_writestring("kbc: Unbekannter Scancode");
 		terminal_writestring(scancode);
 		char *result;
-		itoa(scancode,*result,10);
+		*result=itoa(scancode,10);
 		terminal_writestring(*result);
     }
 

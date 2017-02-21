@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdint.h>
+#include "config.h"
 #include "terminal.h"
 #include "gdt.h"
 #include "idt.h"
@@ -8,3 +9,6 @@
 #include "isr.h"
 #include "keyboard.h"
 #include "multitasking.h"
+#include "pic.h"
+#include "pmm.h"
+#include "cmos.h"

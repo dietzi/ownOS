@@ -43,5 +43,6 @@ void init_idt();
 #define COPROCESSOR_FAULT           16
 #define ALIGNMENT_CHECK_EXCEPTION   17
 #define MACHINE_CHECK_EXCEPTION     18
+#define SYSCALL						30
 
 #endif

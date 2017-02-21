@@ -27,7 +27,7 @@ isr\num:
 isr\num:
     cli
     push	$\num
-    jmp	isr_stub
+    jmp	irq_stub
 .endm
 
 isr_noerr 0
@@ -193,36 +193,51 @@ irq 12, 32
 irq 13, 33
 irq 14, 34
 irq 15, 35
-
+	
 .extern handle_interrupt
 irq_stub:
-    pusha
-
-    mov	%ds, %ax
-    pushl	%eax
-    movl	%eax, %esi
-
-    movw	$0x10, %ax
-    movw	%ax, %ds
-    movw	%ax, %es
-    movw	%ax, %fs
-    movw	%ax, %gs
-
-    call	handle_interrupt
+    // CPU-Zustand sichern	
+	// xchg %bx, %bx
 	
-    pop	%ebx
-    movl	%esi, %ebx
-
-    movw	%bx, %ds
-    movw	%bx, %es
-    movw	%bx, %fs
-    movw	%bx, %gs
-
-    popa
+    push %ebp
+    push %edi
+    push %esi
+    push %edx
+    push %ecx
+    push %ebx
+    push %eax
+	
+    // Kernel-Datensegmente laden
+    mov $0x10, %ax
+    mov %ax, %ds
+    mov %ax, %es
+	
+    // Handler aufrufen
+    push %esp
+    call handle_interrupt
+    mov %eax, %esp
+	
+    // User-Datensegmente laden
+    mov $0x23, %ax
+    mov %ax, %ds
+    mov %ax, %es
+	
+    // CPU-Zustand wiederherstellen
+    pop %eax
+    pop %ebx
+    pop %ecx
+    pop %edx
+    pop %esi
+    pop %edi
+    pop %ebp
+	
+     // Fehlercode und Interruptnummer vom Stack nehmen
     add $8, %esp
-    sti
+ 
+	// Ruecksprung zum unterbrochenen Code
+	// xchg %bx, %bx
     iret
-
+	
 .global load_gdt
 
 .type load_gdt, @function

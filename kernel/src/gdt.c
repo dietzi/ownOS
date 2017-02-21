@@ -1,6 +1,18 @@
 #include "includes.h"
 
-#define GDTENTRIES 5
+#define GDT_FLAG_DATASEG 0x02
+#define GDT_FLAG_CODESEG 0x0a
+#define GDT_FLAG_TSS     0x09
+ 
+#define GDT_FLAG_SEGMENT 0x10
+#define GDT_FLAG_RING0   0x00
+#define GDT_FLAG_RING3   0x60
+#define GDT_FLAG_PRESENT 0x80
+ 
+#define GDT_FLAG_4K_GRAN 0x800
+#define GDT_FLAG_32_BIT  0x400
+
+#define GDTENTRIES 6
 // This structure contains the value of one GDT entry.
 // We use the attribute 'packed' to tell GCC not to change
 // any of the alignment in the structure.
@@ -35,6 +47,7 @@ gdt_ptr_t   gdt_ptr;
 //idt_entry_t idt_entries[256];
 //idt_ptr_t   idt_ptr;
 
+static uint64_t gdt[GDTENTRIES];
 
 void init_gdt()
 {
@@ -52,14 +65,38 @@ void init_gdt()
       0xCF == 1100 1111  == 1   1   0   0  ~
     */
 
-    gdt_set_gate(0,0,0,0,0);                    //Null segment
+    /*gdt_set_gate(0,0,0,0,0);                    //Null segment
     gdt_set_gate(1, 0, 0xFFFFFFFF, 0x9A, 0xCF); //Code segment
     gdt_set_gate(2, 0, 0xFFFFFFFF, 0x92, 0xCF); //Data segment
     gdt_set_gate(3, 0, 0xFFFFFFFF, 0xFA, 0xCF); //User mode code segment
     gdt_set_gate(4, 0, 0xFFFFFFFF, 0xF2, 0xCF); //User mode data segment
 
+	set_entry(5, (uint32_t) tss, sizeof(tss), GDT_FLAG_TSS | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
+		
     terminal_writestring("Flushing GDT");
-    load_gdt(&gdt_ptr);
+    load_gdt(&gdt_ptr);*/
+	
+	set_entry(0, 0, 0, 0);
+    set_entry(1, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
+        GDT_FLAG_CODESEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT);
+    set_entry(2, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
+        GDT_FLAG_DATASEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT);
+    set_entry(3, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
+        GDT_FLAG_CODESEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
+    set_entry(4, 0, 0xfffff, GDT_FLAG_SEGMENT | GDT_FLAG_32_BIT |
+        GDT_FLAG_DATASEG | GDT_FLAG_4K_GRAN | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
+	set_entry(5, (uint32_t) tss, sizeof(tss), GDT_FLAG_TSS | GDT_FLAG_PRESENT | GDT_FLAG_RING3);
+		
+	terminal_writestring("Flushing GDT");
+	struct {
+		uint16_t limit;
+		void* pointer;
+	} __attribute__((packed)) gdtp = {
+		.limit = GDTENTRIES * 8 - 1,
+		.pointer = gdt,
+	};
+	asm volatile("lgdt %0" : : "m" (gdtp));
+	asm volatile("ltr %%ax" : : "a" (5 << 3));
 }
 
 void gdt_set_gate(int32_t entry, uint32_t base, uint32_t limit, uint8_t access, uint8_t gran)
@@ -73,4 +110,14 @@ void gdt_set_gate(int32_t entry, uint32_t base, uint32_t limit, uint8_t access, 
 
     gdt_entries[entry].granularity |= gran & 0xF0;
     gdt_entries[entry].access = access;
+}
+
+static void set_entry(int i, unsigned int base, unsigned int limit, int flags)
+{
+    gdt[i] = limit & 0xffffLL;
+    gdt[i] |= (base & 0xffffffLL) << 16;
+    gdt[i] |= (flags & 0xffLL) << 40;
+    gdt[i] |= ((limit >> 16) & 0xfLL) << 48;
+    gdt[i] |= ((flags >> 8 )& 0xffLL) << 52;
+    gdt[i] |= ((base >> 24) & 0xffLL) << 56;
 }

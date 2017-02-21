@@ -1,3 +1,6 @@
+#ifndef ISR_H
+#define ISR_H
+
 #include <stdint.h>
 
 typedef struct registers
@@ -9,11 +12,7 @@ typedef struct registers
 } registers_t;
 
 struct cpu_state {
-    uint32_t ds;                             // Data segment selector
-    uint32_t edi, esi, ebp, esp, ebx, edx, ecx, eax; // Pushed by pusha.
-    uint32_t intr, error;               // Interrupt number and error code (if applicable)
-    uint32_t eip, cs, eflags, useresp, ss;   // Pushed by the processor automatically.
-/*    // Von Hand gesicherte Register
+    // Von Hand gesicherte Register
     uint32_t   eax;
     uint32_t   ebx;
     uint32_t   ecx;
@@ -30,7 +29,7 @@ struct cpu_state {
     uint32_t   cs;
     uint32_t   eflags;
     uint32_t   esp;
-    uint32_t   ss;*/
+    uint32_t   ss;
 };
 
 // This intentionally accepts a *COPY* of the registers.
@@ -39,19 +38,21 @@ struct cpu_state {
 typedef void (*isr_handler_t)(registers_t);
 void register_interrupt_handler(uint8_t interrupt, isr_handler_t handler);
 
-#define IRQ0 32
-#define IRQ1 33
-#define IRQ2 34
-#define IRQ3 35
-#define IRQ4 36
-#define IRQ5 37
-#define IRQ6 38
-#define IRQ7 39
-#define IRQ8 40
-#define IRQ9 41
-#define IRQ10 42
-#define IRQ11 43
-#define IRQ12 44
-#define IRQ13 45
-#define IRQ14 46
-#define IRQ15 47
+#define IRQ0 20
+#define IRQ1 21
+#define IRQ2 22
+#define IRQ3 23
+#define IRQ4 24
+#define IRQ5 25
+#define IRQ6 26
+#define IRQ7 27
+#define IRQ8 28
+#define IRQ9 29
+#define IRQ10 30
+#define IRQ11 31
+#define IRQ12 32
+#define IRQ13 33
+#define IRQ14 34
+#define IRQ15 35
+
+#endif

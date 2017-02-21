@@ -46,7 +46,8 @@ size_t terminal_row;
 size_t terminal_column;
 uint8_t terminal_color;
 uint16_t* terminal_buffer;
- 
+char* videomem = (char*) 0xb8000;
+
 void terminal_initialize(void) {
 	terminal_row = 0;
 	terminal_column = 0;
@@ -74,15 +75,13 @@ void terminal_putentryat(char c, uint8_t color, size_t x, size_t y) {
  
 void terminal_putchar(char c) {
 	if(c=='\n') {
-		if (++terminal_row == VGA_HEIGHT)
-			terminal_scroll();
+		if (++terminal_row == VGA_HEIGHT) terminal_scroll();
 		terminal_column=0;
 	} else {
 		terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
 		if (++terminal_column == VGA_WIDTH) {
 			terminal_column = 0;
-			if (++terminal_row == VGA_HEIGHT)
-				terminal_scroll();
+			if (++terminal_row == VGA_HEIGHT) terminal_scroll();
 		}
 	}
 }
@@ -92,9 +91,54 @@ void terminal_key(char c) {
 	displaycursor(terminal_row,terminal_column);
 }
 
-void terminal_write(const char* data, size_t size) {
-	for (size_t i = 0; i < size; i++)
-		terminal_putchar(data[i]);
+void terminal_write(char* data, size_t size) {
+	for (size_t i = 0; i < size; i++) {
+		switch (data[i]) {
+			case '0':
+			case 0:
+				terminal_putchar(48);
+				break;
+			case '1':
+			case 1:
+				terminal_putchar(49);
+				break;
+			case '2':
+			case 2:
+				terminal_putchar(50);
+				break;
+			case '3':
+			case 3:
+				terminal_putchar(51);
+				break;
+			case '4':
+			case 4:
+				terminal_putchar(52);
+				break;
+			case '5':
+			case 5:
+				terminal_putchar(53);
+				break;
+			case '6':
+			case 6:
+				terminal_putchar(54);
+				break;
+			case '7':
+			case 7:
+				terminal_putchar(55);
+				break;
+			case '8':
+			case 8:
+				terminal_putchar(56);
+				break;
+			case '9':
+			case 9:
+				terminal_putchar(57);
+				break;
+			default:
+				terminal_putchar(data[i]);
+				break;
+		}
+	}
 	displaycursor(terminal_row,terminal_column);
 }
 
@@ -127,7 +171,9 @@ void terminal_writestring(const char* data) {
 	terminal_write(data, strlen(data));
 	terminal_write("\n",strlen("\n"));
 	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
+	terminal_color = vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK);
 	terminal_write("ownOS> ",strlen("ownOS> "));
+	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
 }
 
@@ -188,8 +234,9 @@ void stopCPU() {
     }
 }
 
-char * itoa (int value, char *result, int base)
+char * itoa (int value, int base)
 {
+	char *result;
     // check that the base if valid
     if (base < 2 || base > 36) { *result = '\0'; return result; }
 
@@ -225,4 +272,13 @@ bool request_ports(uint32_t port, uint32_t length) {
     
     return eax;
 }
-  
+
+void *kmemset(void *ptr, int val, size_t num) {
+        size_t i;
+        uint8_t *byte_ptr = (uint8_t*) ptr;
+        for(i = 0; i < num; i++)        //----------Der Anzahl num nach, wird die Konstante val in den angegebenen Speicher geschrieben----------
+        {
+                byte_ptr[i] = val;
+        }
+        return ptr;
+}

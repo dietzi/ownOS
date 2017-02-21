@@ -1,3 +1,6 @@
+#ifndef GDT_H
+#define GDT_H
+
 #define GDT_FLAG_DATASEG 0x02
 #define GDT_FLAG_CODESEG 0x0a
 #define GDT_FLAG_TSS     0x09
@@ -12,3 +15,7 @@
 
 void init_gdt(void);
 void gdt_set_gate(int32_t, uint32_t, uint32_t, uint8_t, uint8_t);
+static void set_entry(int, unsigned int, unsigned int, int);
+
+extern uint32_t tss[32];
+#endif
