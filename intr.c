@@ -245,7 +245,7 @@ extern struct vmm_context* kernel_context;
 
 void error(struct cpu_state* cpu) {
 	show_prefix=false;
-	change_to_text();
+	//change_to_text();
     struct cpu_state* new_cpu = cpu;
 
 	clrscr_color(0x17);
@@ -317,8 +317,9 @@ void sleep(int ms) {
 
 struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 {
-	if(cpu->intr != 0x20 & cpu->intr != 0x21 & cpu->intr != 0x2f) kprintf("IRQ: %d - 0x%x\n",(cpu->intr - 0x20),cpu->intr);
-    struct cpu_state* new_cpu = cpu;
+	if((cpu->intr > 0x1f) && (cpu->intr != 0x20 & cpu->intr != 0x21 & cpu->intr != 0x2f)) kprintf("IRQ: %d - 0x%x\n",(cpu->intr - 0x20),cpu->intr);
+    if(cpu->intr <= 0x1f) kprintf("IRQ: %d - 0x%x\n",(cpu->intr),cpu->intr);
+	struct cpu_state* new_cpu = cpu;
 	if(!init_complete) {
 		if(cpu->intr==0x20) {
 			timer_ticks++;
@@ -333,12 +334,12 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 		return new_cpu;
 	}
 	
-	if (cpu->intr == 0x13) {
-		if(!remove_task(cpu->eip)) retry++;
-		else retry=0;
-		if(retry==10) {
+	if (cpu->intr == 0xd) {
+		//if(!remove_task(cpu->eip)) retry++;
+		//else retry=0;
+		//if(retry==10) {
 			error(new_cpu);
-		}
+		//}
 	} else if (cpu->intr <= 0x1f) {
 		error(new_cpu);
     } else if (cpu->intr >= 0x20 && cpu->intr <= 0x2f) {

@@ -1,9 +1,6 @@
 #ifndef VIA_H
 #define VIA_H
 
-#include "includes.h"
-
-
 enum intr_status_bits {
         IntrRxDone      = 0x0001,
         IntrTxDone      = 0x0002,
@@ -47,22 +44,6 @@ enum intr_status_bits {
                                  IntrStatsMax)
 #define RHINE_EVENT_SLOW        (IntrPCIErr | IntrLinkChange)
 #define RHINE_EVENT             (RHINE_EVENT_NAPI | RHINE_EVENT_SLOW)
-
-struct ip_addr {
-	uint8_t ip1;
-	uint8_t ip2;
-	uint8_t ip3;
-	uint8_t ip4;
-};
-
-struct mac {
-	uint8_t mac1;
-	uint8_t mac2;
-	uint8_t mac3;
-	uint8_t mac4;
-	uint8_t mac5;
-	uint8_t mac6;
-};
 
 void start_nic(void);
 void via_handle_intr(void);

@@ -18,3 +18,4 @@
 #include "timer.h"
 #include "pci.h"
 #include "via.h"
+#include "declerations.h"
