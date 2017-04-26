@@ -930,6 +930,12 @@ uint32_t pci_read_register_32(pci_bdf_t addr, uint32_t barOffset, uint32_t offse
 	return res;
 }
 
+void pci_write_register_8(pci_bdf_t addr, uint32_t barOffset, uint32_t offset, uint8_t val);
+
+void pci_write_register_8(pci_bdf_t addr, uint32_t barOffset, uint32_t offset, uint8_t val) {
+	pci_write_register(addr, barOffset, offset, val);
+}
+
 void pci_write_register(pci_bdf_t addr, uint32_t barOffset, uint32_t offset, uint8_t val) {
 	barOffset=(0x010+(barOffset*4));
 	uint32_t pci_read=pci_config_readd(addr,barOffset);

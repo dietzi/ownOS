@@ -13,7 +13,7 @@ all:
 	make kernel
 	cp kernel grub/
 	grub-mkrescue -o boot.iso grub
-	doxygen test.xml
+#	doxygen test.xml
 	sh ftp.sh
 
 kernel: $(OBJS)
