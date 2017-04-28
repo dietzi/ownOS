@@ -233,7 +233,7 @@ void dhcp_discover(void) {
 	dhcp.options[55].data[3] = 6;
 
 	struct dhcp_packet_created *dhcp_send = create_dhcp_packet(dhcp);
-	sendPacket(dhcp_send->ether, *dhcp_send->data, dhcp_send->length);
+	sendPacket(dhcp_send->ether, &dhcp_send->data, dhcp_send->length);
 
 	for(int i=0;i<255;i++) {
 		pmm_free(dhcp.options[i].data);
