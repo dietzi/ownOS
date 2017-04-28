@@ -166,8 +166,12 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	last_message = "Copying Buffer";
 	
-	memcpy(buffer1,&ip,20);
-	
+	ip1.ip = ip;
+
+	//memcpy(buffer1,&ip,20);
+	for(int m=0;m<20;m++) {
+		buffer1[m] = ip1.data[m];
+	}
 	for(int m=0;m<packet_length;m++) {
 		buffer1[20 + m] = temp_udp.data[m];
 	}
