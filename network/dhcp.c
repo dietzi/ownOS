@@ -4,7 +4,7 @@ int dhcp_status = 0;
 
 uint32_t connection_id = 0x33224411;
 
-struct dhcp_packet_created* create_dhcp_packet(struct dhcp_packet);
+struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet);
 void dhcp_discover(void);
 void dhcp_offer(struct dhcp_packet dhcp);
 void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip);
@@ -12,7 +12,7 @@ void dhcp_ack(struct dhcp_packet dhcp);
 void dhcp_get_ip(void);
 void handle_dhcp(struct ether_header ether, struct udp_header udp1);
 
-struct dhcp_packet_created* create_dhcp_packet(struct dhcp_packet dhcp) {
+struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	//kprintf("Creating DHCP-Packet\n");
 	if(dhcp_status == 2) sleep(1000);
 	struct ether_header ether;
@@ -174,12 +174,12 @@ struct dhcp_packet_created* create_dhcp_packet(struct dhcp_packet dhcp) {
 
 	last_message = "Creating Returner";
 	
-	struct dhcp_packet_created *returner;
+	struct dhcp_packet_created returner;
 		
-	returner->length = 20 + HTONS(udp.packetsize);
-	//returner->data = buffer1;
-	memcpy(returner->data,buffer1,20 + HTONS(udp.packetsize));
-	returner->ether = ether;
+	returner.length = 20 + HTONS(udp.packetsize);
+	//returner.data = buffer1;
+	memcpy(returner.data,buffer1,20 + HTONS(udp.packetsize));
+	returner.ether = ether;
 	
 	last_message = "Returning......";
 	
@@ -232,8 +232,8 @@ void dhcp_discover(void) {
 	dhcp.options[55].data[2] = 15;
 	dhcp.options[55].data[3] = 6;
 
-	struct dhcp_packet_created *dhcp_send = create_dhcp_packet(dhcp);
-	sendPacket(dhcp_send->ether, dhcp_send->data, dhcp_send->length);
+	struct dhcp_packet_created dhcp_send = create_dhcp_packet(dhcp);
+	sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
 		pmm_free(dhcp.options[i].data);
@@ -319,9 +319,9 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp.options[54].data[2] = server_ip.ip3;
 	dhcp.options[54].data[3] = server_ip.ip4;
 	
-	struct dhcp_packet_created *dhcp_send = create_dhcp_packet(dhcp);
+	struct dhcp_packet_created dhcp_send = create_dhcp_packet(dhcp);
 	
-	sendPacket(dhcp_send->ether, dhcp_send->data, dhcp_send->length);
+	sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
 		pmm_free(dhcp.options[i].data);
