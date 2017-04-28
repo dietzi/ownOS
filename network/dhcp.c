@@ -312,9 +312,9 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp.options[54].data[2] = server_ip.ip3;
 	dhcp.options[54].data[3] = server_ip.ip4;
 	
-	struct dhcp_packet_created dhcp_send = create_dhcp_packet(dhcp);
+	//struct dhcp_packet_created dhcp_send = create_dhcp_packet(dhcp);
 	
-	sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
+	sendPacket(create_dhcp_packet(dhcp).ether, create_dhcp_packet(dhcp).data, create_dhcp_packet(dhcp).length);
 
 	for(int i=0;i<255;i++) {
 		pmm_free(dhcp.options[i].data);
