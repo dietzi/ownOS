@@ -107,19 +107,19 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	union temp_dhcp {
 		struct dhcp_packet dhcp;
-		uint8_t data[HTONS(udp.packetsize) - 8];
+		uint8_t data[packet_length - 8];
 	};
 	union temp_dhcp temp_dhcp;
 	temp_dhcp.dhcp = dhcp;
 
 	union temp_udp {
 		struct udp_header udp;
-		uint8_t data[HTONS(udp.packetsize)];
+		uint8_t data[packet_length];
 	};
 	union temp_udp temp_udp;
 	temp_udp.udp = udp;
 	
-	for(int i=0;i<HTONS(udp.packetsize) - 8 - dhcp_options_length;i++) {
+	for(int i=0;i<packet_length - 8 - dhcp_options_length;i++) {
 		temp_udp.data[8+i] = temp_dhcp.data[i];
 	}
 	int counter = 0;
@@ -141,7 +141,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	last_message = "Getting DHCP-Options";
 	
-	uint8_t checksum_header[12 + HTONS(udp.packetsize)];
+	uint8_t checksum_header[12 + packet_length];
 	checksum_header[0] = ip11.ip1;
 	checksum_header[1] = ip11.ip2;
 	checksum_header[2] = ip11.ip3;
@@ -155,11 +155,11 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	checksum_header[10] = temp_udp.data[4];
 	checksum_header[11] = temp_udp.data[5];
 
-	for(int i=0;i<HTONS(udp.packetsize);i++) {
+	for(int i=0;i<packet_length;i++) {
 		checksum_header[12 + i] = temp_udp.data[i];
 	}
 	
-	temp_udp.udp.checksum = HTONS(checksum(checksum_header,12 + HTONS(udp.packetsize)));
+	temp_udp.udp.checksum = HTONS(checksum(checksum_header,12 + packet_length));
 	
 	uint8_t buffer1[HTONS(ip.packetsize)];
 	//uint8_t *buffer1 = pmm_alloc();
@@ -168,7 +168,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	memcpy(buffer1,&ip,20);
 	
-	for(int m=0;m<HTONS(udp.packetsize);m++) {
+	for(int m=0;m<packet_length;m++) {
 		buffer1[20 + m] = temp_udp.data[m];
 	}
 
@@ -176,9 +176,9 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	struct dhcp_packet_created returner;
 		
-	returner.length = 20 + HTONS(udp.packetsize);
+	returner.length = 20 + packet_length;
 	//returner.data = buffer1;
-	memcpy(returner.data,buffer1,20 + HTONS(udp.packetsize));
+	memcpy(returner.data,buffer1,20 + packet_length);
 	returner.ether = ether;
 	
 	last_message = "Returning......";
