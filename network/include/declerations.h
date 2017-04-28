@@ -158,11 +158,6 @@ union ether_test {
 	uint8_t data[sizeof(struct ether_header)];
 };
 
-union ip_union {
-	struct ip_header ip;
-	uint8_t data[sizeof(struct ip_header)];
-};
-
 union icmp_ping_union {
 	struct icmp_echo_packet icmp;
 	uint8_t data[sizeof(struct icmp_echo_packet)];
