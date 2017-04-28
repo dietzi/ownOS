@@ -286,7 +286,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 			.magic_cookie = HTONL(0x63825363),
 			.options = pmm_alloc()
 		};
-		
+		kprintf("0x%x\n",dhcp.options);
 		for(int i=0;i<255;i++) {
 			//dhcp.options[i].data = pmm_alloc();
 			dhcp.options[i].index = 0;
