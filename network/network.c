@@ -81,6 +81,7 @@ void sendPacket(struct ether_header ether, uint8_t data[], int data_length) {
 			i++;
 			j++;
 		}
+last_message = "via_send...";
 		via_send(buffer,i);
 	}
 }

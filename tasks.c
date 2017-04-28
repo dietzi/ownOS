@@ -79,7 +79,7 @@ void update_status(void) {
 			*tasktype++;
 		}
 	} else if(current_task->type==IDLE) {
-		char *tasktype="Leerlauf";
+		char *tasktype=*last_message; //"Leerlauf";
 		while(*tasktype) {
 			statusleiste[i]=*tasktype;
 			statusleiste[i+1]=0x70;
