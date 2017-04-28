@@ -212,7 +212,7 @@ void dhcp_discover(void) {
 	};
 	
 	for(int i=0;i<255;i++) {
-		//dhcp.options[i].data = pmm_alloc();
+		dhcp.options[i].data = pmm_alloc();
 		dhcp.options[i].index = 0;
 	}
 	
@@ -273,11 +273,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	ip22.ip2 = 0xff;
 	ip22.ip3 = 0xff;
 	ip22.ip4 = 0xff;	
-//	ip22.ip1 = dhcp_offer.options[54].data[0];
-//	ip22.ip2 = dhcp_offer.options[54].data[1];
-//	ip22.ip3 = dhcp_offer.options[54].data[2];
-//	ip22.ip4 = dhcp_offer.options[54].data[3];	
-	
+
 	struct dhcp_packet dhcp = {
 		.operation = 0x1, // 1 Byte
 		.network_type = 0x1, // 1 Byte
@@ -318,15 +314,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp.options[54].data[2] = server_ip.ip3;
 	dhcp.options[54].data[3] = server_ip.ip4;
 	
-	struct dhcp_packet_created dhcp_send;
-	
-	kprintf("Creating DHCP-Packet.....\n");
-	sleep(1000);
-	
-	dhcp_send = create_dhcp_packet(dhcp);
-	
-	last_message = "Preparing send...";
-	kprintf("Preparing send: %d\n", dhcp_send.length);
+	struct dhcp_packet_created dhcp_send = create_dhcp_packet(dhcp);
 	
 	via_send(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
@@ -347,7 +335,8 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 void dhcp_get_ip(void) {
 	kprintf("DHCP-DISCOVER...\n");
 	dhcp_discover();
-	//dhcp_discover();
+	sleep(1000);
+	dhcp_discover();
 }
 
 void handle_dhcp(struct ether_header ether, struct udp_header udp1) {
