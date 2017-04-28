@@ -16,10 +16,10 @@ void icmp_handle(struct ip_header ip, struct ether_header ether) {
 		
 		packet_id++;
 		
-union ip_union {
-	struct ip_header ip;
-	uint8_t data[sizeof(struct ip_header)];
-};
+		union ip_union {
+			struct ip_header ip;
+			uint8_t data[sizeof(struct ip_header)];
+		};
 
 		union ip_union ip1;
 		ip1.ip = ip;
