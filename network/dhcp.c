@@ -178,7 +178,7 @@ struct dhcp_packet_created* create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	
 	returner->length = 20 + HTONS(udp.packetsize);
-	returner->data = buffer1;
+	returner->data = &buffer1;
 	returner->ether = ether;
 	
 	last_message = "Returning......";
