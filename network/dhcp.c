@@ -176,6 +176,8 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	struct dhcp_packet_created returner;
 		
+	returner.data = pmm_alloc();
+	
 	returner.length = 20 + packet_length;
 	//returner.data = buffer1;
 	memcpy(returner.data,buffer1,20 + packet_length);
