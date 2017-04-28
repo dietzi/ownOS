@@ -55,7 +55,7 @@ void update_status(void) {
 		i+=2;
 		*number++;
 	}
-	char *testa="  Aktueller Tasktyp: ";
+	char *testa="  A: ";
 	while(*testa) {
 		statusleiste[i]=*testa;
 		statusleiste[i+1]=0x70;
