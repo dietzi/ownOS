@@ -225,6 +225,7 @@ void via_send(uint8_t data[], int data_length) {
 			j++;
 		}
 		kprintf("VIA send: %d\n",i);*/
+last_message = "via_send...1";
 	int i=0;
 	for(i=0;i<data_length;i++) {
 		((uint8_t*)tx1[next_tx]->addr)[i] = data[i];
@@ -233,7 +234,7 @@ void via_send(uint8_t data[], int data_length) {
 	tx1[next_tx]->status |= 0x80000000;
 	next_tx++;
 	pci_write_register_16(addr,base,0x08,pci_read_register_16(addr,base,0x08) | 0x20); //poll TX
-last_message = "via_send...6";
+last_message = "via_send...2";
 }
 
 void via_handle_intr(void) {
