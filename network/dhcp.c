@@ -310,12 +310,12 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp.options[50].data[2] = own_ip.ip3;
 	dhcp.options[50].data[3] = own_ip.ip4;
 
-	/*dhcp.options[54].index = 54;
+	dhcp.options[54].index = 54;
 	dhcp.options[54].length = 4;
 	dhcp.options[54].data[0] = server_ip.ip1;
 	dhcp.options[54].data[1] = server_ip.ip2;
 	dhcp.options[54].data[2] = server_ip.ip3;
-	dhcp.options[54].data[3] = server_ip.ip4;*/
+	dhcp.options[54].data[3] = server_ip.ip4;
 	
 	struct dhcp_packet_created *dhcp_send = create_dhcp_packet(dhcp);
 	
