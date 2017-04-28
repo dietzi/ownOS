@@ -165,7 +165,8 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	for(int m=0;m<HTONS(udp.packetsize);m++) {
 		buffer1[20 + m] = temp_udp.data[m];
 	}
-	
+	kprintf("%d %d\n",ip.packetsize,udp.packetsize);
+	sleep(5000);
 	last_message = "Creating Returner";
 	
 	struct dhcp_packet_created returner;
