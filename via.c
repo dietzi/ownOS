@@ -168,7 +168,7 @@ void start_nic(void) {
 	kprintf("Network init complete\n");
 }
 
-void via_send(uint8_t data[], int data_length) {
+void via_send(uint8_t *data, int data_length) {
 	/*kprintf("VIA send begin\n");
 	if((ether.receipt_mac.mac1 == my_mac.mac1 &&
 			ether.receipt_mac.mac2 == my_mac.mac2 &&
