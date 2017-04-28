@@ -174,17 +174,17 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 
 	last_message = "Creating Returner";
 	
-	struct dhcp_packet_created returner;
+	/*struct dhcp_packet_created returner;
 		
 	returner.data = pmm_alloc();
 	
 	returner.length = 20 + packet_length;
 	//returner.data = buffer1;
 	memcpy(returner.data,buffer1,20 + packet_length);
-	returner.ether = ether;
+	returner.ether = ether;*/
 	
 	last_message = "Returning......";
-	sendPacket(returner.ether, returner.data, returner.length);
+	sendPacket(ether, buffer1, 20 + packet_length);
 	//return returner;
 }
 
