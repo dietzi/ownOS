@@ -13,7 +13,7 @@ void dhcp_get_ip(void);
 void handle_dhcp(struct ether_header ether, struct udp_header udp1);
 
 struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
-	kprintf("Creating DHCP-Packet\n");
+	//kprintf("Creating DHCP-Packet\n");
 	if(dhcp_status == 2) sleep(1000);
 	struct ether_header ether;
 	struct ip_header ip;
@@ -60,7 +60,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	int udp_length = 8;
 	int dhcp_length = 48 + 64 + 128;
 	int dhcp_options_length = 1;
-	kprintf("Calculating DHCP-Options-Length: ");
+
 	for(int i=1;i<255;i++) {
 		if(dhcp.options[i].index == i) {
 			dhcp_options_length++;
@@ -70,7 +70,6 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 			}
 		}
 	}
-	kprintf("%d\n",dhcp_options_length);
 	
 	int packet_length = udp_length + dhcp_length + dhcp_options_length;
 	
@@ -120,7 +119,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	}
 	int counter = 0;
 		
-	kprintf("Getting DHCP-Options\n");
+	//kprintf("Getting DHCP-Options\n");
 	for(int i=1;i<255;i++) {
 		if(dhcp.options[i].index == i) {
 			temp_udp.data[udp_length + dhcp_length + counter] = i;
@@ -239,7 +238,7 @@ void dhcp_discover(void) {
 }
 
 void dhcp_offer(struct dhcp_packet dhcp1) {
-	kprintf("DHCP-OFFER...\n");
+	//kprintf("DHCP-OFFER...\n");
 	
 	if(dhcp1.connection_id == HTONL(connection_id)) {
 		dhcp_status = 2;
@@ -260,7 +259,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 }
 
 void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
-	kprintf("DHCP-REQUEST...\n");
+	//kprintf("DHCP-REQUEST...\n");
 	
 	struct ip_addr ip11;
 	struct ip_addr ip22;
@@ -335,8 +334,8 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 void dhcp_get_ip(void) {
 	kprintf("DHCP-DISCOVER...\n");
 	dhcp_discover();
-	sleep(1000);
-	dhcp_discover();
+//	sleep(1000);
+//	dhcp_discover();
 }
 
 void handle_dhcp(struct ether_header ether, struct udp_header udp1) {
