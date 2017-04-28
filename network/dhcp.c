@@ -176,9 +176,9 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 		buffer1[20 + m] = temp_udp.data[m];
 	}
 
-	last_message = "Creating Returner";
+	/*last_message = "Creating Returner";
 	
-	/*struct dhcp_packet_created returner;
+	struct dhcp_packet_created returner;
 		
 	returner.data = pmm_alloc();
 	
