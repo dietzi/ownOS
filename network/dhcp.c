@@ -315,8 +315,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 		kprintf("Creating DHCP-Packet.....\n");
 		sleep(1000);
 		
-		struct dhcp_packet *dhcp123 = &dhcp;
-		dhcp_send = create_dhcp_packet(*dhcp123);
+		dhcp_send = create_dhcp_packet(dhcp);
 		
 		last_message = "Preparing send...";
 		kprintf("Preparing send: %d\n", dhcp_send.length);
