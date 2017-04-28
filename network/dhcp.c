@@ -119,8 +119,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 		temp_udp.data[8+i] = temp_dhcp.data[i];
 	}
 	int counter = 0;
-	
-	
+		
 	kprintf("Getting DHCP-Options\n");
 	for(int i=1;i<255;i++) {
 		if(dhcp.options[i].index == i) {
@@ -320,6 +319,8 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 		
 		last_message = "Preparing send...";
 		kprintf("Preparing send: %d\n", dhcp_send.length);
+		
+		uint8_t *data = &dhcp;
 		
 		via_send(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
