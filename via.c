@@ -342,7 +342,7 @@ void via_handle_intr(void) {
 								arp1.receipt_ip.ip2 == my_ip.ip2 &&
 								arp1.receipt_ip.ip3 == my_ip.ip3 &&
 								arp1.receipt_ip.ip4 == my_ip.ip4) {
-							arp(arp1, ether);
+							//arp(arp1, ether);
 						}
 						break;
 					case 0x0800: //IP
