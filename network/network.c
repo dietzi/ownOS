@@ -65,26 +65,22 @@ void sendPacket(struct ether_header ether, uint8_t data[], int data_length) {
 		int i=0;
 		int j=0;
 
-last_message = "i...";
 		while(i < 14) {
 			buffer[i] = ether_union.data[i];
 			//ether++;
 			i++;
 		}
-last_message = "data_length...";
 		while(/*j < 28*/ data_length - j > 0) {
 			buffer[i] = data[j];
 			//data++;
 			i++;
 			j++;
 		}
-last_message = "j...";
 		while(j < 46) {
 			buffer[i] = 0x0;
 			i++;
 			j++;
 		}
-last_message = "via_send...";
 		via_send(buffer,i);
 	}
 }

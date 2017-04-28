@@ -226,13 +226,19 @@ void via_send(uint8_t data[], int data_length) {
 		}
 		kprintf("VIA send: %d\n",i);*/
 	int i=0;
+last_message = "via_send...1";
 	for(i=0;i<data_length;i++) {
 		((uint8_t*)tx1[next_tx]->addr)[i] = data[i];
 	}
+last_message = "via_send...2";
 	tx1[next_tx]->length = ((uint32_t)i) | 0x600000;
+last_message = "via_send...3";
 	tx1[next_tx]->status |= 0x80000000;
+last_message = "via_send...4";
 	next_tx++;
+last_message = "via_send...5";
 	pci_write_register_16(addr,base,0x08,pci_read_register_16(addr,base,0x08) | 0x20); //poll TX
+last_message = "via_send...6";
 }
 
 void via_handle_intr(void) {
