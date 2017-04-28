@@ -154,7 +154,6 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 		checksum_header[12 + i] = temp_udp.data[i];
 	}
 	
-	//temp_udp.udp.checksum = HTONS(checksum(temp_udp.data,HTONS(udp.packetsize)));
 	temp_udp.udp.checksum = HTONS(checksum(checksum_header,12 + HTONS(udp.packetsize)));
 	
 	uint8_t buffer1[HTONS(ip.packetsize)];
@@ -227,7 +226,7 @@ void dhcp_discover(void) {
 	dhcp.options[55].data[3] = 6;
 
 	struct dhcp_packet_created dhcp_send = create_dhcp_packet(dhcp);
-	via_send(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
+	//sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
 		pmm_free(dhcp.options[i].data);
@@ -299,7 +298,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp.options[53].length = 1;
 	dhcp.options[53].data[0] = 3;
 	
-	/*dhcp.options[50].index = 50;
+	dhcp.options[50].index = 50;
 	dhcp.options[50].length = 4;
 	dhcp.options[50].data[0] = own_ip.ip1;
 	dhcp.options[50].data[1] = own_ip.ip2;
@@ -311,11 +310,11 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp.options[54].data[0] = server_ip.ip1;
 	dhcp.options[54].data[1] = server_ip.ip2;
 	dhcp.options[54].data[2] = server_ip.ip3;
-	dhcp.options[54].data[3] = server_ip.ip4;*/
+	dhcp.options[54].data[3] = server_ip.ip4;
 	
 	struct dhcp_packet_created dhcp_send = create_dhcp_packet(dhcp);
 	
-	via_send(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
+	//sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
 		pmm_free(dhcp.options[i].data);
@@ -383,7 +382,7 @@ void handle_dhcp(struct ether_header ether, struct udp_header udp1) {
 			dhcp_offer(dhcp);			
 		}
 		if(dhcp.options[53].data[0] == 5) {
-			dhcp_ack(dhcp);			
+			//dhcp_ack(dhcp);			
 		}
 	}	
 	for(int i=0;i<255;i++) {

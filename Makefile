@@ -4,7 +4,7 @@ OBJS = $(addsuffix .o,$(basename $(SRCS)))
 CC = gcc
 LD = ld
 
-INCLUDES = -I include -I network/include
+INCLUDES = -I include -I .
 ASFLAGS = -m32 -g
 CFLAGS = -w -m32 -Wall -g -fno-stack-protector $(INCLUDES) -march=i486 -O0
 LDFLAGS = -melf_i386 -Tkernel.ld

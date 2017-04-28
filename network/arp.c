@@ -37,5 +37,5 @@ void arp(struct arp arp_val, struct ether_header ether) {
 	union arp_test tester1;
 	tester1.arp_val1 = (arp_temp);
 	//kprintf("Test: Offset 2: 0x%x\n",arp_val.hardware_addr_length);
-	via_send(ether,tester1.data, sizeof(struct arp));
+	sendPacket(ether,tester1.data, sizeof(struct arp));
 }

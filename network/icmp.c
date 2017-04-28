@@ -46,6 +46,6 @@ void icmp_handle(struct ip_header ip, struct ether_header ether) {
 			buffer1[20 + m] = ip.data[m];
 		}
 		
-		via_send(ether, buffer1, HTONS(ip1.ip.packetsize));
+		sendPacket(ether, buffer1, HTONS(ip1.ip.packetsize));
 	}
 }

@@ -48,5 +48,6 @@ enum intr_status_bits {
 void start_nic(void);
 void via_handle_intr(void);
 void dhcp_get_ip(void);
+void via_send(uint8_t data[], int data_length);
 
 #endif
