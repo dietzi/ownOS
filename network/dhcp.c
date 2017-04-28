@@ -161,8 +161,8 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	temp_udp.udp.checksum = HTONS(checksum(checksum_header,12 + HTONS(udp.packetsize)));
 	
-	//uint8_t buffer1[HTONS(ip.packetsize)];
-	uint8_t *buffer1 = pmm_alloc();
+	uint8_t buffer1[HTONS(ip.packetsize)];
+	//uint8_t *buffer1 = pmm_alloc();
 	
 	last_message = "Copying Buffer";
 	
