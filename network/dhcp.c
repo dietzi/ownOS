@@ -120,6 +120,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	}
 	int counter = 0;
 	
+	
 	kprintf("Getting DHCP-Options\n");
 	for(int i=1;i<255;i++) {
 		if(dhcp.options[i].index == i) {
