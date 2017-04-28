@@ -168,7 +168,7 @@ struct dhcp_packet_created* create_dhcp_packet(struct dhcp_packet dhcp) {
 
 	last_message = "Creating Returner";
 	
-	struct dhcp_packet_created *returner;
+	struct dhcp_packet_created *returner = pmm_alloc();
 	
 	returner->length = 20 + HTONS(udp.packetsize);
 	returner->data = buffer1;
