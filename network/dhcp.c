@@ -12,8 +12,6 @@ void dhcp_ack(struct dhcp_packet dhcp);
 void dhcp_get_ip(void);
 void handle_dhcp(struct ether_header ether, struct udp_header udp1);
 
-	struct dhcp_packet_created *returner;
-	
 struct dhcp_packet_created* create_dhcp_packet(struct dhcp_packet dhcp) {
 	//kprintf("Creating DHCP-Packet\n");
 	if(dhcp_status == 2) sleep(1000);
@@ -176,9 +174,11 @@ struct dhcp_packet_created* create_dhcp_packet(struct dhcp_packet dhcp) {
 
 	last_message = "Creating Returner";
 	
-	
+	struct dhcp_packet_created *returner;
+		
 	returner->length = 20 + HTONS(udp.packetsize);
-	returner->data = buffer1;
+	//returner->data = buffer1;
+	memcpy(returner->data,buffer1,20 + HTONS(udp.packetsize));
 	returner->ether = ether;
 	
 	last_message = "Returning......";
@@ -339,7 +339,6 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 
 void dhcp_get_ip(void) {
 	kprintf("DHCP-DISCOVER...\n");
-	returner = pmm_alloc();
 	dhcp_discover();
 //	sleep(1000);
 //	dhcp_discover();
