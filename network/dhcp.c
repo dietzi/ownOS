@@ -230,6 +230,10 @@ void dhcp_discover(void) {
 	struct dhcp_packet_created dhcp_send = create_dhcp_packet(dhcp);
 	via_send(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
+	for(int i=0;i<255;i++) {
+		pmm_free(dhcp.options[i].data);
+	}
+
 	pmm_free(dhcp.options);
 	dhcp_status = 1;	
 }
@@ -251,80 +255,87 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 			.ip3 = dhcp1.own_ip.ip3,
 			.ip4 = dhcp1.own_ip.ip4
 		};
-
-		kprintf("DHCP-REQUEST...\n");
-		
-		struct ip_addr ip11;
-		struct ip_addr ip22;
-
-		ip11.ip1 = 0x0;
-		ip11.ip2 = 0x0;
-		ip11.ip3 = 0x0;
-		ip11.ip4 = 0x0;
-		ip22.ip1 = 0xff;
-		ip22.ip2 = 0xff;
-		ip22.ip3 = 0xff;
-		ip22.ip4 = 0xff;	
-	//	ip22.ip1 = dhcp_offer.options[54].data[0];
-	//	ip22.ip2 = dhcp_offer.options[54].data[1];
-	//	ip22.ip3 = dhcp_offer.options[54].data[2];
-	//	ip22.ip4 = dhcp_offer.options[54].data[3];	
-		
-		struct dhcp_packet dhcp = {
-			.operation = 0x1, // 1 Byte
-			.network_type = 0x1, // 1 Byte
-			.network_addr_length = 0x6, // 1 Byte
-			.relay_agents = 0x0, // 1 Byte
-			.connection_id = HTONL(connection_id), // 4 Byte
-			.seconds_start = 0x0, // 2 Byte
-			.flags = HTONS(0x8000), // 2 Byte
-			.client_ip = ip11,
-			.own_ip = ip11,
-			.server_ip = ip11, //server_ip,
-			.relay_ip = ip11,
-			.client_mac = my_mac,
-			.magic_cookie = HTONL(0x63825363),
-			.options = pmm_alloc()
-		};
-		kprintf("0x%x\n",dhcp.options);
-		for(int i=0;i<255;i++) {
-			//dhcp.options[i].data = pmm_alloc();
-			dhcp.options[i].index = 0;
-		}
-		
-		dhcp.options[53].index = 53;
-		dhcp.options[53].length = 1;
-		dhcp.options[53].data[0] = 3;
-		
-		dhcp.options[50].index = 50;
-		dhcp.options[50].length = 4;
-		dhcp.options[50].data[0] = own_ip.ip1;
-		dhcp.options[50].data[1] = own_ip.ip2;
-		dhcp.options[50].data[2] = own_ip.ip3;
-		dhcp.options[50].data[3] = own_ip.ip4;
-
-		dhcp.options[54].index = 54;
-		dhcp.options[54].length = 4;
-		dhcp.options[54].data[0] = server_ip.ip1;
-		dhcp.options[54].data[1] = server_ip.ip2;
-		dhcp.options[54].data[2] = server_ip.ip3;
-		dhcp.options[54].data[3] = server_ip.ip4;
-		
-		struct dhcp_packet_created dhcp_send;
-		
-		kprintf("Creating DHCP-Packet.....\n");
-		sleep(1000);
-		
-		dhcp_send = create_dhcp_packet(dhcp);
-		
-		last_message = "Preparing send...";
-		kprintf("Preparing send: %d\n", dhcp_send.length);
-		
-		via_send(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
-
-		pmm_free(dhcp.options);
-		dhcp_status = 3;
+		dhcp_request(server_ip,own_ip);
 	}
+}
+
+void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
+	kprintf("DHCP-REQUEST...\n");
+	
+	struct ip_addr ip11;
+	struct ip_addr ip22;
+
+	ip11.ip1 = 0x0;
+	ip11.ip2 = 0x0;
+	ip11.ip3 = 0x0;
+	ip11.ip4 = 0x0;
+	ip22.ip1 = 0xff;
+	ip22.ip2 = 0xff;
+	ip22.ip3 = 0xff;
+	ip22.ip4 = 0xff;	
+//	ip22.ip1 = dhcp_offer.options[54].data[0];
+//	ip22.ip2 = dhcp_offer.options[54].data[1];
+//	ip22.ip3 = dhcp_offer.options[54].data[2];
+//	ip22.ip4 = dhcp_offer.options[54].data[3];	
+	
+	struct dhcp_packet dhcp = {
+		.operation = 0x1, // 1 Byte
+		.network_type = 0x1, // 1 Byte
+		.network_addr_length = 0x6, // 1 Byte
+		.relay_agents = 0x0, // 1 Byte
+		.connection_id = HTONL(connection_id), // 4 Byte
+		.seconds_start = 0x0, // 2 Byte
+		.flags = HTONS(0x8000), // 2 Byte
+		.client_ip = ip11,
+		.own_ip = ip11,
+		.server_ip = ip11, //server_ip,
+		.relay_ip = ip11,
+		.client_mac = my_mac,
+		.magic_cookie = HTONL(0x63825363),
+		.options = pmm_alloc()
+	};
+	
+	for(int i=0;i<255;i++) {
+		dhcp.options[i].data = pmm_alloc();
+		dhcp.options[i].index = 0;
+	}
+	
+	dhcp.options[53].index = 53;
+	dhcp.options[53].length = 1;
+	dhcp.options[53].data[0] = 3;
+	
+	dhcp.options[50].index = 50;
+	dhcp.options[50].length = 4;
+	dhcp.options[50].data[0] = own_ip.ip1;
+	dhcp.options[50].data[1] = own_ip.ip2;
+	dhcp.options[50].data[2] = own_ip.ip3;
+	dhcp.options[50].data[3] = own_ip.ip4;
+
+	dhcp.options[54].index = 54;
+	dhcp.options[54].length = 4;
+	dhcp.options[54].data[0] = server_ip.ip1;
+	dhcp.options[54].data[1] = server_ip.ip2;
+	dhcp.options[54].data[2] = server_ip.ip3;
+	dhcp.options[54].data[3] = server_ip.ip4;
+	
+	struct dhcp_packet_created dhcp_send;
+	
+	kprintf("Creating DHCP-Packet.....\n");
+	sleep(1000);
+	
+	dhcp_send = create_dhcp_packet(dhcp);
+	
+	last_message = "Preparing send...";
+	kprintf("Preparing send: %d\n", dhcp_send.length);
+	
+	via_send(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
+
+	for(int i=0;i<255;i++) {
+		pmm_free(dhcp.options[i].data);
+	}
+
+	pmm_free(dhcp.options);
+	dhcp_status = 3;
 }
 
 void dhcp_ack(struct dhcp_packet dhcp) {
