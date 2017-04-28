@@ -13,7 +13,6 @@ void dhcp_get_ip(void);
 void handle_dhcp(struct ether_header ether, struct udp_header udp1);
 
 	struct dhcp_packet_created *returner;
-	uint8_t *buffer1;
 	
 struct dhcp_packet_created* create_dhcp_packet(struct dhcp_packet dhcp) {
 	//kprintf("Creating DHCP-Packet\n");
@@ -164,7 +163,8 @@ struct dhcp_packet_created* create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	temp_udp.udp.checksum = HTONS(checksum(checksum_header,12 + HTONS(udp.packetsize)));
 	
-	//uint8_t buffer1[HTONS(ip.packetsize)];
+	uint8_t buffer1[HTONS(ip.packetsize)];
+	*buffer1 = pmm_alloc();
 	
 	last_message = "Copying Buffer";
 	
@@ -340,7 +340,6 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 void dhcp_get_ip(void) {
 	kprintf("DHCP-DISCOVER...\n");
 	returner = pmm_alloc();
-	buffer1 = pmm_alloc();
 	dhcp_discover();
 //	sleep(1000);
 //	dhcp_discover();
