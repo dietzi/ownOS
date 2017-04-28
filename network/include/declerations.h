@@ -96,6 +96,12 @@ struct udp_header {
 	uint8_t *data;
 } __attribute__((packed));
 
+struct dhcp_options {
+	uint8_t index;
+	uint8_t length;
+	uint8_t *data;
+} __attribute__((packed));
+
 struct dhcp_packet {
 	uint8_t operation;
 	uint8_t network_type;
@@ -113,7 +119,14 @@ struct dhcp_packet {
 	uint8_t server_name[64];
 	uint8_t file_name[128];
 	uint32_t magic_cookie;
+	struct dhcp_options options[255];
 } __attribute__((packed));
+
+struct dhcp_packet_created {
+	uint32_t length;
+	struct ether_header ether;
+	uint8_t *data;
+};
 
 struct arp {
 	uint16_t hardware_addr_type;
@@ -154,11 +167,5 @@ union icmp_ping_union {
 	struct icmp_echo_packet icmp;
 	uint8_t data[sizeof(struct icmp_echo_packet)];
 };
-
-struct dhcp_options {
-	uint8_t option;
-	uint8_t length;
-	uint8_t *data;
-} __attribute__((packed));
 
 #endif

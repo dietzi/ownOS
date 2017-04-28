@@ -272,7 +272,7 @@ void error(struct cpu_state* cpu) {
 				((errcode >> 16) & 0x01);
 			kprintf("Fehlercode: %d (%x)\n",errcode, errcode);
 			kprintf("  External: %d (%x)\n",external,external);
-			kprintf("  Tbl     : %d%d (%x%x)\n",tbl,tbl);
+			kprintf("  Tbl     : %d (%x)\n",tbl,tbl);
 			kprintf("  Index   : %d (%x)\n",index,index);
 			break;
 		case 0x0e:
@@ -295,7 +295,9 @@ void error(struct cpu_state* cpu) {
 	}
 	
 	print_stack(new_cpu);
-
+	
+	kprintf("Last Message: %s",last_message);
+	
 	/*regs16_t regs;
 	regs.ax = 0x0003;
 	int32(0x10, &regs);*/
@@ -307,12 +309,18 @@ void error(struct cpu_state* cpu) {
 }
 
 int retry=0;
+bool sleeper = false;
 
 void sleep(int ms) {
 	timer_ticks=0;
+	sleeper = true;
+	asm volatile("sti");
 	while(timer_ticks < ms) {
-		asm volatile("nop");
+		asm volatile("sti");
 	}
+	sleeper = false;
+	asm volatile("sti");
+	return;
 }
 
 struct cpu_state* handle_interrupt(struct cpu_state* cpu)

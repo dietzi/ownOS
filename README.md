@@ -1,1 +1,0 @@
-ownOS Project started at 09.01.2017

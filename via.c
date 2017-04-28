@@ -141,7 +141,7 @@ void start_nic(void) {
 	
 	pci_write_register_16(addr,base,0x6E,0x0006);
 	//pci_write_register_8(addr,base,0x06,0x50);
-	pci_write_register(addr,base,0x07,0xE0); //store & forward //0x20
+	pci_write_register(addr,base,0x20,0xE0); //store & forward = 0x07 //0x20
 
 	pci_write_register_16(addr,base,0x0E,/*RHINE_EVENT & */0xffff);
 	pci_write_register(addr,base,0x09,0x04);
@@ -169,7 +169,7 @@ void start_nic(void) {
 }
 
 void via_send(struct ether_header ether, uint8_t data[], int data_length) {
-	
+	kprintf("VIA send begin\n");
 	if((ether.receipt_mac.mac1 == my_mac.mac1 &&
 			ether.receipt_mac.mac2 == my_mac.mac2 &&
 			ether.receipt_mac.mac3 == my_mac.mac3 &&
@@ -224,10 +224,11 @@ void via_send(struct ether_header ether, uint8_t data[], int data_length) {
 			i++;
 			j++;
 		}
+		kprintf("VIA send: %d\n",i);
 		tx1[next_tx]->length = ((uint32_t)i) | 0x600000;
 		tx1[next_tx]->status |= 0x80000000;
 		next_tx++;
-		//pci_write_register_16(addr,base,0x08,pci_read_register_16(addr,base,0x08) | 0x20); //poll TX
+		pci_write_register_16(addr,base,0x08,pci_read_register_16(addr,base,0x08) | 0x20); //poll TX
 	}
 }
 

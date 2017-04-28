@@ -19,3 +19,4 @@
 #include "pci.h"
 #include "via.h"
 #include "declerations.h"
+#include "dhcp.h"

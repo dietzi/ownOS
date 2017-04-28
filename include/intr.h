@@ -37,6 +37,8 @@ void sleep(int ms);
 struct cpu_state* handle_interrupt(struct cpu_state* cpu);
 struct cpu_state* schedule(struct cpu_state* cpu);
 
+char* last_message;
+
 v86_t v86regs;
 
 #endif
