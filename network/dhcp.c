@@ -161,8 +161,8 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	temp_udp.udp.checksum = HTONS(checksum(checksum_header,12 + packet_length));
 	
-	//uint8_t buffer1[HTONS(ip.packetsize)];
-	uint8_t *buffer1 = pmm_alloc();
+	uint8_t buffer1[HTONS(ip.packetsize)];
+	//uint8_t *buffer1 = pmm_alloc();
 	
 	last_message = "Copying Buffer";
 	
@@ -267,7 +267,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 }
 
 void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
-	//kprintf("DHCP-REQUEST...\n");
+	kprintf("DHCP-REQUEST...\n");
 	
 	struct ip_addr ip11;
 	struct ip_addr ip22;
