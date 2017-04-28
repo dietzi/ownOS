@@ -16,7 +16,7 @@ all:
 	grub-mkrescue -o boot.iso grub
 #	doxygen test.xml
 	sh ftp.sh
-	@git commit -a --allow-empty-message -m '' && git push
+	make gitupdate -i
 
 kernel: $(OBJS)
 	$(LD) $(LDFLAGS) -o $@ $^
@@ -32,5 +32,8 @@ kernel: $(OBJS)
 
 clean:
 	rm $(OBJS)
+	
+gitupdate:
+	git commit -a --allow-empty-message -m '' && git push
 
 .PHONY: clean
