@@ -348,7 +348,20 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 
 void dhcp_get_ip(void) {
 	kprintf("DHCP-DISCOVER...\n");
-	dhcp_discover();
+	//dhcp_discover();
+		struct ip_addr server_ip = {
+			.ip1 = 10,
+			.ip2 = 0,
+			.ip3 = 0,
+			.ip4 = 1
+		};
+		struct ip_addr own_ip = {
+			.ip1 = 10,
+			.ip2 = 0,
+			.ip3 = 0,
+			.ip4 = 13
+		};
+		dhcp_request(server_ip,own_ip);
 //	sleep(1000);
 //	dhcp_discover();
 }
