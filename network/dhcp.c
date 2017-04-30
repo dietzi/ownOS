@@ -254,23 +254,6 @@ void dhcp_discover(void) {
 struct ip_addr server_ip;
 struct ip_addr own_ip;
 
-void dhcp_offer(struct dhcp_packet dhcp1) {
-	kprintf("DHCP-OFFER...\n");
-	
-	if(dhcp1.connection_id == HTONL(connection_id)) {
-		dhcp_status = 2;
-		server_ip.ip1 = dhcp1.options[54].data[0];
-		server_ip.ip2 = dhcp1.options[54].data[1];
-		server_ip.ip3 = dhcp1.options[54].data[2];
-		server_ip.ip4 = dhcp1.options[54].data[3];
-		own_ip.ip1 = dhcp1.own_ip.ip1;
-		own_ip.ip2 = dhcp1.own_ip.ip2;
-		own_ip.ip3 = dhcp1.own_ip.ip3;
-		own_ip.ip4 = dhcp1.own_ip.ip4;
-		//dhcp_request(server_ip, own_ip);
-	}
-}
-
 void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	kprintf("DHCP-REQUEST...\n");
 	
@@ -339,6 +322,23 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp_status = 3;
 }
 
+void dhcp_offer(struct dhcp_packet dhcp1) {
+	kprintf("DHCP-OFFER...\n");
+	
+	if(dhcp1.connection_id == HTONL(connection_id)) {
+		dhcp_status = 2;
+		server_ip.ip1 = dhcp1.options[54].data[0];
+		server_ip.ip2 = dhcp1.options[54].data[1];
+		server_ip.ip3 = dhcp1.options[54].data[2];
+		server_ip.ip4 = dhcp1.options[54].data[3];
+		own_ip.ip1 = dhcp1.own_ip.ip1;
+		own_ip.ip2 = dhcp1.own_ip.ip2;
+		own_ip.ip3 = dhcp1.own_ip.ip3;
+		own_ip.ip4 = dhcp1.own_ip.ip4;
+		dhcp_request(server_ip, own_ip);
+	}
+}
+
 void dhcp_ack(struct dhcp_packet dhcp) {
 	kprintf("DHCP-ACK...\n");
 	//my_ip.ip1 = 0x0;
@@ -346,7 +346,7 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 }
 
 void dhcp_get_ip(void) {
-	switch(dhcp_status) {
+/*	switch(dhcp_status) {
 		case 0:
 			kprintf("DHCP-DISCOVER...\n");
 			dhcp_discover();
@@ -355,9 +355,10 @@ void dhcp_get_ip(void) {
 		case 2:
 			dhcp_request(server_ip, own_ip);
 			break;
-	}
+	}*/
 //	sleep(1000);
-//	dhcp_discover();
+	kprintf("DHCP-DISCOVER...\n");
+	dhcp_discover();
 }
 
 void handle_dhcp(struct ether_header ether, struct udp_header udp1) {
