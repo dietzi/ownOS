@@ -297,7 +297,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 		.flags = HTONS(0x8000), // 2 Byte
 		.client_ip = ip11,
 		.own_ip = ip11,
-		.server_ip = ip11, //server_ip,
+		.server_ip = server_ip,
 		.relay_ip = ip11,
 		.client_mac = my_mac,
 		.magic_cookie = HTONL(0x63825363),
