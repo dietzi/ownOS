@@ -269,58 +269,56 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	ip22.ip3 = 0xff;
 	ip22.ip4 = 0xff;	
 
-	struct dhcp_packet *dhcp_alloc = pmm_alloc();
+	struct dhcp_packet *dhcp = pmm_alloc();
 	
-	struct dhcp_packet dhcp = *dhcp_alloc;
-	
-		dhcp.operation = 0x1; // 1 Byte
-		dhcp.network_type = 0x1; // 1 Byte
-		dhcp.network_addr_length = 0x6; // 1 Byte
-		dhcp.relay_agents = 0x0; // 1 Byte
-		dhcp.connection_id = HTONL(connection_id); // 4 Byte
-		dhcp.seconds_start = 0x0; // 2 Byte
-		dhcp.flags = HTONS(0x8000); // 2 Byte
-		dhcp.client_ip = ip11;
-		dhcp.own_ip = ip11;
-		dhcp.server_ip = server_ip;
-		dhcp.relay_ip = ip11;
-		dhcp.client_mac = my_mac;
-		dhcp.magic_cookie = HTONL(0x63825363);
-		//dhcp.options = pmm_alloc();
+		dhcp->operation = 0x1; // 1 Byte
+		dhcp->network_type = 0x1; // 1 Byte
+		dhcp->network_addr_length = 0x6; // 1 Byte
+		dhcp->relay_agents = 0x0; // 1 Byte
+		dhcp->connection_id = HTONL(connection_id); // 4 Byte
+		dhcp->seconds_start = 0x0; // 2 Byte
+		dhcp->flags = HTONS(0x8000); // 2 Byte
+		dhcp->client_ip = ip11;
+		dhcp->own_ip = ip11;
+		dhcp->server_ip = server_ip;
+		dhcp->relay_ip = ip11;
+		dhcp->client_mac = my_mac;
+		dhcp->magic_cookie = HTONL(0x63825363);
+		//dhcp->options = pmm_alloc();
 	
 	for(int i=0;i<255;i++) {
-		dhcp.options[i].data = pmm_alloc();
-		dhcp.options[i].index = 0;
+		dhcp->options[i].data = pmm_alloc();
+		dhcp->options[i].index = 0;
 	}
 	
-	dhcp.options[53].index = 53;
-	dhcp.options[53].length = 1;
-	dhcp.options[53].data[0] = 3;
+	dhcp->options[53].index = 53;
+	dhcp->options[53].length = 1;
+	dhcp->options[53].data[0] = 3;
 	
-	dhcp.options[50].index = 50;
-	dhcp.options[50].length = 4;
-	dhcp.options[50].data[0] = own_ip.ip1;
-	dhcp.options[50].data[1] = own_ip.ip2;
-	dhcp.options[50].data[2] = own_ip.ip3;
-	dhcp.options[50].data[3] = own_ip.ip4;
+	dhcp->options[50].index = 50;
+	dhcp->options[50].length = 4;
+	dhcp->options[50].data[0] = own_ip.ip1;
+	dhcp->options[50].data[1] = own_ip.ip2;
+	dhcp->options[50].data[2] = own_ip.ip3;
+	dhcp->options[50].data[3] = own_ip.ip4;
 
-	dhcp.options[54].index = 54;
-	dhcp.options[54].length = 4;
-	dhcp.options[54].data[0] = server_ip.ip1;
-	dhcp.options[54].data[1] = server_ip.ip2;
-	dhcp.options[54].data[2] = server_ip.ip3;
-	dhcp.options[54].data[3] = server_ip.ip4;
+	dhcp->options[54].index = 54;
+	dhcp->options[54].length = 4;
+	dhcp->options[54].data[0] = server_ip.ip1;
+	dhcp->options[54].data[1] = server_ip.ip2;
+	dhcp->options[54].data[2] = server_ip.ip3;
+	dhcp->options[54].data[3] = server_ip.ip4;
 	
 	//struct dhcp_packet_created dhcp_send = 
-	create_dhcp_packet(dhcp);
+	create_dhcp_packet(*dhcp);
 	//sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
-		pmm_free(dhcp.options[i].data);
+		pmm_free(dhcp->options[i].data);
 	}
 
-	pmm_free(dhcp.options);
-	pmm_free(dhcp_alloc);
+	//pmm_free(dhcp.options);
+	pmm_free(dhcp);
 	dhcp_status = 3;
 }
 
