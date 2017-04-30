@@ -257,16 +257,16 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 	if(dhcp1.connection_id == HTONL(connection_id)) {
 		dhcp_status = 2;
 		struct ip_addr server_ip = {
-			.ip1 = dhcp1.options[54].data[0],
-			.ip2 = dhcp1.options[54].data[1],
-			.ip3 = dhcp1.options[54].data[2],
-			.ip4 = dhcp1.options[54].data[3]
+			.ip1 = 10,
+			.ip2 = 0,
+			.ip3 = 0,
+			.ip4 = 1
 		};
 		struct ip_addr own_ip = {
-			.ip1 = dhcp1.own_ip.ip1,
-			.ip2 = dhcp1.own_ip.ip2,
-			.ip3 = dhcp1.own_ip.ip3,
-			.ip4 = dhcp1.own_ip.ip4
+			.ip1 = 10,
+			.ip2 = 0,
+			.ip3 = 0,
+			.ip4 = 13
 		};
 		dhcp_request(server_ip,own_ip);
 	}
@@ -348,20 +348,7 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 
 void dhcp_get_ip(void) {
 	kprintf("DHCP-DISCOVER...\n");
-	//dhcp_discover();
-		struct ip_addr server_ip = {
-			.ip1 = 10,
-			.ip2 = 0,
-			.ip3 = 0,
-			.ip4 = 1
-		};
-		struct ip_addr own_ip = {
-			.ip1 = 10,
-			.ip2 = 0,
-			.ip3 = 0,
-			.ip4 = 13
-		};
-		dhcp_request(server_ip,own_ip);
+	dhcp_discover();
 //	sleep(1000);
 //	dhcp_discover();
 }
