@@ -385,5 +385,6 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
             asm volatile("cli; hlt");
         }
     }
+	last_message = "Returning new_cpu";
     return new_cpu;
 }
