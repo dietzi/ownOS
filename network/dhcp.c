@@ -324,10 +324,6 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp_status = 3;
 }
 
-void dhcp_request1(struct ip_addr server_ip, struct ip_addr own_ip) {
-	dhcp_request(server_ip, own_ip);
-}
-
 void dhcp_offer(struct dhcp_packet dhcp1) {
 	kprintf("DHCP-OFFER...\n");
 	
@@ -341,7 +337,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 		own_ip.ip2 = dhcp1.own_ip.ip2;
 		own_ip.ip3 = dhcp1.own_ip.ip3;
 		own_ip.ip4 = dhcp1.own_ip.ip4;
-		dhcp_request1(server_ip, own_ip);
+		dhcp_request(server_ip, own_ip);
 	}
 }
 
