@@ -251,14 +251,14 @@ void dhcp_discover(void) {
 	dhcp_status = 1;	
 }
 
-struct ip_addr server_ip;
-struct ip_addr own_ip;
-
 void dhcp_offer(struct dhcp_packet dhcp1) {
 	kprintf("DHCP-OFFER...\n");
 	
 	if(dhcp1.connection_id == HTONL(connection_id)) {
 		dhcp_status = 2;
+		struct ip_addr server_ip;
+		struct ip_addr own_ip;
+
 		server_ip.ip1 = dhcp1.options[54].data[0];
 		server_ip.ip2 = dhcp1.options[54].data[1];
 		server_ip.ip3 = dhcp1.options[54].data[2];
@@ -267,7 +267,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 		own_ip.ip2 = dhcp1.own_ip.ip2;
 		own_ip.ip3 = dhcp1.own_ip.ip3;
 		own_ip.ip4 = dhcp1.own_ip.ip4;
-		dhcp_request(server_ip,own_ip);
+		dhcp_request(server_ip, own_ip);
 	}
 }
 
