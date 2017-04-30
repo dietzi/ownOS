@@ -310,7 +310,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp.options[54].data[3] = server_ip.ip4;
 	
 	//struct dhcp_packet_created dhcp_send = 
-	create_dhcp_packet(dhcp);
+	create_dhcp_packet((struct dhcp_packet)dhcp);
 	//sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
