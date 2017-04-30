@@ -4,7 +4,7 @@ int dhcp_status = 0;
 
 uint32_t connection_id = 0x33224411;
 
-struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet);
+//struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet);
 void dhcp_discover(void);
 void dhcp_offer(struct dhcp_packet dhcp);
 void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip);
