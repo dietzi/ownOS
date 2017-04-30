@@ -269,6 +269,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	ip22.ip3 = 0xff;
 	ip22.ip4 = 0xff;	
 
+	struct dhcp_packet *dhcp1 = pmm_alloc();
 	struct dhcp_packet dhcp = {
 		.operation = 0x1, // 1 Byte
 		.network_type = 0x1, // 1 Byte
@@ -286,7 +287,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 		.options = pmm_alloc()
 	};
 	
-	/*for(int i=0;i<255;i++) {
+	for(int i=0;i<255;i++) {
 		dhcp.options[i].data = pmm_alloc();
 		dhcp.options[i].index = 0;
 	}
@@ -307,17 +308,17 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	dhcp.options[54].data[0] = server_ip.ip1;
 	dhcp.options[54].data[1] = server_ip.ip2;
 	dhcp.options[54].data[2] = server_ip.ip3;
-	dhcp.options[54].data[3] = server_ip.ip4;*/
+	dhcp.options[54].data[3] = server_ip.ip4;
 	
 	//struct dhcp_packet_created dhcp_send = 
 	create_dhcp_packet(dhcp);
 	//sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
-	//for(int i=0;i<255;i++) {
-	//	pmm_free(dhcp.options[i].data);
-	//}
+	for(int i=0;i<255;i++) {
+		pmm_free(dhcp.options[i].data);
+	}
 
-	//pmm_free(dhcp.options);
+	pmm_free(dhcp.options);
 	dhcp_status = 3;
 }
 
