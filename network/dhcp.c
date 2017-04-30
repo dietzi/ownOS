@@ -269,7 +269,8 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	ip22.ip3 = 0xff;
 	ip22.ip4 = 0xff;	
 
-	struct dhcp_packet *dhcp1 = pmm_alloc();
+	struct dhcp_packet *dhcp_alloc = pmm_alloc();
+	
 	struct dhcp_packet dhcp = {
 		.operation = 0x1, // 1 Byte
 		.network_type = 0x1, // 1 Byte
