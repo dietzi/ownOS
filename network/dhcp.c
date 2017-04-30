@@ -270,24 +270,23 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	ip22.ip4 = 0xff;	
 
 	struct dhcp_packet *dhcp_alloc = pmm_alloc();
-	struct dhcp_packet dhcp1 = *dhcp_alloc;
 	
-	struct dhcp_packet dhcp = {
-		.operation = 0x1, // 1 Byte
-		.network_type = 0x1, // 1 Byte
-		.network_addr_length = 0x6, // 1 Byte
-		.relay_agents = 0x0, // 1 Byte
-		.connection_id = HTONL(connection_id), // 4 Byte
-		.seconds_start = 0x0, // 2 Byte
-		.flags = HTONS(0x8000), // 2 Byte
-		.client_ip = ip11,
-		.own_ip = ip11,
-		.server_ip = server_ip,
-		.relay_ip = ip11,
-		.client_mac = my_mac,
-		.magic_cookie = HTONL(0x63825363),
-		.options = pmm_alloc()
-	};
+	struct dhcp_packet dhcp = *dhcp_alloc;
+	
+		dhcp.operation = 0x1; // 1 Byte
+		dhcp.network_type = 0x1; // 1 Byte
+		dhcp.network_addr_length = 0x6; // 1 Byte
+		dhcp.relay_agents = 0x0; // 1 Byte
+		dhcp.connection_id = HTONL(connection_id); // 4 Byte
+		dhcp.seconds_start = 0x0; // 2 Byte
+		dhcp.flags = HTONS(0x8000); // 2 Byte
+		dhcp.client_ip = ip11;
+		dhcp.own_ip = ip11;
+		dhcp.server_ip = server_ip;
+		dhcp.relay_ip = ip11;
+		dhcp.client_mac = my_mac;
+		dhcp.magic_cookie = HTONL(0x63825363);
+		//dhcp.options = pmm_alloc();
 	
 	for(int i=0;i<255;i++) {
 		dhcp.options[i].data = pmm_alloc();
@@ -321,6 +320,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	}
 
 	pmm_free(dhcp.options);
+	pmm_free(dhcp_alloc);
 	dhcp_status = 3;
 }
 
