@@ -1,6 +1,7 @@
 #include "includes.h"
 
 void sendPacket(struct ether_header ether, uint8_t data[], int data_length);
+void sendPacket(struct ether_header ether, uint8_t *data, int data_length);
 
 int checksum(void *buffer, int size) {
   uint32_t sum = 0;
@@ -25,6 +26,7 @@ int checksum(void *buffer, int size) {
  
   return (~sum)&0xFFFF;
 }
+
 struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	//kprintf("Creating DHCP-Packet\n");
 	struct ether_header ether;
@@ -203,7 +205,6 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	sendPacket(ether, buffer1, 20 + packet_length);
 	//return returner;
 }
-
 
 void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
 	kprintf("Send Packet....\n");
