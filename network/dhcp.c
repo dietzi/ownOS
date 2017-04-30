@@ -255,7 +255,7 @@ struct ip_addr server_ip;
 struct ip_addr own_ip;
 
 void dhcp_offer(struct dhcp_packet dhcp1) {
-	//kprintf("DHCP-OFFER...\n");
+	kprintf("DHCP-OFFER...\n");
 	
 	if(dhcp1.connection_id == HTONL(connection_id)) {
 		dhcp_status = 2;
