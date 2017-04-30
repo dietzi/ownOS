@@ -266,7 +266,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 			.ip1 = 10,
 			.ip2 = 0,
 			.ip3 = 0,
-			.ip4 = 13
+			.ip4 = 113
 		};
 		dhcp_request(server_ip,own_ip);
 	}
