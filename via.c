@@ -235,6 +235,7 @@ last_message = "via_send...1";
 	next_tx++;
 	pci_write_register_16(addr,base,0x08,pci_read_register_16(addr,base,0x08) | 0x20); //poll TX
 last_message = "via_send...2";
+	return;
 }
 
 void via_handle_intr(void) {

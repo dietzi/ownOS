@@ -406,7 +406,7 @@ void handle_dhcp(struct ether_header ether, struct udp_header udp1) {
 			dhcp_offer(dhcp);			
 		}
 		if(dhcp.options[53].data[0] == 5) {
-			//dhcp_ack(dhcp);			
+			dhcp_ack(dhcp);			
 		}
 	}	
 	for(int i=0;i<255;i++) {
