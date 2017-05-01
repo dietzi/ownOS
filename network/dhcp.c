@@ -243,7 +243,7 @@ void dhcp_discover(void) {
 	//sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
-		pmm_free(dhcp.options[i].data);
+		//pmm_free(dhcp.options[i].data);
 	}
 
 	//pmm_free(dhcp.options);
