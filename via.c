@@ -106,7 +106,7 @@ struct tx_desc* tx1[10];
 struct rx_desc* rx1[10];
 
 void start_nic(void) {
-//	pci_config_write_8(addr,base,0x04,0x07);
+	pci_config_write_8(addr,base,0x04,0x07);
 	for(int i=0;i<10;i++) {
 		struct rx_desc* rx=(void*)pmm_alloc();
 		rx->status=0x80000000;

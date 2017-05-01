@@ -50,7 +50,12 @@ void init(struct multiboot_info *mb_info) {
 	kprintf(" #\n");
 	kprintf("#######################\n");
 	//beep();
-	
+	pci_bdf_t addr = {
+		.bus=0,
+		.dev=1,
+		.func=0
+	};
+	kprintf("%b\n",pci_config_read_8(addr,0,0x04));
 	init_complete=true;
 	show_prefix=true;
 	kprintf("\n");
