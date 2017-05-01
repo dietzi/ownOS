@@ -5,6 +5,11 @@ void arp(struct arp arp_val, struct ether_header ether) {
 	struct arp arp_temp;
 	
 	ether.receipt_mac.mac1 = my_mac.mac1;
+	ether.receipt_mac.mac2 = my_mac.mac2;
+	ether.receipt_mac.mac3 = my_mac.mac3;
+	ether.receipt_mac.mac4 = my_mac.mac4;
+	ether.receipt_mac.mac5 = my_mac.mac5;
+	ether.receipt_mac.mac6 = my_mac.mac6;
 	
 	arp_temp.hardware_addr_type = HTONS(arp_val.hardware_addr_type);
 	arp_temp.network_addr_type = HTONS(arp_val.network_addr_type);
