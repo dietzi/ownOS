@@ -344,7 +344,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 }
 
 void dhcp_ack(struct dhcp_packet dhcp) {
-	//kprintf("DHCP-ACK...\n");
+	kprintf("DHCP-ACK...\n");
 	if(dhcp.connection_id == HTONL(connection_id)) {
 		if(dhcp.own_ip.ip1 == own_ip.ip1 &&
 				dhcp.own_ip.ip2 == own_ip.ip2 &&
