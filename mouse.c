@@ -156,6 +156,8 @@ void mouse_handler(void)
         mouse_cycle=0;
 		if(rel_x < 0) rel_x = 0;
 		if(rel_y < 0) rel_y = 0;
+		if(rel_x > screen.x) rel_x = screen.x;
+		if(rel_y > screen.y) rel_y = screen.y;
 		char *button_name;
 		switch(buttons) {
 			case 0:
