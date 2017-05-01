@@ -92,6 +92,8 @@ void mouse_install(void)
     mouse_write(0xF4);
     mouse_read();
     mouse_cycle = 0;
+	
+	kprintf("Mouse initialized\n");
 }
 
 void mouse_handler(void)
