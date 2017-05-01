@@ -240,7 +240,7 @@ last_message = "via_send...1";
 	for(i=0;i<data_length;i++) {
 		((uint8_t*)tx1[next_tx]->addr)[i] = data[i];
 	}
-	tx1[next_tx]->length = ((uint32_t)i) | 0x600000;
+	tx1[next_tx]->length = ((uint32_t)data_length) | 0x600000;
 	tx1[next_tx]->status |= 0x80000000;
 	next_tx++;
 	//pci_write_register_16(addr,base,0x08,pci_read_register_16(addr,base,0x08) | 0x20); //poll TX
