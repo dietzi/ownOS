@@ -352,7 +352,8 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 								dhcp.options[51].data[0] << 16 |
 								dhcp.options[51].data[0] << 8 |
 								dhcp.options[51].data[0] << 0;
-			dhcp_timer = timer;
+			dhcp_timer = timer * 10;
+			kprintf("Timer: %d\n",dhcp_timer);
 			dhcp_status = 5;
 		} else {
 			dhcp_status = 0;
