@@ -355,11 +355,11 @@ void via_handle_intr(void) {
 							.receipt_ip.ip3 = (((uint8_t*)rx1[i]->addr)[40]),
 							.receipt_ip.ip4 = (((uint8_t*)rx1[i]->addr)[41])
 						};
-						kprintf("Receipt-IP: %d.%d.%d.%d\n", arp1.receipt_ip.ip1,
+						/*kprintf("Receipt-IP: %d.%d.%d.%d\n", arp1.receipt_ip.ip1,
 																arp1.receipt_ip.ip2,
 																arp1.receipt_ip.ip3,
 																arp1.receipt_ip.ip4);
-						kprintf("Own-IP: %d.%d.%d.%d\n",my_ip.ip1,my_ip.ip2,my_ip.ip3,my_ip.ip4);
+						kprintf("Own-IP: %d.%d.%d.%d\n",my_ip.ip1,my_ip.ip2,my_ip.ip3,my_ip.ip4);*/
 						if(arp1.receipt_ip.ip1 == my_ip.ip1 &&
 								arp1.receipt_ip.ip2 == my_ip.ip2 &&
 								arp1.receipt_ip.ip3 == my_ip.ip3 &&
