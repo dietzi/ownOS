@@ -237,6 +237,7 @@ void via_send(uint8_t *data, int data_length) {
 		kprintf("VIA send: %d\n",i);*/
 last_message = "via_send...1";
 	int i=0;
+	if(next_tx >= 10) next_tx = 0;
 	for(i=0;i<data_length;i++) {
 		((uint8_t*)tx1[next_tx]->addr)[i] = data[i];
 	}
