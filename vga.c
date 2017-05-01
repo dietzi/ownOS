@@ -40,7 +40,7 @@ uint16_t* get_vesa_modes(void) {
 		regs.ax=0x4f01;
 		regs.cx=*modes;
 		regs.es=0;
-		regs.di=info;
+		regs.di=&info;
 		int32(0x10,&regs);
 		if(regs.ax !=0x004f) {
 			kprintf(" Error\n");
