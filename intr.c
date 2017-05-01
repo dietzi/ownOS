@@ -232,6 +232,7 @@ struct cpu_state* syscall(struct cpu_state* cpu) {
 			c2.value = cpu->ecx;
 			own_ip = c2.ip;
 			
+			dhcp_request(server_ip, own_ip);
 			break;
     }
 

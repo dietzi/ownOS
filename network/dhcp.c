@@ -334,9 +334,8 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 		own_ip.ip2 = dhcp1.own_ip.ip2;
 		own_ip.ip3 = dhcp1.own_ip.ip3;
 		own_ip.ip4 = dhcp1.own_ip.ip4;
-		//debugger
 		asm("int $0x30" : : "a" (1), "b" (server_ip), "c" (own_ip));
-		dhcp_request(server_ip, own_ip);
+		//dhcp_request(server_ip, own_ip);
 	}
 }
 
