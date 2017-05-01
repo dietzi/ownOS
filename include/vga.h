@@ -64,6 +64,13 @@ typedef unsigned char  BYTE; // 1byte
 typedef unsigned short  WORD; // 2bytes
 typedef unsigned long  DWORD; //4bytes
 
+typedef struct screen_res {
+	int x;
+	int y;
+} screen_res;
+
+screen_res screen;
+
 long char_pos_x;
 long char_pos_y;
 uint8_t* vga;

@@ -179,6 +179,9 @@ void mouse_handler(void)
 			case 6:
 				button_name="Rechts + Mitte";
 				break;
+			case 7:
+				button_name="Links + Rechts + Mitte";
+				break;
 			default:
 				button_name="Unbekannt";
 				break;
