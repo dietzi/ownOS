@@ -6,6 +6,7 @@ void udp_handle(struct ip_header ip, struct ether_header ether) {
 	udp.destination_port = (uint16_t)((ip.data[2] << 8) + (ip.data[3]));
 	udp.packetsize = (uint16_t)((ip.data[4] << 8) + (ip.data[5]));
 	udp.checksum = (uint16_t)((ip.data[6] << 8) + (ip.data[7]));
+	udp.data = pmm_alloc();
 	
 	for(int i=0;i<udp.packetsize - 8;i++) {
 		udp.data[i] = ip.data[8 + i];
@@ -21,4 +22,6 @@ void udp_handle(struct ip_header ip, struct ether_header ether) {
 	kprintf("Packetlaenge: %d\n",udp.packetsize);
 	kprintf("Pruefsumme: 0x%x\n",udp.checksum);
 	kprintf("Datenlaenge: %d\n",ip.data_length - 8);
+	
+	pmm_free(udp.data);
 }
