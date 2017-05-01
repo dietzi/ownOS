@@ -343,6 +343,7 @@ void via_handle_intr(void) {
 																arp1.receipt_ip.ip2,
 																arp1.receipt_ip.ip3,
 																arp1.receipt_ip.ip4);
+						kprintf("Own-IP: %d.%d.%d.%d\n",my_ip.ip1,my_ip.ip2,my_ip.ip3,my_ip.ip4);
 						if(arp1.receipt_ip.ip1 == my_ip.ip1 &&
 								arp1.receipt_ip.ip2 == my_ip.ip2 &&
 								arp1.receipt_ip.ip3 == my_ip.ip3 &&
