@@ -27,7 +27,6 @@ int checksum(void *buffer, int size) {
 }
 
 void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
-	kprintf("Send Packet....\n");
 	uint8_t buffer[data_length + 20];
 	if((ether.receipt_mac.mac1 == my_mac.mac1 &&
 			ether.receipt_mac.mac2 == my_mac.mac2 &&
