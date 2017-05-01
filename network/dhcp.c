@@ -195,7 +195,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 }
 
 void dhcp_discover(void) {
-	//kprintf("DHCP-DISCOVER...\n");
+	kprintf("DHCP-DISCOVER...\n");
 	struct ip_addr ip11;
 	struct ip_addr ip22;
 
@@ -258,7 +258,7 @@ struct ip_addr server_ip;
 struct ip_addr own_ip;
 
 void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
-	//kprintf("DHCP-REQUEST...\n");
+	kprintf("DHCP-REQUEST...\n");
 	
 	struct ip_addr ip11;
 	struct ip_addr ip22;
@@ -326,7 +326,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 }
 
 void dhcp_offer(struct dhcp_packet dhcp1) {
-	//kprintf("DHCP-OFFER...\n");
+	kprintf("DHCP-OFFER...\n");
 	
 	if(dhcp1.connection_id == HTONL(connection_id)) {
 		dhcp_status = 2;
