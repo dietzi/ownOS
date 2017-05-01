@@ -27,23 +27,10 @@ bool vesa_parameter(char *parameter) {
 	char *ptr;
 	uint16_t res;
 	res=strtol(parameter,&ptr,16);
-	
-	pci_bdf_t addr = {
-		.bus=0,
-		.dev=1,
-		.func=0
-	};
-	pci_bdf_t addr1 = {
-		.bus=0,
-		.dev=1,
-		.func=0
-	};
-	pci_config_write_8(addr,0,0x04,pci_config_read_8(addr,0,0x04) | 0x04);
-	
+		
 	if(check_command("text",ptr)) change_to_text();
 	else set_vesa_mode(res);
-	pci_config_write_8(addr1,0,0x04,0x07);
-	//start_nic();
+
 	return true;
 }
 

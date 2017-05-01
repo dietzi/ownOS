@@ -12,12 +12,17 @@ extern void int32(unsigned char intnum, regs16_t *regs);
 /** @brief diese Funktion holt die VESA-Informationen */
 
 uint16_t* get_vesa_modes(void) {
-	/*kprintf("Disabling NIC\n");
+	kprintf("Disabling NIC\n");
 	pci_bdf_t addr1 = {
 		.bus=0,
 		.dev=17,
 		.func=0
 	};	
+	pci_bdf_t addr2 = {
+		.bus=0,
+		.dev=1,
+		.func=0
+	};
 	pci_bdf_t addr = {
 		.bus=0,
 		.dev=18,
@@ -26,7 +31,8 @@ uint16_t* get_vesa_modes(void) {
 	int base = 0;
 	pci_write_register_16(addr,base,0x08, 0x04);
 	pci_config_write_8(addr1,0x51,0x0d); //0x3d
-	kprintf("NIC disabled\n");*/
+	pci_config_write_8(addr2,0,0x04,pci_config_read_8(addr2,0,0x04) | 0x04);
+	kprintf("NIC disabled\n");
 
 	struct VESA_INFO *vesa=(VESA_INFO *)pmm_alloc();
 	struct MODE_INFO *info=(MODE_INFO *)pmm_alloc();
@@ -69,7 +75,7 @@ uint16_t* get_vesa_modes(void) {
 	}
 	kprintf("\n");
 
-	//start_nic();
+	start_nic();
 }
 
 /** @brief diese Funktion holt die VESA-Mode-Informationen */
@@ -100,6 +106,28 @@ struct MODE_INFO *info_set;
 /** @brief diese Funktion setzt den VESA-Mode */
 
 void set_vesa_mode(uint16_t mode) {
+	kprintf("Disabling NIC\n");
+	pci_bdf_t addr1 = {
+		.bus=0,
+		.dev=17,
+		.func=0
+	};	
+	pci_bdf_t addr2 = {
+		.bus=0,
+		.dev=1,
+		.func=0
+	};
+	pci_bdf_t addr = {
+		.bus=0,
+		.dev=18,
+		.func=0
+	};
+	int base = 0;
+	pci_write_register_16(addr,base,0x08, 0x04);
+	pci_config_write_8(addr1,0x51,0x0d); //0x3d
+	pci_config_write_8(addr2,0,0x04,pci_config_read_8(addr2,0,0x04) | 0x04);
+	kprintf("NIC disabled\n");
+
 	char_pos_x=0;
 	char_pos_y=0;
 	info_set=get_vesa_mode_info(mode);
@@ -108,6 +136,8 @@ void set_vesa_mode(uint16_t mode) {
 	regs.ax = 0x4f02;
 	regs.bx = mode;
 	int32(0x10,&regs);
+	
+	start_nic();
 	
 	/*draw_rectangle_filled(0,0,info_set->XResolution,info_set->YResolution,0x888888);
 	draw_rectangle_filled(50,50,350,350,0xBBBBBB);
