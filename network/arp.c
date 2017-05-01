@@ -4,6 +4,8 @@ void arp(struct arp arp_val, struct ether_header ether) {
 	kprintf("ARP\n");
 	struct arp arp_temp;
 	
+	ether.receipt_mac.mac1 = my_mac.mac1;
+	
 	arp_temp.hardware_addr_type = HTONS(arp_val.hardware_addr_type);
 	arp_temp.network_addr_type = HTONS(arp_val.network_addr_type);
 	arp_temp.hardware_addr_length = arp_val.hardware_addr_length;
