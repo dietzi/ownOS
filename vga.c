@@ -12,12 +12,19 @@ extern void int32(unsigned char intnum, regs16_t *regs);
 /** @brief diese Funktion holt die VESA-Informationen */
 
 uint16_t* get_vesa_modes(void) {
+	pci_bdf_t addr1 = {
+		.bus=0,
+		.dev=17,
+		.func=0
+	};	
+	pci_config_write_8(addr1,0x51,0x0d); //0x3d
+
 	struct VESA_INFO *vesa=(VESA_INFO *)pmm_alloc();
 	struct MODE_INFO *info=(MODE_INFO *)pmm_alloc();
 	memcpy(vesa->VESASignature,"VBE2",4);
 	regs16_t regs;
 	regs.ax=0x4f00;
-	regs.di=&vesa;
+	regs.di=vesa;
 	regs.es=0;
 	int32(0x10,&regs);
 	if(regs.ax!=0x004f) {
@@ -40,7 +47,7 @@ uint16_t* get_vesa_modes(void) {
 		regs.ax=0x4f01;
 		regs.cx=*modes;
 		regs.es=0;
-		regs.di=&info;
+		regs.di=info;
 		int32(0x10,&regs);
 		if(regs.ax !=0x004f) {
 			kprintf(" Error\n");
@@ -52,6 +59,8 @@ uint16_t* get_vesa_modes(void) {
 		kprintf(" --> %dx%dx%d Addr: %x",info->XResolution,info->YResolution,info->BitsPerPixel,(char*)info->PhysBasePtr);		
 	}
 	kprintf("\n");
+
+	pci_config_write_8(addr1,0x51,0x3d); //0x3d
 }
 
 /** @brief diese Funktion holt die VESA-Mode-Informationen */
