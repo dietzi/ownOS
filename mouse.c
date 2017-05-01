@@ -110,7 +110,7 @@ void mouse_handler(void)
         mouse_cycle++;
         break;
     case 2:
-		video[2 * (rel_y * 80 + rel_x) + 1] = 0x07;
+		video[2 * ((rel_y + 1) * 80 + rel_x) + 1] = 0x07;
         mouse_byte[2]=inb(0x60);
         mouse_x=mouse_byte[1];
         ((int*)cb_buffer)[0] = mouse_x;
@@ -159,9 +159,9 @@ void mouse_handler(void)
         mouse_cycle=0;
 		if(rel_x < 0) rel_x = 0;
 		if(rel_y < 0) rel_y = 0;
-		if(rel_x > screen.x) rel_x = screen.x;
-		if(rel_y > screen.y) rel_y = screen.y;
-		video[2 * (rel_y * 80 + rel_x) + 1] = 0x70;
+		if(rel_x > screen.x) rel_x = screen.x - 1;
+		if(rel_y > screen.y) rel_y = screen.y - 1;
+		video[2 * ((rel_y + 1) * 80 + rel_x) + 1] = 0x70;
 		char *button_name;
 		switch(buttons) {
 			case 0:
