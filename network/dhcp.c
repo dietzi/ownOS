@@ -218,7 +218,7 @@ void dhcp_discover(void) {
 		.relay_ip = ip11,
 		.client_mac = my_mac,
 		.magic_cookie = HTONL(0x63825363),
-		.options = pmm_alloc()
+		//.options = pmm_alloc()
 	};
 	
 	for(int i=0;i<255;i++) {
@@ -246,7 +246,7 @@ void dhcp_discover(void) {
 		pmm_free(dhcp.options[i].data);
 	}
 
-	pmm_free(dhcp.options);
+	//pmm_free(dhcp.options);
 	dhcp_status = 1;	
 }
 
@@ -316,7 +316,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 		pmm_free(dhcp.options[i].data);
 	}
 
-	pmm_free(dhcp.options);
+	//pmm_free(dhcp.options);
 
 	dhcp_status = 3;
 }
