@@ -29,7 +29,7 @@ bool vesa_parameter(char *parameter) {
 	res=strtol(parameter,&ptr,16);
 	if(check_command("text",ptr)) change_to_text();
 	else set_vesa_mode(res);
-	start_nic();
+	//start_nic();
 	return true;
 }
 
