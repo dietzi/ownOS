@@ -243,7 +243,7 @@ void dhcp_discover(void) {
 	//sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
-		//pmm_free(dhcp.options[i].data);
+		pmm_free(dhcp.options[i].data);
 	}
 
 	//pmm_free(dhcp.options);
@@ -313,7 +313,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	//sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
-		//pmm_free(dhcp.options[i].data);
+		pmm_free(dhcp.options[i].data);
 	}
 
 	//pmm_free(dhcp.options);
@@ -334,6 +334,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 		own_ip.ip2 = dhcp1.own_ip.ip2;
 		own_ip.ip3 = dhcp1.own_ip.ip3;
 		own_ip.ip4 = dhcp1.own_ip.ip4;
+		asm("int $0x30" : : "a" (1), "b" (server_ip), "c" (own_ip));
 		dhcp_request(server_ip, own_ip);
 	}
 }
