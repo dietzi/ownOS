@@ -161,7 +161,7 @@ void mouse_handler(void)
 		if(rel_y < 0) rel_y = 0;
 		if(rel_x > screen.x) rel_x = screen.x;
 		if(rel_y > screen.y) rel_y = screen.y;
-		video[(rel_y * 160) + (rel_x * 2) + 1] = 0x70;
+		video[2 * (rel_y * 80 + rel_x) + 1] = 0x70;
 		char *button_name;
 		switch(buttons) {
 			case 0:
