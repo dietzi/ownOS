@@ -26,7 +26,7 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("Initialization keyboard\n");
 	keyboard_init();
 	kprintf("Initialization mouse\n");
-	//mouse_init();
+	mouse_init();
 	kprintf("Initialization Timer\n");
 	pit_init();
 	kprintf("Initialization physical memory\n");
@@ -39,15 +39,15 @@ void init(struct multiboot_info *mb_info) {
 	init_intr();
 	kprintf("Initialization multitasking\n");
 	init_multitasking(mb_info);
-	//beep();
 	kprintf("Initialization Network\n");
-	//start_nic();
+	start_nic();
 	kprintf("Initialization complete\n");
 	kprintf("#######################\n");
 	kprintf("# ");
 	time();
 	kprintf(" #\n");
 	kprintf("#######################\n");
+	//beep();
 	
 	init_complete=true;
 	show_prefix=true;
