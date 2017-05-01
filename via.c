@@ -6,6 +6,7 @@ void *tx_addr;
 
 int init_i = 0;
 
+extern int dhcp_timer;
 extern int dhcp_status;
 
 /*struct ip_addr my_ip = {
@@ -295,6 +296,9 @@ void via_handle_intr(void) {
 	for(int i=0;i<10;i++) {
 		status = rx1[i]->status;
 		if((status & 0x80000000) == 0) {
+			if(dhcp_timer <= 0 && dhcp_status == 5) {
+				dhcp_status = 0;
+			}
 			dhcp_get_ip();
 			recv_size = (status & 0xFFFF0000) >> 16;
 			int b;
