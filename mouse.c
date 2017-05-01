@@ -17,6 +17,8 @@ uint8_t cb_buffer[12];
 char **cbfilenames = 0;
 int cb_count = 0;
 
+static char* video = (char*) 0xb8000;
+
 void mouse_wait(uint8_t a_type)
 {
 	uint32_t _time_out=100000;
@@ -158,6 +160,7 @@ void mouse_handler(void)
 		if(rel_y < 0) rel_y = 0;
 		if(rel_x > screen.x) rel_x = screen.x;
 		if(rel_y > screen.y) rel_y = screen.y;
+		video[(rel_y * 80) + (rel_x * 2) + 1] = 0x07;
 		char *button_name;
 		switch(buttons) {
 			case 0:
