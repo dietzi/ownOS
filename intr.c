@@ -377,7 +377,7 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 
         if (cpu->intr == 0x20) {
 			dhcp_timer--;
-			if(dhcp_timer <= 0) {
+			if(dhcp_timer <= 0 && dhcp_status > 0) {
 				dhcp_status = 0;
 				dhcp_get_ip();
 			}
