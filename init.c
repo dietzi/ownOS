@@ -16,6 +16,8 @@
 
 void init(struct multiboot_info *mb_info) {
 	init_complete=false;
+	screen.x = 80;
+	screen.y = 25;
 	show_prefix=false;
 	video_active=false;
 	timer_ticks=0;
