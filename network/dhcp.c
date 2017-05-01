@@ -355,6 +355,7 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 								(dhcp.options[51].data[3] & 0x000000FF);
 			dhcp_timer = timer * 1000;
 			kprintf("Timer: %d\n",dhcp_timer);
+			sleep(2000);
 			dhcp_status = 5;
 		} else {
 			dhcp_status = 0;
