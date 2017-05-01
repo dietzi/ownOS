@@ -12,6 +12,7 @@ extern void int32(unsigned char intnum, regs16_t *regs);
 /** @brief diese Funktion holt die VESA-Informationen */
 
 uint16_t* get_vesa_modes(void) {
+	kprintf("Disabling NIC\n");
 	pci_bdf_t addr1 = {
 		.bus=0,
 		.dev=17,
@@ -25,6 +26,7 @@ uint16_t* get_vesa_modes(void) {
 	int base = 0;
 	pci_write_register_16(addr,base,0x08, 0x04);
 	pci_config_write_8(addr1,0x51,0x0d); //0x3d
+	kprintf("NIC disabled\n");
 
 	struct VESA_INFO *vesa=(VESA_INFO *)pmm_alloc();
 	struct MODE_INFO *info=(MODE_INFO *)pmm_alloc();
