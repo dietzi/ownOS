@@ -363,6 +363,9 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 }
 
 void dhcp_get_ip(void) {
+	if(dhcp_timer <= 0 && dhcp_status == 5) {
+		dhcp_status = 0;
+	}
 	switch(dhcp_status) {
 		case 0:
 			dhcp_discover();

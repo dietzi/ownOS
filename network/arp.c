@@ -1,7 +1,7 @@
 #include "includes.h"
 
 void arp(struct arp arp_val, struct ether_header ether) {
-	kprintf("ARP\n");
+	//kprintf("ARP\n");
 	struct arp arp_temp;
 	
 	ether.receipt_mac.mac1 = my_mac.mac1;
