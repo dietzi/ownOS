@@ -241,7 +241,6 @@ last_message = "via_send...2";
 void via_handle_intr(void) {
 	
 	uint32_t nic_status = pci_read_register_16(addr,base,0x0c);
-	dhcp_get_ip();
 	if(init_i == 0) {
 	
 		if(pci_read_register(addr,base,0x6d) & 0x02) {
@@ -286,6 +285,7 @@ void via_handle_intr(void) {
 	for(int i=0;i<10;i++) {
 		status = rx1[i]->status;
 		if((status & 0x80000000) == 0) {
+			dhcp_get_ip();
 			recv_size = (status & 0xFFFF0000) >> 16;
 			int b;
 			for(b=0;b < recv_size;b++) {
@@ -343,7 +343,7 @@ void via_handle_intr(void) {
 								arp1.receipt_ip.ip2 == my_ip.ip2 &&
 								arp1.receipt_ip.ip3 == my_ip.ip3 &&
 								arp1.receipt_ip.ip4 == my_ip.ip4) {
-							//arp(arp1, ether);
+							arp(arp1, ether);
 						}
 						break;
 					case 0x0800: //IP
