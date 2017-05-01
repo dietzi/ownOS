@@ -6,6 +6,8 @@ void *tx_addr;
 
 int init_i = 0;
 
+extern int dhcp_status;
+
 /*struct ip_addr my_ip = {
 	my_ip.ip1 = 10,
 	my_ip.ip2 = 0,
@@ -254,6 +256,7 @@ void via_handle_intr(void) {
 			kprintf("Link is down\n");
 		} else {
 			kprintf("Link is up\n");
+			dhcp_status = 0;
 		}
 
 		nic_status |= pci_read_register_16(addr,base,0x84) << 16;
