@@ -259,6 +259,7 @@ void via_handle_intr(void) {
 		} else {
 			kprintf("Link is up\n");
 			dhcp_status = 0;
+			dhcp_timer = 0;
 		}
 
 		nic_status |= pci_read_register_16(addr,base,0x84) << 16;
