@@ -55,14 +55,14 @@ void mouse_write(uint8_t a_write)
     outb(0x60, a_write);
 }
 
-uint8_t mouse_read()
+uint8_t mouse_read(void)
 {
     //Antwort der Maus abfragen
     mouse_wait(0);
     return inb(0x60);
 }
 
-void mouse_install()
+void mouse_install(void)
 {
     uint8_t _status;
 
