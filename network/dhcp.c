@@ -1,7 +1,5 @@
 #include "includes.h"
 
-int dhcp_status = 0;
-
 uint32_t connection_id = 0x33224411;
 
 //struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet);
@@ -11,8 +9,9 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip);
 void dhcp_ack(struct dhcp_packet dhcp);
 void dhcp_get_ip(void);
 void handle_dhcp(struct ether_header ether, struct udp_header udp1);
-int dhcp_timer = 0;
 
+int dhcp_status = 0;
+int dhcp_timer = 0;
 
 struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	//kprintf("Creating DHCP-Packet\n");

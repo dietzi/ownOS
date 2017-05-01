@@ -62,6 +62,8 @@ int timer=0;
 bool timerb=false;
 
 extern struct task* current_task;
+extern int dhcp_timer;
+extern int dhcp_status;
 
 static void gdt_set_entry(int i, unsigned int base, unsigned int limit, int flags) {
     gdt[i] = limit & 0xffffLL;
@@ -374,6 +376,8 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
     } else if (cpu->intr >= 0x20 && cpu->intr <= 0x2f) {
 
         if (cpu->intr == 0x20) {
+			dhcp_timer--;
+			if(dhcp_timer <= 0) dhcp_status = 0;
 			timer_ticks++;
 			if(timer_ticks>=60000) timer_ticks=0;
             new_cpu = schedule(cpu);
