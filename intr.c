@@ -216,6 +216,11 @@ struct cpu_state* syscall(struct cpu_state* cpu) {
         case 0: /* putc */
             kprintf("%c", cpu->ebx);
             break;
+		case 1: // dhcp_request
+			kprintf("");
+			//struct ip_addr server_ip = cpu->ebx;
+			//struct ip_addr own_ip = cpu->ecx;
+			break;
     }
 
     return cpu;
