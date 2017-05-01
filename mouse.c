@@ -154,7 +154,8 @@ void mouse_handler(void)
         }
         cb_buffer[8] = buttons;
         mouse_cycle=0;
-		kprintf("X: %d     Y: %d\n",mouse_x,mouse_y);
+		kprintf("X: %d     Y: %d     B: %d\n",rel_x,rel_y,buttons);
+		kprintf("P: %d     R: %d\n",buttons_pressed,buttons_released);
         break;
     }
 }
