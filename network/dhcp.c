@@ -350,9 +350,9 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 				dhcp.own_ip.ip4 == own_ip.ip4) {
 			my_ip = own_ip;
 			uint32_t timer = dhcp.options[51].data[0] >> 24 |
-								dhcp.options[51].data[0] >> 16 |
-								dhcp.options[51].data[0] >> 8 |
-								(dhcp.options[51].data[0] & 0x000000FF);
+								dhcp.options[51].data[1] >> 16 |
+								dhcp.options[51].data[2] >> 8 |
+								(dhcp.options[51].data[3] & 0x000000FF);
 			dhcp_timer = timer * 1000;
 			kprintf("Timer: %d\n",dhcp_timer);
 			dhcp_status = 5;
