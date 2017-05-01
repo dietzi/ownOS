@@ -240,6 +240,13 @@ void dhcp_discover(void) {
 	dhcp.options[55].data[2] = 15;
 	dhcp.options[55].data[3] = 6;
 
+	dhcp.options[12].index = 12;
+	dhcp.options[12].length = 4;
+	dhcp.options[12].data[0] = (int)'F';
+	dhcp.options[12].data[1] = (int)'A';
+	dhcp.options[12].data[2] = (int)'O';
+	dhcp.options[12].data[3] = (int)'S';
+	
 	//struct dhcp_packet_created dhcp_send = 
 	//sleep(2000);
 	create_dhcp_packet(dhcp);
