@@ -313,7 +313,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 	//sendPacket(dhcp_send.ether, dhcp_send.data, dhcp_send.length);
 
 	for(int i=0;i<255;i++) {
-		pmm_free(dhcp.options[i].data);
+		//pmm_free(dhcp.options[i].data);
 	}
 
 	//pmm_free(dhcp.options);
