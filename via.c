@@ -311,7 +311,7 @@ void via_handle_intr(void) {
 			if(ether.type > 0x0600) { //Ethernet II
 				switch(ether.type) {
 					case 0x0806: //ARP
-						kprintf("");
+						kprintf("ARP1\n");
 						struct arp arp1 = {
 							.hardware_addr_type = HTONS(((uint16_t*)rx1[i]->addr)[7]),
 							.network_addr_type = HTONS(((uint16_t*)rx1[i]->addr)[8]),
