@@ -23,7 +23,7 @@ uint16_t* get_vesa_modes(void) {
 		.func=0
 	};
 	int base = 0;
-	pci_write_register_16(addr,base,0x08, 0x7b);
+	pci_write_register_16(addr,base,0x08, 0x04);
 	pci_config_write_8(addr1,0x51,0x0d); //0x3d
 
 	struct VESA_INFO *vesa=(VESA_INFO *)pmm_alloc();
