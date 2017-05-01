@@ -218,8 +218,20 @@ struct cpu_state* syscall(struct cpu_state* cpu) {
             break;
 		case 1: // dhcp_request
 			kprintf("");
-			//struct ip_addr server_ip = cpu->ebx;
-			//struct ip_addr own_ip = cpu->ecx;
+			struct ip_addr server_ip;
+			struct ip_addr own_ip;
+			union cpu1 {
+				uint32_t value;
+				struct ip_addr ip;
+			};
+			union cpu1 c1;
+			c1.value = cpu->ebx;
+			server_ip = c1.ip;
+			
+			union cpu1 c2;
+			c2.value = cpu->ecx;
+			own_ip = c2.ip;
+			
 			break;
     }
 
