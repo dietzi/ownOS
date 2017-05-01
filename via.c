@@ -106,8 +106,7 @@ struct tx_desc* tx1[10];
 struct rx_desc* rx1[10];
 
 void start_nic(void) {
-	pci_config_write_8(addr,base,0x04,0x07);
-	//kprintf("Config: %b\n",pci_config_read_8(addr,base,0x04));
+//	pci_config_write_8(addr,base,0x04,0x07);
 	for(int i=0;i<10;i++) {
 		struct rx_desc* rx=(void*)pmm_alloc();
 		rx->status=0x80000000;
@@ -142,18 +141,15 @@ void start_nic(void) {
 		.func=0
 	};	
 	pci_config_write_8(addr1,0x51,0x3d); //0x3d
-	//pci_config_write_8(addr1,0x55,0xF0); //INTA == IRQ15
-	//pci_config_write_8(addr1,0x55,0xBE); //INTB == IRQ14 / INTC == IRQ11
-	//pci_config_write_8(addr1,0x55,0xA0); //INTD == IRQ10
+
 	via_power_init();
 	via_chip_reset();
 	via_reload_eeprom();
 	
 	pci_write_register_16(addr,base,0x6E,0x0006);
-	//pci_write_register_8(addr,base,0x06,0x50);
 	pci_write_register(addr,base,0x07,0xE0); //store & forward = 0x07 //0x20
 
-	pci_write_register_16(addr,base,0x0E,/*RHINE_EVENT & */0xffff);
+	pci_write_register_16(addr,base,0x0E, 0xffff);
 	pci_write_register(addr,base,0x09,0x04);
 	
 	uint32_t nic_status = pci_read_register_16(addr,0,0x0c);
@@ -173,67 +169,11 @@ void start_nic(void) {
 	pci_write_register_32(addr,base,0x1C,tx1[0]);
 	
 	tx_addr = pmm_alloc();
-	pci_write_register_16(addr,base,0x08, 0x7b); //0x02 | 0x10 | 0x08 | (0x08 << 8));
+	pci_write_register_16(addr,base,0x08, 0x7b);
 }
 
 void via_send(uint8_t *data, int data_length) {
-	/*kprintf("VIA send begin\n");
-	if((ether.receipt_mac.mac1 == my_mac.mac1 &&
-			ether.receipt_mac.mac2 == my_mac.mac2 &&
-			ether.receipt_mac.mac3 == my_mac.mac3 &&
-			ether.receipt_mac.mac4 == my_mac.mac4 &&
-			ether.receipt_mac.mac5 == my_mac.mac5 &&
-			ether.receipt_mac.mac6 == my_mac.mac6) ||
-			(ether.receipt_mac.mac1 == 0xff &&
-			ether.receipt_mac.mac2 == 0xff &&
-			ether.receipt_mac.mac3 == 0xff &&
-			ether.receipt_mac.mac4 == 0xff &&
-			ether.receipt_mac.mac5 == 0xff &&
-			ether.receipt_mac.mac6 == 0xff)) {
-	
-		struct ether_header ether_temp;
-		
-		ether_temp.receipt_mac.mac1 = ether.sender_mac.mac1;
-		ether_temp.receipt_mac.mac2 = ether.sender_mac.mac2;
-		ether_temp.receipt_mac.mac3 = ether.sender_mac.mac3;
-		ether_temp.receipt_mac.mac4 = ether.sender_mac.mac4;
-		ether_temp.receipt_mac.mac5 = ether.sender_mac.mac5;
-		ether_temp.receipt_mac.mac6 = ether.sender_mac.mac6;
-		
-		ether_temp.sender_mac.mac1 = my_mac.mac1;
-		ether_temp.sender_mac.mac2 = my_mac.mac2;
-		ether_temp.sender_mac.mac3 = my_mac.mac3;
-		ether_temp.sender_mac.mac4 = my_mac.mac4;
-		ether_temp.sender_mac.mac5 = my_mac.mac5;
-		ether_temp.sender_mac.mac6 = my_mac.mac6;
-		
-		ether_temp.type = HTONS(ether.type);
-		
-		union ether_test ether_union;
-		ether_union.ether_val1 = ether_temp;
-		
-		int i=0;
-		int j=0;
-		if(next_tx >= 10) next_tx=0;
-
-		while(i < 14) {
-			((uint8_t*)tx1[next_tx]->addr)[i] = ether_union.data[i];
-			//ether++;
-			i++;
-		}
-		while(data_length - j > 0) {
-			((uint8_t*)tx1[next_tx]->addr)[i] = data[j];
-			//data++;
-			i++;
-			j++;
-		}
-		while(j < 46) {
-			((uint8_t*)tx1[next_tx]->addr)[i] = 0x0;
-			i++;
-			j++;
-		}
-		kprintf("VIA send: %d\n",i);*/
-last_message = "via_send...1";
+	last_message = "via_send...1";
 	int i=0;
 	if(next_tx >= 10) next_tx = 0;
 	for(i=0;i<data_length;i++) {
@@ -243,7 +183,7 @@ last_message = "via_send...1";
 	tx1[next_tx]->status |= 0x80000000;
 	next_tx++;
 	//pci_write_register_16(addr,base,0x08,pci_read_register_16(addr,base,0x08) | 0x20); //poll TX
-last_message = "via_send...2";
+	last_message = "via_send...2";
 	return;
 }
 
