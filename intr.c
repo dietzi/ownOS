@@ -385,7 +385,7 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
         } else if (cpu->intr == 0x21) {
 			kbd_irq_handler(cpu);
         } else if (cpu->intr == 0x2c) {
-			//mouse_handler();
+			mouse_handler();
         } else if (cpu->intr == 0x2f) {
 			via_handle_intr();
 		}

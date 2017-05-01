@@ -141,7 +141,7 @@ void start_nic(void) {
 		.dev=17,
 		.func=0
 	};	
-	pci_config_write_8(addr1,0x51,0x39); //0x3d
+	pci_config_write_8(addr1,0x51,0x3d); //0x3d
 	//pci_config_write_8(addr1,0x55,0xF0); //INTA == IRQ15
 	//pci_config_write_8(addr1,0x55,0xBE); //INTB == IRQ14 / INTC == IRQ11
 	//pci_config_write_8(addr1,0x55,0xA0); //INTD == IRQ10
