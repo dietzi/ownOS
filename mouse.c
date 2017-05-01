@@ -196,7 +196,7 @@ void mouse_handler(void)
 				button_name="Unbekannt";
 				break;
 		}
-		kprintf("X: %d     Y: %d     B: %s\n",rel_x,rel_y,button_name);
+		//kprintf("X: %d     Y: %d     B: %s\n",rel_x,rel_y,button_name);
         break;
     }
 }
