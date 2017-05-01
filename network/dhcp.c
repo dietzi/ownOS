@@ -11,6 +11,8 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip);
 void dhcp_ack(struct dhcp_packet dhcp);
 void dhcp_get_ip(void);
 void handle_dhcp(struct ether_header ether, struct udp_header udp1);
+int dhcp_timer = 0;
+
 
 struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	//kprintf("Creating DHCP-Packet\n");
@@ -341,8 +343,22 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 
 void dhcp_ack(struct dhcp_packet dhcp) {
 	kprintf("DHCP-ACK...\n");
-	//my_ip.ip1 = 0x0;
-	dhcp_status = 0;
+	if(dhcp.connection_id == HTONL(connection_id)) {
+		if(dhcp.own_ip.ip1 == own_ip.ip1 &&
+				dhcp.own_ip.ip2 == own_ip.ip2 &&
+				dhcp.own_ip.ip3 == own_ip.ip3 &&
+				dhcp.own_ip.ip4 == own_ip.ip4) {
+			my_ip = own_ip;
+			uint32_t timer = dhcp.options[51].data[0] << 24 |
+								dhcp.options[51].data[0] << 16 |
+								dhcp.options[51].data[0] << 8 |
+								dhcp.options[51].data[0] << 0;
+			dhcp_timer = timer;
+			dhcp_status = 5;
+		} else {
+			dhcp_status = 0;
+		}
+	}
 }
 
 void dhcp_get_ip(void) {

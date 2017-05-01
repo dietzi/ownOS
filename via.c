@@ -241,7 +241,7 @@ last_message = "via_send...2";
 void via_handle_intr(void) {
 	
 	uint32_t nic_status = pci_read_register_16(addr,base,0x0c);
-			dhcp_get_ip();
+	dhcp_get_ip();
 	if(init_i == 0) {
 	
 		if(pci_read_register(addr,base,0x6d) & 0x02) {
