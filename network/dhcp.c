@@ -334,7 +334,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 		own_ip.ip2 = dhcp1.own_ip.ip2;
 		own_ip.ip3 = dhcp1.own_ip.ip3;
 		own_ip.ip4 = dhcp1.own_ip.ip4;
-		asm("int $0x30" : : "a" (1), "b" (server_ip), "c" (own_ip));
+		//asm("int $0x30" : : "a" (1), "b" (server_ip), "c" (own_ip));
 		//dhcp_request(server_ip, own_ip);
 	}
 }
@@ -346,7 +346,7 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 }
 
 void dhcp_get_ip(void) {
-/*	switch(dhcp_status) {
+	switch(dhcp_status) {
 		case 0:
 			kprintf("DHCP-DISCOVER...\n");
 			dhcp_discover();
@@ -355,10 +355,10 @@ void dhcp_get_ip(void) {
 		case 2:
 			dhcp_request(server_ip, own_ip);
 			break;
-	}*/
+	}
 //	sleep(1000);
-	kprintf("DHCP-DISCOVER...\n");
-	dhcp_discover();
+//	kprintf("DHCP-DISCOVER...\n");
+//	dhcp_discover();
 }
 
 void handle_dhcp(struct ether_header ether, struct udp_header udp1) {
