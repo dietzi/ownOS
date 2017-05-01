@@ -145,9 +145,9 @@ void start_nic(void) {
 	//pci_config_write_8(addr1,0x55,0xF0); //INTA == IRQ15
 	//pci_config_write_8(addr1,0x55,0xBE); //INTB == IRQ14 / INTC == IRQ11
 	//pci_config_write_8(addr1,0x55,0xA0); //INTD == IRQ10
-	via_power_init();
-	via_chip_reset();
-	via_reload_eeprom();
+	//via_power_init();
+	//via_chip_reset();
+	//via_reload_eeprom();
 	
 	pci_write_register_16(addr,base,0x6E,0x0006);
 	//pci_write_register_8(addr,base,0x06,0x50);
