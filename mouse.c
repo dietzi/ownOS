@@ -161,6 +161,27 @@ void mouse_handler(void)
 			case 0:
 				button_name="Keiner";
 				break;
+			case 1:
+				button_name="Links";
+				break;
+			case 2:
+				button_name="Rechts";
+				break;
+			case 3:
+				button_name="Links + Rechts";
+				break;
+			case 4:
+				button_name="Mitte";
+				break;
+			case 5:
+				button_name="Links + Mitte";
+				break;
+			case 6:
+				button_name="Rechts + Mitte";
+				break;
+			default:
+				button_name="Unbekannt";
+				break;
 		}
 		kprintf("X: %d     Y: %d     B: %s\n",rel_x,rel_y,button_name);
         break;
