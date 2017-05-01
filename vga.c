@@ -17,7 +17,7 @@ uint16_t* get_vesa_modes(void) {
 	memcpy(vesa->VESASignature,"VBE2",4);
 	regs16_t regs;
 	regs.ax=0x4f00;
-	regs.di=vesa;
+	regs.di=&vesa;
 	regs.es=0;
 	int32(0x10,&regs);
 	if(regs.ax!=0x004f) {

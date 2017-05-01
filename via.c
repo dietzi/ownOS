@@ -174,8 +174,6 @@ void start_nic(void) {
 	
 	tx_addr = pmm_alloc();
 	pci_write_register_16(addr,base,0x08, 0x7b); //0x02 | 0x10 | 0x08 | (0x08 << 8));
-	
-	kprintf("Network init complete\n");
 }
 
 void via_send(uint8_t *data, int data_length) {

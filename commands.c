@@ -50,16 +50,6 @@ bool kill(char *parameter) {
 	return true;
 }
 
-void test_via(void) {
-	pci_bdf_t addr = {
-		.bus=0,
-		.dev=18,
-		.func=0
-	};
-	kprintf("0x%x%x\n",pci_read_register(addr,0,0x9C),pci_read_register(addr,0,0x9D));
-	kprintf("0x%x%x\n",pci_read_register(addr,0,0x9E),pci_read_register(addr,0,0x9F));
-}
-
 void send_command(char input[1000]) {
 	show_prefix=false;
 	//kprintf("\n");
@@ -74,7 +64,6 @@ void send_command(char input[1000]) {
 	else if(check_command("task_a",input)) init_task(task_a,NORMAL);
 	else if(check_command("kill ",substr(input,0,5))) kill(substr(input,5,strlen(input)-2));
 	else if(check_command("time",input)) { time(); kprintf("\n"); }
-	else if(check_command("via",input)) test_via();
 	/*else {
 		//while(*input!=NULL && *input!='\0') {
 			draw_char(input,-1,-1,0xffffff,0x000000);

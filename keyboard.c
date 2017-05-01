@@ -85,7 +85,6 @@ void keyboard_init(void)
 	/*kprintf("Registering keyboard IRQ");
 	register_irq_handler(1,kbd_irq_handler);
 	kprintf("IRQ registered");*/
-	kprintf("Keyboard initialized\n");
 	
     init_done = true;
 }
