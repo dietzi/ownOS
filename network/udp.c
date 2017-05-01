@@ -15,12 +15,12 @@ void udp_handle(struct ip_header ip, struct ether_header ether) {
 	if(udp.source_port == 67 && udp.destination_port == 68) {
 		handle_dhcp(ether, udp);
 	} else {
-		kprintf("Typ: UDP\n");
+		/*kprintf("Typ: UDP\n");
 		kprintf("Quellport: %d\n",udp.source_port);
 		kprintf("Zielport: %d\n",udp.destination_port);
 		kprintf("Packetlaenge: %d\n",udp.packetsize);
 		kprintf("Pruefsumme: 0x%x\n",udp.checksum);
-		kprintf("Datenlaenge: %d\n",ip.data_length - 8);
+		kprintf("Datenlaenge: %d\n",ip.data_length - 8);*/
 	}
 	pmm_free(udp.data);
 }
