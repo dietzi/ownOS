@@ -41,7 +41,7 @@ void init(struct multiboot_info *mb_info) {
 	init_multitasking(mb_info);
 	//beep();
 	kprintf("Initialization Network\n");
-	start_nic();
+	//start_nic();
 	kprintf("Initialization complete\n");
 	kprintf("#######################\n");
 	kprintf("# ");
