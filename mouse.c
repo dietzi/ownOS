@@ -154,8 +154,15 @@ void mouse_handler(void)
         }
         cb_buffer[8] = buttons;
         mouse_cycle=0;
-		kprintf("X: %d     Y: %d     B: %d\n",rel_x,rel_y,buttons);
-		kprintf("P: %d     R: %d\n",buttons_pressed,buttons_released);
+		if(rel_x < 0) rel_x = 0;
+		if(rel_y < 0) rel_y = 0;
+		char *button_name;
+		switch(buttons) {
+			case 0:
+				button_name="Keiner";
+				break;
+		}
+		kprintf("X: %d     Y: %d     B: %s\n",rel_x,rel_y,button_name);
         break;
     }
 }
