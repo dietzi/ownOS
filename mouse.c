@@ -110,7 +110,7 @@ void mouse_handler(void)
         mouse_cycle++;
         break;
     case 2:
-		video[(rel_y * 160) + (rel_x * 2) + 1] = 0x07;
+		video[2 * (rel_y * 80 + rel_x) + 1] = 0x07;
         mouse_byte[2]=inb(0x60);
         mouse_x=mouse_byte[1];
         ((int*)cb_buffer)[0] = mouse_x;
