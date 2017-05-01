@@ -1,6 +1,10 @@
 #ifndef VIA_H
 #define VIA_H
 
+#include "network/include/declerations.h"
+
+struct ip_addr my_ip;
+
 enum intr_status_bits {
         IntrRxDone      = 0x0001,
         IntrTxDone      = 0x0002,

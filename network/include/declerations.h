@@ -34,13 +34,6 @@ struct mac {
 	uint8_t mac6;
 } __attribute__((packed));
 
-static struct ip_addr my_ip = {
-	.ip1 = 10,
-	.ip2 = 0,
-	.ip3 = 0,
-	.ip4 = 114
-};
-
 static struct ip_addr broadcast_ip = {
 	.ip1 = 255,
 	.ip2 = 255,

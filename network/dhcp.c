@@ -13,8 +13,6 @@ void handle_dhcp(struct ether_header ether, struct udp_header udp1);
 int dhcp_status = 0;
 int dhcp_timer = 0;
 
-extern struct ip_addr my_ip;
-
 struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	//kprintf("Creating DHCP-Packet\n");
 	struct ether_header ether;
