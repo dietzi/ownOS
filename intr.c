@@ -293,7 +293,7 @@ void error(struct cpu_state* cpu) {
 				((errcode >> 8) & 0x01) + ((errcode >> 9) & 0x01) + ((errcode >> 10) & 0x01) + ((errcode >> 11) & 0x01) &
 				((errcode >> 12) & 0x01) + ((errcode >> 13) & 0x01) + ((errcode >> 14) & 0x01) + ((errcode >> 15) & 0x01) &
 				((errcode >> 16) & 0x01);
-			kprintf("Fehlercode: %d (%x)\n",errcode, errcode);
+			kprintf("Fehlercode: %b (%x)\n",errcode, errcode);
 			kprintf("  External: %d (%x)\n",external,external);
 			kprintf("  Tbl     : %d (%x)\n",tbl,tbl);
 			kprintf("  Index   : %d (%x)\n",index,index);
