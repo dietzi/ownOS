@@ -413,7 +413,8 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
     } else {
 		if(current_task->type == V86) {
 			if(counter == 0) {
-				entering_v86(cpu->ss,cpu->esp,cpu->cs,cpu->eip);
+				//entering_v86(cpu->ss,cpu->esp,cpu->cs,cpu->eip);
+				cpu->eflags |= 0x20000;
 			}
 		} else {
 			//if(current_task->state==EXIT) goto redo;
