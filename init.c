@@ -55,7 +55,9 @@ void init(struct multiboot_info *mb_info) {
 		.dev=1,
 		.func=0
 	};
-	kprintf("%b\n",pci_config_read_8(addr,0,0x04));
+
+	init_task(get_vesa_modes,V86);
+
 	init_complete=true;
 	show_prefix=true;
 	kprintf("\n");
