@@ -60,7 +60,7 @@ void init(struct multiboot_info *mb_info) {
 		.func=0
 	};
 
-	init_task(testv86,V86);
+	//init_task(testv86,V86);
 
 	init_complete=true;
 	show_prefix=true;
