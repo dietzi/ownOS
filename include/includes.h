@@ -19,5 +19,3 @@
 #include "include/pci.h"
 #include "include/via.h"
 #include "network/include/declerations.h"
-#include "network/include/dhcp.h"
-#include "network/include/network.h"
