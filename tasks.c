@@ -257,7 +257,7 @@ struct task* init_task(void* entry,enum task_type type) {
 		new_state.eflags = 0x200;
 	//}
 	if(type == V86) {
-		counter = 0;
+		new_state.eflags = 0x20000;
 	}
 
     /*
@@ -414,7 +414,7 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 		if(current_task->type == V86) {
 			if(counter == 0) {
 				//entering_v86(cpu->ss,cpu->esp,cpu->cs,cpu->eip);
-				cpu->eflags |= 0x20000;
+				//cpu->eflags |= 0x20000;
 				counter++;
 			}
 		} else {
