@@ -297,7 +297,7 @@ void error(struct cpu_state* cpu) {
 			kprintf("  External: %d (%x)\n",external,external);
 			kprintf("  Tbl     : %d (%x)\n",tbl,tbl);
 			kprintf("  Index   : %d (%x)\n",index,index);
-			kprintf("  IP      : %d --- %x\n",(char)cpu->eip,(char)cpu->eip);
+			kprintf("  IP      : %s\n",(char*)cpu->eip);
 			break;
 		case 0x0e:
 			errcode=0;
