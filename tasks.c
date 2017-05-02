@@ -254,6 +254,9 @@ struct task* init_task(void* entry,enum task_type type) {
 		new_state.ss  = 0x20 | 0x03;
 		new_state.eflags = 0x200;
 	}
+	if(type == V86) {
+		new_state.eflags = 0x20000;
+	}
 
     /*
      * Den angelegten CPU-Zustand auf den Stack des Tasks kopieren, damit es am
