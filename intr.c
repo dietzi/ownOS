@@ -286,7 +286,7 @@ void error(struct cpu_state* cpu) {
 			kprintf("Fehlercode: %d (%x)\n",cpu->error, cpu->error);
 			break;
 		case 0x0d:
-			errcode=(uint8_t)cpu->error;
+			errcode=(uint32_t)cpu->error;
 			uint8_t external=errcode >> 1;
 			uint8_t tbl=((errcode >> 2) & 0x01) + ((errcode >> 3) & 0x01);
 			uint16_t index=((errcode >> 4) & 0x01) + ((errcode >> 5) & 0x01) + ((errcode >> 6) & 0x01) + ((errcode >> 7) & 0x01) &
