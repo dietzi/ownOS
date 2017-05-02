@@ -220,6 +220,8 @@ einen Einsprungspunkt.
 @param entry ist der Einstiegspunkt (Funktionsname)
 */
 
+int counter=0;
+
 struct task* init_task(void* entry,enum task_type type) {
 	//kprintf("Initialization Task PID: %d\n", pid);
     uint8_t* stack = pmm_alloc();
@@ -255,7 +257,7 @@ struct task* init_task(void* entry,enum task_type type) {
 		new_state.eflags = 0x200;
 	//}
 	if(type == V86) {
-		new_state.eflags = 0x20000;
+		counter = 0;
 	}
 
     /*
@@ -385,6 +387,8 @@ int get_proc_count(void) {
  * Prozessorzustand wird als Parameter uebergeben und gespeichert, damit er
  * beim naechsten Aufruf des Tasks wiederhergestellt werden kann
  */
+extern void entering_v86(uint32_t ss, uint32_t esp, uint32_t cs, uint32_t eip);
+
 struct cpu_state* schedule(struct cpu_state* cpu) {
 	//if(current_task->state==EXIT) goto redo;
     /*
@@ -408,7 +412,9 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 		//if(current_task->state==EXIT) goto redo;
     } else {
 		if(current_task->type == V86) {
-
+			if(counter == 0) {
+				entering_v86(cpu->ss,cpu->esp,cpu->cs,cpu->eip);
+			}
 		} else {
 			//if(current_task->state==EXIT) goto redo;
 			if(current_task->next->type == IDLE) {

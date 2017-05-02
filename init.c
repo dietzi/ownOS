@@ -14,11 +14,6 @@
 
 #include "includes.h"
 
-void testv86(void) {
-	asm("int $0x10");
-	exit();
-}
-
 void init(struct multiboot_info *mb_info) {
 	init_complete=false;
 	screen.x = 80;
