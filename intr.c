@@ -297,7 +297,14 @@ void error(struct cpu_state* cpu) {
 			kprintf("  External: %d (%x)\n",external,external);
 			kprintf("  Tbl     : %d (%x)\n",tbl,tbl);
 			kprintf("  Index   : %d (%x)\n",index,index);
-			kprintf("  IP      : %s\n",(char*)cpu->eip);
+			
+			uint8_t* ops = (uint8_t*)(cpu->eip + (cpu->cs << 4));
+			uint16_t opcode;
+			opcode = ops[0];
+			if (opcode == 0x66) {
+				opcode = 0x6600 | ops[1];
+			}
+			kprintf("  VM86    : %x\n",opcode);
 			break;
 		case 0x0e:
 			errcode=0;
