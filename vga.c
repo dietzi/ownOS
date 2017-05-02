@@ -115,14 +115,14 @@ void set_vesa_mode(uint16_t mode) {
 	regs.bx = mode;
 	int32(0x10,&regs);
 	
-	/*draw_rectangle_filled(0,0,info_set->XResolution,info_set->YResolution,0x888888);
-	draw_rectangle_filled(50,50,350,350,0xBBBBBB);
+	draw_rectangle_filled(0,0,info_set->XResolution,info_set->YResolution,0x888888);
+	/*draw_rectangle_filled(50,50,350,350,0xBBBBBB);
 	draw_rectangle(400,50,700,350,1,0x000000);
 	draw_rectangle(750,50,1050,350,10,0x000000);
 	draw_circle(500,500,100,0x000000);
 	draw_line(0,info_set->YResolution,info_set->XResolution,0,0x000000);
 	draw_ellipse(500,700,100,50,0x000000);*/
-	int r=0,g=0,b=0;
+	/*int r=0,g=0,b=0;
 	bool dir=false;
 	uint32_t color=0x000000;
 	for(int y=0;y<info_set->YResolution;y++) {
@@ -143,7 +143,7 @@ void set_vesa_mode(uint16_t mode) {
 			}
 			//color+=(0xffffff / (info_set->XResolution * info_set->YResolution));
 		}
-	}
+	}*/
 	
 	video_active=true;
 }
