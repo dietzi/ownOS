@@ -14,6 +14,10 @@
 
 #include "includes.h"
 
+void testv86(void) {
+	asm("int $0x10");
+}
+
 void init(struct multiboot_info *mb_info) {
 	init_complete=false;
 	screen.x = 80;
@@ -56,7 +60,7 @@ void init(struct multiboot_info *mb_info) {
 		.func=0
 	};
 
-	init_task(get_vesa_modes,V86);
+	init_task(testv86,V86);
 
 	init_complete=true;
 	show_prefix=true;
