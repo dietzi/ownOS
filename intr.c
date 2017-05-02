@@ -287,12 +287,12 @@ void error(struct cpu_state* cpu) {
 			break;
 		case 0x0d:
 			errcode=(uint32_t)cpu->error;
-			uint8_t external=errcode >> 1;
-			uint8_t tbl=((errcode >> 2) & 0x01) + ((errcode >> 3) & 0x01);
-			uint16_t index=((errcode >> 4) & 0x01) + ((errcode >> 5) & 0x01) + ((errcode >> 6) & 0x01) + ((errcode >> 7) & 0x01) &
-				((errcode >> 8) & 0x01) + ((errcode >> 9) & 0x01) + ((errcode >> 10) & 0x01) + ((errcode >> 11) & 0x01) &
-				((errcode >> 12) & 0x01) + ((errcode >> 13) & 0x01) + ((errcode >> 14) & 0x01) + ((errcode >> 15) & 0x01) &
-				((errcode >> 16) & 0x01);
+			uint8_t external=errcode << 1;
+			uint8_t tbl=((errcode << 2) & 0x01) + ((errcode << 3) & 0x01);
+			uint16_t index=((errcode << 4) & 0x01) + ((errcode << 5) & 0x01) + ((errcode << 6) & 0x01) + ((errcode << 7) & 0x01) &
+				((errcode << 8) & 0x01) + ((errcode << 9) & 0x01) + ((errcode << 10) & 0x01) + ((errcode << 11) & 0x01) &
+				((errcode << 12) & 0x01) + ((errcode << 13) & 0x01) + ((errcode << 14) & 0x01) + ((errcode << 15) & 0x01) &
+				((errcode << 16) & 0x01);
 			kprintf("Fehlercode: %b (%x)\n",errcode, errcode);
 			kprintf("  External: %d (%x)\n",external,external);
 			kprintf("  Tbl     : %d (%x)\n",tbl,tbl);
