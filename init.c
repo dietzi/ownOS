@@ -16,7 +16,6 @@
 
 void init(struct multiboot_info *mb_info) {
 	init_complete=false;
-	set_vesa_mode(0x11b);
 	screen.x = 80;
 	screen.y = 25;
 	show_prefix=false;
@@ -42,6 +41,7 @@ void init(struct multiboot_info *mb_info) {
 	init_intr();
 	kprintf("Initialization multitasking\n");
 	init_multitasking(mb_info);
+	set_vesa_mode(0x11b);
 	kprintf("Initialization Network\n");
 	start_nic();
 	kprintf("Initialization complete\n");
