@@ -14,12 +14,9 @@
 
 #include "includes.h"
 
-void testv86(void) {
-	asm("int $0x10");
-}
-
 void init(struct multiboot_info *mb_info) {
 	init_complete=false;
+	set_vesa_mode(0x11b);
 	screen.x = 80;
 	screen.y = 25;
 	show_prefix=false;
@@ -54,13 +51,6 @@ void init(struct multiboot_info *mb_info) {
 	kprintf(" #\n");
 	kprintf("#######################\n");
 	//beep();
-	pci_bdf_t addr = {
-		.bus=0,
-		.dev=1,
-		.func=0
-	};
-
-	//init_task(testv86,V86);
 
 	init_complete=true;
 	show_prefix=true;
