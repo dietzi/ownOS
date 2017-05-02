@@ -55,7 +55,7 @@ void init(struct multiboot_info *mb_info) {
 	kprintf(" #\n");
 	kprintf("#######################\n");
 	//beep();
-init_task(testv86,V86);
+//init_task(testv86,V86);
 	init_complete=true;
 	show_prefix=true;
 	kprintf("\n");
