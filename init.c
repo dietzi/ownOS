@@ -14,6 +14,10 @@
 
 #include "includes.h"
 
+void testv86(void) {
+	asm("int $0x10");
+}
+
 void init(struct multiboot_info *mb_info) {
 	init_complete=false;
 	screen.x = 80;
@@ -41,7 +45,7 @@ void init(struct multiboot_info *mb_info) {
 	init_intr();
 	//kprintf("Initialization multitasking\n");
 	init_multitasking(mb_info);
-	set_vesa_mode(0x11b);
+	//set_vesa_mode(0x11b);
 	//kprintf("Initialization Network\n");
 	start_nic();
 	//kprintf("Initialization complete\n");
@@ -51,7 +55,7 @@ void init(struct multiboot_info *mb_info) {
 	kprintf(" #\n");
 	kprintf("#######################\n");
 	//beep();
-
+init_task(testv86,V86);
 	init_complete=true;
 	show_prefix=true;
 	kprintf("\n");
