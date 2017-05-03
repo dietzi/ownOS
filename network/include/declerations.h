@@ -84,14 +84,14 @@ struct ip_header {
 } __attribute__((packed));
 
 struct tcp_flags {
-	unsigned cwr : 1;
-	unsigned ece : 1;
-	unsigned urg : 1;
-	unsigned ack : 1;
-	unsigned psh : 1;
-	unsigned rst : 1;
-	unsigned syn : 1;
 	unsigned fin : 1;
+	unsigned syn : 1;
+	unsigned rst : 1;
+	unsigned psh : 1;
+	unsigned ack : 1;
+	unsigned urg : 1;
+	unsigned ece : 1;
+	unsigned cwr : 1;
 } __attribute__((packed));
 
 struct tcp_header {
