@@ -31,9 +31,9 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	kprintf("Urgent-Pointer: 0x%x\n",HTONS(tcp.urgent_pointer));
 	
 	kprintf("\n");
-	
+	uint16_t temp_port = tcp.destination_port;
 	tcp.destination_port = tcp.source_port;
-	tcp.source_port = HTONS((uint16_t)23);
+	tcp.source_port = temp_port;
 	tcp.flags.syn = 0;
 	tcp.flags.ack = 1;
 	tcp.ack_number = tcp.sequence_number;
