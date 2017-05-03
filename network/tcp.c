@@ -29,4 +29,16 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	kprintf("Urgent-Pointer: 0x%x\n",HTONS(tcp.urgent_pointer));
 	
 	kprintf("\n");
+	
+	tcp.destination_port = tcp.source_port;
+	tcp.source_port = 23;
+	tcp.flags.syn = 0;
+	tcp.flags.ack = 1;
+	tcp.checksum = 0;
+	ip.destinationIP = ip.sourceIP;
+	ip.sourceIP = my_ip;
+	ip.data = &tcp;
+	uint8_t buffer[1];
+	
+	sendPacket(ether,&ip,ip.packetsize);
 }
