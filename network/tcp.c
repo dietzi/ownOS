@@ -67,22 +67,22 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	};
 	
 	uint8_t tcpChecksum[12 + packetsize - 20];
-	*temp = &head;
+	temp = &head;
 	for(int i = 0; i < 12; i++) {
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	*temp = &tcp;
+	temp = &tcp;
 	for(int i = 0; i < 20; i++) { //tcp_header
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	*temp = &options;
+	temp = &options;
 	for(int i = 0; i < options_count; i++) { //tcp_options
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	*temp = &data;
+	temp = &data;
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
@@ -91,7 +91,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	tcp.checksum = checksum(&tcpChecksum, pos1);
 	
 	uint8_t buffer[packetsize];
-	*temp = &ip;
+	temp = &ip;
 	kprintf("\n");
 	for(int i = 0; i < 20; i++) { //ip_header
 		buffer[pos] = temp[i];
@@ -99,17 +99,17 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		pos++;
 	}
 	kprintf("\n");
-	*temp = &tcp;
+	temp = &tcp;
 	for(int i = 0; i < 20; i++) { //tcp_header
 		buffer[pos] = temp[i];
 		pos++;
 	}
-	*temp = &options;
+	temp = &options;
 	for(int i = 0; i < options_count; i++) { //tcp_options
 		buffer[pos] = temp[i];
 		pos++;
 	}
-	*temp = &data;
+	temp = &data;
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		buffer[pos] = temp[i];
 		pos++;
