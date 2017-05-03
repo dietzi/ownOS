@@ -7,7 +7,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		uint8_t data[20];
 	};
 	union tcpU tcpU;
-	for(int i=0;i<20;i++) {
+	for(int i=0;i<ip.data_length;i++) {
 		tcpU.data[i] = ip.data[i];
 	}
 	tcp = tcpU.tcp;
@@ -30,7 +30,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	
 	kprintf("\n");
 	
-	tcp.destination_port = tcp.source_port;
+	/*tcp.destination_port = tcp.source_port;
 	tcp.source_port = 23;
 	tcp.flags.syn = 0;
 	tcp.flags.ack = 1;
@@ -40,5 +40,5 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.data = &tcp;
 	uint8_t buffer[1];
 	
-	sendPacket(ether,&ip,ip.packetsize);
+	sendPacket(ether,&ip,ip.packetsize);*/
 }
