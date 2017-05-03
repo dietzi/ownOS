@@ -14,7 +14,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	kprintf("Source-Port: %d\n",HTONS(tcp.source_port));
 	kprintf("Destination-Port: %d\n",HTONS(tcp.destination_port));
 	kprintf("Sequence: %d\n",HTONL(tcp.sequence_number));
-	kprintf("Sequence: %d\n",HTONL(tcp.ack_number));
+	kprintf("ACK-Number: %d\n",HTONL(tcp.ack_number));
 	kprintf("Data-Offset: %d\n",tcp.data_offset);
 	kprintf("  CWR: %d\n",tcp.flags.cwr);
 	kprintf("  ECE: %d\n",tcp.flags.ece);

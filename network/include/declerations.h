@@ -99,8 +99,8 @@ struct tcp_header {
 	uint16_t destination_port;
 	uint32_t sequence_number;
 	uint32_t ack_number;
-	unsigned data_offset : 4;
 	unsigned reserved : 4;
+	unsigned data_offset : 4;
 	struct tcp_flags flags;
 	uint16_t window;
 	uint16_t checksum;
