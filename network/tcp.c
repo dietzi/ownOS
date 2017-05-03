@@ -40,6 +40,8 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 
 	ip.destinationIP = ip.sourceIP;
 	ip.sourceIP = my_ip;
+	ip.fragment = HTONS(ip.fragment);
+	ip.id = HTONS(ip.id);
 	
 	sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 }
