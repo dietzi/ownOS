@@ -83,6 +83,21 @@ struct ip_header {
   uint32_t data_length;
 } __attribute__((packed));
 
+struct tcp_header {
+	uint16_t source_port;
+	uint16_t destination_port;
+	uint32_t sequence_number;
+	uint32_t ack_number;
+	unsigned data_offset : 4;
+	unsigned reserved : 4;
+	uint8_t flags;
+	uint16_t window;
+	uint16_t checksum;
+	uint16_t urgent_pointer;
+	uint32_t options[100];
+	uint8_t *data;
+};
+
 struct udp_header {
 	uint16_t source_port;
 	uint16_t destination_port;
