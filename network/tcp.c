@@ -15,7 +15,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	kprintf("Destination-Port: %d\n",HTONS(tcp.destination_port));
 	kprintf("Sequence: %d\n",HTONL(tcp.sequence_number));
 	kprintf("ACK-Number: %d\n",HTONL(tcp.ack_number));
-	kprintf("Data-Offset: %d\n",tcp.data_offset * 4);
+	kprintf("Header-Length: %d\n",tcp.headerlen * 4);
 	kprintf("  CWR: %d\n",tcp.flags.cwr);
 	kprintf("  ECE: %d\n",tcp.flags.ece);
 	kprintf("  URG: %d\n",tcp.flags.urg);
@@ -41,4 +41,41 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	uint8_t buffer[1];
 	
 	sendPacket(ether,&ip,ip.packetsize);*/
+}
+
+void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length) {
+	int packetsize = 20 + 20 + options_count + data_length;
+	int pos = 0;
+	uint8_t *temp;
+	
+	ip.checksum = 0;
+	tcp.checksum = 0;
+	
+	ip.checksum = checksum(&ip,20);
+	
+	uint8_t tcpChecksum[12 + packetsize - 20];
+	
+	uint8_t buffer[packetsize];
+	*temp = &ip;
+	for(int i = 0; i < 20; i++) { //ip_header
+		buffer[pos] = temp[i];
+		pos++;
+	}
+	*temp = &tcp;
+	for(int i = 0; i < 20; i++) { //tcp_header
+		buffer[pos] = temp[i];
+		pos++;
+	}
+	*temp = &options;
+	for(int i = 0; i < options_count; i++) { //tcp_options
+		buffer[pos] = temp[i];
+		pos++;
+	}
+	*temp = &data;
+	for(int i = 0; i < data_length; i++) { //tcp_data
+		buffer[pos] = temp[i];
+		pos++;
+	}
+	pos--;
+	sendPacket(ether,buffer,pos);
 }

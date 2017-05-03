@@ -94,13 +94,21 @@ struct tcp_flags {
 	unsigned cwr : 1;
 } __attribute__((packed));
 
+struct tcp_pseudo_header {
+	struct ip_addr sourceIP;
+	struct ip_addr destinationIP;
+	uint8_t protocol;
+	uint8_t reserved;
+	uint16_t tcp_length;
+} __attribute__((packed));
+
 struct tcp_header {
 	uint16_t source_port;
 	uint16_t destination_port;
 	uint32_t sequence_number;
 	uint32_t ack_number;
 	unsigned reserved : 4;
-	unsigned data_offset : 4;
+	unsigned headerlen : 4;
 	struct tcp_flags flags;
 	uint16_t window;
 	uint16_t checksum;
