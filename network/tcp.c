@@ -33,14 +33,13 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	kprintf("\n");
 	
 	tcp.destination_port = tcp.source_port;
-	tcp.source_port = 23;
+	tcp.source_port = HTONS((uint16_t)23);
 	tcp.flags.syn = 0;
 	tcp.flags.ack = 1;
 	tcp.ack_number = tcp.sequence_number;
 
 	ip.destinationIP = ip.sourceIP;
 	ip.sourceIP = my_ip;
-	ip.version = 4;
 	
 	sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 }
