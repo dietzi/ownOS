@@ -1,5 +1,7 @@
 #include "includes.h"
 
+void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length);
+
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	struct tcp_header tcp;
 	union tcpU {
