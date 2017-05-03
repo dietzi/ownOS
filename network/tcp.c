@@ -30,17 +30,15 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	
 	kprintf("\n");
 	
-	/*tcp.destination_port = tcp.source_port;
+	tcp.destination_port = tcp.source_port;
 	tcp.source_port = 23;
 	tcp.flags.syn = 0;
 	tcp.flags.ack = 1;
-	tcp.checksum = 0;
+
 	ip.destinationIP = ip.sourceIP;
 	ip.sourceIP = my_ip;
-	ip.data = &tcp;
-	uint8_t buffer[1];
 	
-	sendPacket(ether,&ip,ip.packetsize);*/
+	sendTCPpacket(ether, ip, tcp, tcp.options, tcp.data);
 }
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length) {
@@ -50,7 +48,10 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	uint8_t *temp;
 	
 	ip.checksum = 0;
+	ip.packetsize = packetsize;
+	ip.headerlen = 5;
 	tcp.checksum = 0;
+	tcp.headerlen = packetsize - 20;
 	
 	ip.checksum = checksum(&ip,20);
 	
