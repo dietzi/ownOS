@@ -27,7 +27,7 @@ int checksum(void *buffer, int size) {
 }
 
 void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
-	uint8_t buffer[data_length + 20];
+	uint8_t buffer[data_length + 14];
 	/*if((ether.receipt_mac.mac1 == my_mac.mac1 &&
 			ether.receipt_mac.mac2 == my_mac.mac2 &&
 			ether.receipt_mac.mac3 == my_mac.mac3 &&
@@ -80,6 +80,7 @@ void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
 			j++;
 		}
 last_message = "via_send...";
+		kprintf("VIA-Send...\n");
 		via_send(buffer,i);
 	//}
 }

@@ -184,6 +184,7 @@ void via_send(uint8_t *data, int data_length) {
 	next_tx++;
 	//pci_write_register_16(addr,base,0x08,pci_read_register_16(addr,base,0x08) | 0x20); //poll TX
 	last_message = "via_send...2";
+	kprintf("VIA sent....\n");
 	return;
 }
 
