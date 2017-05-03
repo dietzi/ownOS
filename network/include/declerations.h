@@ -97,8 +97,8 @@ struct tcp_flags {
 struct tcp_pseudo_header {
 	struct ip_addr sourceIP;
 	struct ip_addr destinationIP;
-	uint8_t protocol;
 	uint8_t reserved;
+	uint8_t protocol;
 	uint16_t tcp_length;
 } __attribute__((packed));
 
