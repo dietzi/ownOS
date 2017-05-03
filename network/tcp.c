@@ -34,11 +34,12 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	tcp.source_port = 23;
 	tcp.flags.syn = 0;
 	tcp.flags.ack = 1;
+	tcp.ack_number = tcp.sequence_number;
 
 	ip.destinationIP = ip.sourceIP;
 	ip.sourceIP = my_ip;
 	
-	sendTCPpacket(ether, ip, tcp, tcp.options, tcp.data);
+	sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 }
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length) {
