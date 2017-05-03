@@ -40,6 +40,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 
 	ip.destinationIP = ip.sourceIP;
 	ip.sourceIP = my_ip;
+	ip.version = 4;
 	
 	kprintf("Sending Packet....\n");
 	sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
