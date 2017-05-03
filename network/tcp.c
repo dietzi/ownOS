@@ -41,7 +41,9 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.destinationIP = ip.sourceIP;
 	ip.sourceIP = my_ip;
 	
+	kprintf("Sending Packet....\n");
 	sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
+	kprintf("Packet sent....\n");
 }
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length) {
