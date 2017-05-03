@@ -92,10 +92,13 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	
 	uint8_t buffer[packetsize];
 	*temp = &ip;
+	kprintf("\n");
 	for(int i = 0; i < 20; i++) { //ip_header
 		buffer[pos] = temp[i];
+		kprintf("%x ",temp[i]);
 		pos++;
 	}
+	kprintf("\n");
 	*temp = &tcp;
 	for(int i = 0; i < 20; i++) { //tcp_header
 		buffer[pos] = temp[i];
