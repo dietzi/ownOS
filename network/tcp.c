@@ -52,12 +52,12 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	uint8_t *temp;
 	
 	ip.checksum = 0;
-	ip.packetsize = packetsize;
+	ip.packetsize = HTONS((uint16_t)packetsize);
 	ip.headerlen = 5;
 	tcp.checksum = 0;
 	tcp.headerlen = packetsize - 20;
 	
-	ip.checksum = checksum(&ip,20);
+	ip.checksum = HTONS(checksum(&ip,20));
 	
 	struct tcp_pseudo_header head = {
 		.sourceIP = ip.sourceIP,
@@ -88,17 +88,14 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		pos1++;
 	}
 	pos1--;
-	tcp.checksum = checksum(&tcpChecksum, pos1);
+	tcp.checksum = HTONS(checksum(&tcpChecksum, pos1));
 	
 	uint8_t buffer[packetsize];
 	temp = &ip;
-	kprintf("\n");
 	for(int i = 0; i < 20; i++) { //ip_header
 		buffer[pos] = temp[i];
-		kprintf("%x ",temp[i]);
 		pos++;
 	}
-	kprintf("\n");
 	temp = &tcp;
 	for(int i = 0; i < 20; i++) { //tcp_header
 		buffer[pos] = temp[i];
