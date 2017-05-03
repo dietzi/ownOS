@@ -24,7 +24,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	kprintf("  RST: %d\n",tcp.flags.rst);
 	kprintf("  SYN: %d\n",tcp.flags.syn);
 	kprintf("  FIN: %d\n",tcp.flags.fin);
-	kprintf("Window: %d\n",HTONS(tcp.window));
+	kprintf("Window-Size: %d\n",HTONS(tcp.window));
 	kprintf("Checksum: 0x%x\n",HTONS(tcp.checksum));
 	kprintf("Urgent-Pointer: 0x%x\n",HTONS(tcp.urgent_pointer));
 	
