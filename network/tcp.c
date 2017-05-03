@@ -42,9 +42,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.sourceIP = my_ip;
 	ip.version = 4;
 	
-	kprintf("Sending Packet....\n");
 	sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
-	kprintf("Packet sent....\n");
 }
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length) {
@@ -114,25 +112,5 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		pos++;
 	}
 	pos--;
-	kprintf("Receiver: %x:%x:%x:%x:%x:%x   %d.%d.%d.%d\n", ether.receipt_mac.mac1,
-															ether.receipt_mac.mac2,
-															ether.receipt_mac.mac3,
-															ether.receipt_mac.mac4,
-															ether.receipt_mac.mac5,
-															ether.receipt_mac.mac6,
-															ip.sourceIP.ip1,
-															ip.sourceIP.ip2,
-															ip.sourceIP.ip3,
-															ip.sourceIP.ip4);
-	kprintf("Sender: %x:%x:%x:%x:%x:%x   %d.%d.%d.%d\n", ether.sender_mac.mac1,
-															ether.sender_mac.mac2,
-															ether.sender_mac.mac3,
-															ether.sender_mac.mac4,
-															ether.sender_mac.mac5,
-															ether.sender_mac.mac6,
-															ip.destinationIP.ip1,
-															ip.destinationIP.ip2,
-															ip.destinationIP.ip3,
-															ip.destinationIP.ip4);
 	sendPacket(ether,buffer,pos);
 }

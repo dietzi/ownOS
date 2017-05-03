@@ -80,7 +80,6 @@ void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
 			j++;
 		}
 last_message = "via_send...";
-		kprintf("VIA-Send...\n");
 		via_send(buffer,i);
 	//}
 }
