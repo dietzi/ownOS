@@ -56,7 +56,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	ip.packetsize = HTONS((uint16_t)packetsize);
 	ip.headerlen = 5;
 	tcp.checksum = 0;
-	tcp.headerlen = packetsize - 20;
+	tcp.headerlen = (packetsize - 20) / 4;
 	
 	ip.checksum = HTONS(checksum(&ip,20));
 	
