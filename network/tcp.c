@@ -46,6 +46,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length) {
 	int packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
+	int pos1 = 0;
 	uint8_t *temp;
 	
 	ip.checksum = 0;
@@ -61,10 +62,28 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	};
 	
 	uint8_t tcpChecksum[12 + packetsize - 20];
-	*temp = &tcpChecksum;
+	*temp = &head;
 	for(int i = 0; i < 12; i++) {
-		
+		tcpChecksum[pos1] = temp[i];
+		pos1++;
 	}
+	*temp = &tcp;
+	for(int i = 0; i < 20; i++) { //tcp_header
+		tcpChecksum[pos1] = temp[i];
+		pos1++;
+	}
+	*temp = &options;
+	for(int i = 0; i < options_count; i++) { //tcp_options
+		tcpChecksum[pos1] = temp[i];
+		pos1++;
+	}
+	*temp = &data;
+	for(int i = 0; i < data_length; i++) { //tcp_data
+		tcpChecksum[pos1] = temp[i];
+		pos1++;
+	}
+	pos1--;
+	tcp.checksum = checksum(&tcpChecksum, pos1);
 	
 	uint8_t buffer[packetsize];
 	*temp = &ip;
