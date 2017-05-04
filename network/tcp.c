@@ -63,8 +63,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				tcp.data[2] = "l";
 				tcp.data[3] = "l";
 				tcp.data[4] = "o";
-				tcp.data[5] = "\n";
-				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 6);
+				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 5);
 			}
 		}
 	}
@@ -80,7 +79,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	ip.packetsize = HTONS((uint16_t)packetsize);
 	ip.headerlen = 5;
 	tcp.checksum = 0;
-	tcp.headerlen = (packetsize - 20) / 4;
+	tcp.headerlen = (packetsize - data_length - 20) / 4;
 	
 	ip.checksum = HTONS(checksum(&ip,20));
 	
