@@ -52,12 +52,16 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	
 	if(tcp_listeners[HTONS(temp_port)].enabled) {
 		if(tcp_listeners[HTONS(temp_port)].con_est) {
-			if(tcp.flags.ack && tcp.flags.psh) {
-				//raise event / data_incoming
-				tcp_listeners[HTONS(temp_port)].data = tcp.data;
-				tcp_listeners[HTONS(temp_port)].data_length = HTONS(ip.packetsize) - (ip.headerlen * 4) - (tcp.headerlen * 4);
-				callback = tcp_listeners[HTONS(temp_port)].callback_pointer;
-				callback(tcp_listeners[HTONS(temp_port)]);
+			if(!tcp.flags.rst) {
+				if(tcp.flags.ack && tcp.flags.psh) {
+					//raise event / data_incoming
+					tcp_listeners[HTONS(temp_port)].data = tcp.data;
+					tcp_listeners[HTONS(temp_port)].data_length = HTONS(ip.packetsize) - (ip.headerlen * 4) - (tcp.headerlen * 4);
+					callback = tcp_listeners[HTONS(temp_port)].callback_pointer;
+					callback(tcp_listeners[HTONS(temp_port)]);
+				}
+			} else {
+				//do reset
 			}
 		} else {
 			if(!tcp.flags.rst) {
