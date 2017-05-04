@@ -10,5 +10,9 @@ void handle_telnet(struct tcp_callback cb) {
 }
 
 void init_telnet(void) {
-	register_tcp_listener(23, &handle_telnet);
+	if(register_tcp_listener(23, &handle_telnet)) {
+		kprintf("Telnet registered\n");
+	} else {
+		kprintf("Telnet not registered\n");
+	}
 }
