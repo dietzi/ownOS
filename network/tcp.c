@@ -1,7 +1,7 @@
 #include "includes.h"
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t *data, int data_length);
-bool register_tcp_listener(struct tcp_callback cb);
+bool register_tcp_listener(int port, void *callback_pointer);
 
 uint32_t last_seq = 0;
 uint32_t last_ack = 0;
@@ -91,7 +91,13 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	}
 }
 
-bool register_tcp_listener(struct tcp_callback cb) {
+bool register_tcp_listener(int port, void *callback_pointer) {
+	struct tcp_callback cb = {
+		.callback_pointer = &callback_pointer,
+		.port = 23,
+		.con_est = false,
+		.enabled = true,
+	};
 	if(tcp_listeners[cb.port].enabled) {
 		return false;
 	} else {
