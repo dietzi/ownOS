@@ -116,7 +116,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		pos1++;
 	}
 	kprintf("\n");
-	pos1--;
+	//pos1--;
 	tcp.checksum = HTONS(checksum(&tcpChecksum, pos1));
 	
 	uint8_t buffer[packetsize];
