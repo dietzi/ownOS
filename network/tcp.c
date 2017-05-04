@@ -8,6 +8,8 @@ bool con_est = false;
 
 struct tcp_callback tcp_listeners[65535];
 
+void (*callback)(struct tcp_callback cb);
+
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	struct tcp_header tcp;
 	union tcpU {
@@ -91,6 +93,10 @@ bool register_tcp_listener(struct tcp_callback cb) {
 		tcp_listeners[cb.port].enabled = true;
 		return true;
 	}
+}
+
+void senData(struct tcp_callback cb) {
+	
 }
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {

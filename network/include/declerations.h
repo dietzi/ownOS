@@ -200,5 +200,7 @@ struct tcp_callback {
 	uint32_t last_seq;
 	bool enabled;
 	struct tcp_header tcp;
+	int data_length;
+	uint8_t *data;
 };
 #endif
