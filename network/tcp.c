@@ -2,6 +2,10 @@
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length);
 
+uint32_t last_seq = 0;
+uint32_t last_ack = 0;
+bool con_est = false;
+
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	struct tcp_header tcp;
 	union tcpU {
@@ -40,12 +44,29 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.fragment = HTONS(ip.fragment);
 	ip.id = HTONS(ip.id);
 	
-	if(tcp.flags.syn && !tcp.flags.ack && !tcp.flags.rst) {
-		tcp.flags.syn = 1;
-		tcp.flags.ack = 1;
-		tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
-		tcp.sequence_number = HTONL(tcp.sequence_number);		
-		sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
+	if(!tcp.flags.rst) {
+		if(tcp.flags.syn && !tcp.flags.ack) {
+			tcp.flags.syn = 1;
+			tcp.flags.ack = 1;
+			tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
+			tcp.sequence_number = HTONL(tcp.sequence_number);
+			last_seq = HTONL(tcp.sequence_number);
+			last_ack = HTONL(tcp.ack_number);
+			sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
+		}
+		if(!tcp.flags.syn && tcp.flags.ack) {
+			if(last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == last_seq + 1) {
+				con_est = true;
+				tcp.flags.psh = 1;
+				tcp.data[0] = "H";
+				tcp.data[1] = "e";
+				tcp.data[2] = "l";
+				tcp.data[3] = "l";
+				tcp.data[4] = "o";
+				tcp.data[5] = "\n";
+				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 6);
+			}
+		}
 	}
 }
 
