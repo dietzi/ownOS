@@ -9,7 +9,7 @@ bool con_est = false;
 
 struct tcp_callback tcp_listeners[65535];
 
-void (*callback)(struct tcp_callback);
+void (*callback_func)(struct tcp_callback);
 
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	struct tcp_header tcp;
@@ -57,8 +57,8 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 					//raise event / data_incoming
 					tcp_listeners[HTONS(temp_port)].data = tcp.data;
 					tcp_listeners[HTONS(temp_port)].data_length = HTONS(ip.packetsize) - (ip.headerlen * 4) - (tcp.headerlen * 4);
-					callback = tcp_listeners[HTONS(temp_port)].callback_pointer;
-					callback(tcp_listeners[HTONS(temp_port)]);
+					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
+					callback_func(tcp_listeners[HTONS(temp_port)]);
 				}
 			} else {
 				//do reset
