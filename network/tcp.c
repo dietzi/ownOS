@@ -107,7 +107,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	//temp = data;
+	temp = &data;
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		tcpChecksum[pos1] = data[i];
 		pos1++;
