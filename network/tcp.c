@@ -1,6 +1,7 @@
 #include "includes.h"
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t *data, int data_length);
+bool register_tcp_listener(struct tcp_callback cb);
 
 uint32_t last_seq = 0;
 uint32_t last_ack = 0;
@@ -39,6 +40,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	kprintf("Urgent-Pointer: 0x%x\n",HTONS(tcp.urgent_pointer));
 	
 	kprintf("\n");*/
+	
 	uint16_t temp_port = tcp.destination_port;
 	tcp.destination_port = tcp.source_port;
 	tcp.source_port = temp_port;
