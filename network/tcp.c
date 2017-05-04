@@ -34,10 +34,14 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	uint16_t temp_port = tcp.destination_port;
 	tcp.destination_port = tcp.source_port;
 	tcp.source_port = temp_port;
+	
+	if(tcp.flags.syn && !tcp.flags.ack && !tcp.flags.rst) {
+		tcp.flags.syn = 1;
+		tcp.flags.ack = 1;
+		tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
+		tcp.sequence_number = HTONL(tcp.sequence_number);		
+	}
 	//tcp.flags.syn = 0;
-	tcp.flags.ack = 1;
-	tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
-	tcp.sequence_number = HTONL(tcp.sequence_number);
 
 	ip.destinationIP = ip.sourceIP;
 	ip.sourceIP = my_ip;
