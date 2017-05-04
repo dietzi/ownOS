@@ -58,8 +58,9 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			if(last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == last_seq + 1) {
 				con_est = true;
 				tcp.flags.psh = 1;
+				uint32_t temp_ack = tcp.ack_number;
 				tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
-				tcp.sequence_number = tcp.ack_number;
+				tcp.sequence_number = temp_ack;
 				last_seq = HTONL(tcp.sequence_number);
 				last_ack = HTONL(tcp.ack_number);
 				uint8_t *data;
