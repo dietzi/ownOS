@@ -137,7 +137,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	}
 	//temp = &data;
 	for(int i = 0; i < data_length; i++) { //tcp_data
-		buffer[pos] = &data[i];
+		buffer[pos] = *data;
 		pos++;
 	}
 	pos--;
