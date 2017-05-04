@@ -58,14 +58,15 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			if(last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == last_seq + 1) {
 				con_est = true;
 				tcp.flags.psh = 1;
-				tcp.data[0] = "H";
-				tcp.data[1] = "e";
-				tcp.data[2] = "l";
-				tcp.data[3] = "l";
-				tcp.data[4] = "o";
-				tcp.data[5] = "\r";
-				tcp.data[6] = "\n";
-				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 7);
+				uint8_t *data;
+				data[0] = "H";
+				data[1] = "e";
+				data[2] = "l";
+				data[3] = "l";
+				data[4] = "o";
+				data[5] = "\r";
+				data[6] = "\n";
+				sendTCPpacket(ether, ip, tcp, tcp.options, 0, data, 7);
 			}
 		}
 	}
