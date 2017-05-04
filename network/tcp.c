@@ -112,7 +112,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	kprintf("Data: ");
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		tcpChecksum[pos1] = data[i];
-		kprintf("%c ",data[i]);
+		kprintf("%c - %c ;;; ",data[i], &data[i]);
 		pos1++;
 	}
 	kprintf("\n");
