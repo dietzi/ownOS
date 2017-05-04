@@ -64,7 +64,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				last_ack = HTONL(tcp.ack_number);
 				uint8_t data[1];
 				data[0] = "H";
-				sendTCPpacket(ether, ip, tcp, tcp.options, 0, &data, 1);
+				sendTCPpacket(ether, ip, tcp, tcp.options, 0, *data, 1);
 			}
 		}
 	}
