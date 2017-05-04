@@ -82,7 +82,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	ip.packetsize = HTONS((uint16_t)packetsize);
 	ip.headerlen = 5;
 	tcp.checksum = 0;
-	tcp.headerlen = (packetsize - data_length - 20) / 4;
+	tcp.headerlen = (packetsize - 20) / 4;
 	
 	ip.checksum = HTONS(checksum(&ip,20));
 	
@@ -114,8 +114,9 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	//pos1--;
+	pos1--;
 	tcp.checksum = HTONS(checksum(&tcpChecksum, pos1));
+	tcp.headerlen = (packetsize - data_length - 20) / 4;
 	
 	uint8_t buffer[packetsize];
 	temp = &ip;
