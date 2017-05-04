@@ -92,17 +92,17 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 }
 
 bool register_tcp_listener(int port, void *callback_pointer) {
-	struct tcp_callback cb = {
-		.callback_pointer = &callback_pointer,
-		.port = 23,
-		.con_est = false,
-		.enabled = true,
-	};
-	if(tcp_listeners[cb.port].enabled) {
+	if(tcp_listeners[port].enabled) {
 		return false;
 	} else {
-		tcp_listeners[cb.port] = cb;
-		tcp_listeners[cb.port].enabled = true;
+		struct tcp_callback cb = {
+			.callback_pointer = &callback_pointer,
+			.port = 23,
+			.con_est = false,
+			.enabled = true,
+		};
+		tcp_listeners[port] = cb;
+		tcp_listeners[port].enabled = true;
 		return true;
 	}
 }
