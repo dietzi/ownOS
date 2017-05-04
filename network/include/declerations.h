@@ -102,6 +102,10 @@ struct tcp_pseudo_header {
 	uint16_t tcp_length;
 } __attribute__((packed));
 
+struct uint32_t {
+	int testwe;
+};
+
 struct tcp_header {
 	uint16_t source_port;
 	uint16_t destination_port;
