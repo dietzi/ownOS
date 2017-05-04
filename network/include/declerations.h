@@ -193,11 +193,12 @@ union icmp_ping_union {
 };
 
 struct tcp_callback {
-	uint32_t *pointer;
+	uint32_t *callback_pointer;
 	int port;
 	bool con_est;
 	uint32_t last_ack;
 	uint32_t last_seq;
 	bool enabled;
+	struct tcp_header tcp;
 };
 #endif
