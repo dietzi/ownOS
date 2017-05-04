@@ -17,7 +17,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		tcpU.data[i] = ip.data[i];
 	}
 	tcp = tcpU.tcp;
-	kprintf("Source-Port: %d\n",HTONS(tcp.source_port));
+	/*kprintf("Source-Port: %d\n",HTONS(tcp.source_port));
 	kprintf("Destination-Port: %d\n",HTONS(tcp.destination_port));
 	kprintf("Sequence: %d\n",HTONL(tcp.sequence_number));
 	kprintf("ACK-Number: %d\n",HTONL(tcp.ack_number));
@@ -34,7 +34,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	kprintf("Checksum: 0x%x\n",HTONS(tcp.checksum));
 	kprintf("Urgent-Pointer: 0x%x\n",HTONS(tcp.urgent_pointer));
 	
-	kprintf("\n");
+	kprintf("\n");*/
 	uint16_t temp_port = tcp.destination_port;
 	tcp.destination_port = tcp.source_port;
 	tcp.source_port = temp_port;
@@ -109,7 +109,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		pos1++;
 	}
 	//temp = &data;
-	kprintf("\n");
+	kprintf("Data: ");
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		tcpChecksum[pos1] = data[i];
 		kprintf("%c ",data[i]);
