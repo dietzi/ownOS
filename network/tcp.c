@@ -58,11 +58,11 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			if(last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == last_seq + 1) {
 				con_est = true;
 				tcp.flags.psh = 1;
-				tcp.ack_number = HTONL(HTONL(tcp.sequence_number));
+				tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 				tcp.sequence_number = HTONL(tcp.sequence_number);
 				last_seq = HTONL(tcp.sequence_number);
 				last_ack = HTONL(tcp.ack_number);
-				uint8_t *data;
+				uint8_t data[1];
 				data[0] = "H";
 				sendTCPpacket(ether, ip, tcp, tcp.options, 0, data, 1);
 			}
@@ -70,7 +70,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	}
 }
 
-void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length) {
+void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
 	int packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
 	int pos1 = 0;
@@ -107,7 +107,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	temp = &data;
+	temp = data;
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		tcpChecksum[pos1] = temp[i];
 		pos1++;

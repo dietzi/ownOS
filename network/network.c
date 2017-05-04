@@ -74,11 +74,11 @@ void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
 			i++;
 			j++;
 		}
-		while(j < 46) {
+		/*while(j < 46) {
 			buffer[i] = 0x0;
 			i++;
 			j++;
-		}
+		}*/
 last_message = "via_send...";
 		via_send(buffer,i);
 	//}
