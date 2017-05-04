@@ -63,7 +63,9 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				tcp.data[2] = "l";
 				tcp.data[3] = "l";
 				tcp.data[4] = "o";
-				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 5);
+				tcp.data[5] = "\r";
+				tcp.data[6] = "\n";
+				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 7);
 			}
 		}
 	}
