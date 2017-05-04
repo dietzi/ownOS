@@ -53,6 +53,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			if(tcp.flags.ack && tcp.flags.psh) {
 				//raise event / data_incoming
 				callback = tcp_listeners[HTONS(temp_port)].callback_pointer;
+				callback(tcp_listeners[HTONS(temp_port)]);
 			}
 		} else {
 			if(!tcp.flags.rst) {
