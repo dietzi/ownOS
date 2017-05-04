@@ -62,10 +62,9 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				tcp.sequence_number = HTONL(tcp.sequence_number);
 				last_seq = HTONL(tcp.sequence_number);
 				last_ack = HTONL(tcp.ack_number);
-				uint8_t data[2];
+				uint8_t data[1];
 				data[0] = "H";
-				data[1] = "a";
-				sendTCPpacket(ether, ip, tcp, tcp.options, 0, data, 2);
+				sendTCPpacket(ether, ip, tcp, tcp.options, 0, data, 1);
 			}
 		}
 	}
@@ -108,7 +107,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	temp = &data;
+	//temp = &data;
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		tcpChecksum[pos1] = data[i];
 		pos1++;
@@ -132,9 +131,9 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		buffer[pos] = temp[i];
 		pos++;
 	}
-	temp = &data;
+	//temp = &data;
 	for(int i = 0; i < data_length; i++) { //tcp_data
-		buffer[pos] = temp[i];
+		buffer[pos] = data[i];
 		pos++;
 	}
 	pos--;
