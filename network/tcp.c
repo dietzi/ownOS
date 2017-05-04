@@ -140,6 +140,6 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		buffer[pos] = *data;
 		pos++;
 	}
-	pos--;
+	//pos--;
 	sendPacket(ether,buffer,pos);
 }
