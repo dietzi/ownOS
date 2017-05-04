@@ -78,7 +78,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 
 bool register_tcp_listener(struct tcp_callback cb) {
 	if(tcp_listeners[cb.port].enabled) {
-		
 		return false;
 	} else {
 		tcp_listeners[cb.port] = cb;
