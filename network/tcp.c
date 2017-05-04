@@ -34,21 +34,19 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	uint16_t temp_port = tcp.destination_port;
 	tcp.destination_port = tcp.source_port;
 	tcp.source_port = temp_port;
-	
-	if(tcp.flags.syn && !tcp.flags.ack && !tcp.flags.rst) {
-		tcp.flags.syn = 1;
-		tcp.flags.ack = 1;
-		tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
-		tcp.sequence_number = HTONL(tcp.sequence_number);		
-	}
-	//tcp.flags.syn = 0;
 
 	ip.destinationIP = ip.sourceIP;
 	ip.sourceIP = my_ip;
 	ip.fragment = HTONS(ip.fragment);
 	ip.id = HTONS(ip.id);
 	
-	sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
+	if(tcp.flags.syn && !tcp.flags.ack && !tcp.flags.rst) {
+		tcp.flags.syn = 1;
+		tcp.flags.ack = 1;
+		tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
+		tcp.sequence_number = HTONL(tcp.sequence_number);		
+		sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
+	}
 }
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t data[], int data_length) {
