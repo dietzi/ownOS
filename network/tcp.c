@@ -111,8 +111,8 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	//temp = &data;
 	kprintf("Data: ");
 	for(int i = 0; i < data_length; i++) { //tcp_data
-		tcpChecksum[pos1] = &data[i];
-		kprintf("%d - %d ;;; ",data[i], &data[i], *data);
+		tcpChecksum[pos1] = *data;
+		kprintf("%d - %d - %d;;; ",data[i], &data[i], *data);
 		pos1++;
 	}
 	kprintf("\n");
