@@ -109,10 +109,13 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 		pos1++;
 	}
 	//temp = &data;
+	kprintf("\n");
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		tcpChecksum[pos1] = data[i];
+		kprintf("%c ",data[i]);
 		pos1++;
 	}
+	kprintf("\n");
 	pos1--;
 	tcp.checksum = HTONS(checksum(&tcpChecksum, pos1));
 	
