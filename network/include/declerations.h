@@ -192,4 +192,12 @@ union icmp_ping_union {
 	uint8_t data[sizeof(struct icmp_echo_packet)];
 };
 
+struct tcp_callback {
+	uint32_t *pointer;
+	int port;
+	bool con_est;
+	uint32_t last_ack;
+	uint32_t last_seq;
+	bool enabled;
+};
 #endif

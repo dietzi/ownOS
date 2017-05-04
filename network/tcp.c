@@ -6,6 +6,8 @@ uint32_t last_seq = 0;
 uint32_t last_ack = 0;
 bool con_est = false;
 
+struct tcp_callback tcp_listeners[65535];
+
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	struct tcp_header tcp;
 	union tcpU {
@@ -44,6 +46,9 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.fragment = HTONS(ip.fragment);
 	ip.id = HTONS(ip.id);
 	
+	if(tcp_listeners[HTONS(temp_port)].enabled) {
+		
+	}
 	if(!tcp.flags.rst) {
 		if(tcp.flags.syn && !tcp.flags.ack) {
 			tcp.flags.syn = 1;
@@ -57,17 +62,26 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		if(!tcp.flags.syn && tcp.flags.ack) {
 			if(last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == last_seq + 1) {
 				con_est = true;
-				tcp.flags.psh = 1;
+				/*tcp.flags.psh = 1;
 				uint32_t temp_ack = tcp.ack_number;
 				tcp.ack_number = tcp.sequence_number;
 				tcp.sequence_number = temp_ack;
 				last_seq = HTONL(tcp.sequence_number);
 				last_ack = HTONL(tcp.ack_number);
 				uint8_t *data = pmm_alloc();
-				data = "Hello\r\n\r\nEs funktioniert";
-				sendTCPpacket(ether, ip, tcp, tcp.options, 0, data, 24);
+				data = "Hallo\r\n\r\nEs funktioniert";
+				sendTCPpacket(ether, ip, tcp, tcp.options, 0, data, 24);*/
 			}
 		}
+	}
+}
+
+bool register_tcp_listener(struct tcp_callback cb) {
+	if(tcp_listeners[cb.port].enabled) {
+		return false;
+	} else {
+		tcp_listeners[cb.port] = cb;
+		return true;
 	}
 }
 
