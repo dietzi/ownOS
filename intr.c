@@ -244,6 +244,28 @@ struct cpu_state* syscall(struct cpu_state* cpu) {
     return cpu;
 }
 
+void StackTrace(unsigned int MaxFrames)
+{
+    // Stack contains:
+    //  Second function argument
+    //  First function argument (MaxFrames)
+    //  Return address in calling function
+    //  EBP of calling function (pointed to by current EBP)
+    unsigned int * ebp = &MaxFrames - 2;
+    kprintf("Stack trace:\n");
+    for(unsigned int frame = 0; frame < MaxFrames; ++frame)
+    {
+        unsigned int eip = ebp[1];
+        if(eip == 0)
+            // No caller on stack
+            break;
+        // Unwind to previous stack frame
+        ebp = (unsigned int)(ebp[0]);
+        unsigned int * arguments = &ebp[2];
+        kprintf("  EIP: 0x%x\n", eip);
+    }
+}
+
 void print_stack(struct cpu_state* cpu) {
     kprintf("eax    -> %d (%x)\n",cpu->eax,cpu->eax);
     kprintf("ebx    -> %d (%x)\n",cpu->ebx,cpu->ebx);
