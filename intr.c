@@ -263,7 +263,7 @@ void StackTrace(unsigned int MaxFrames)
 			kprintf("End\n");
             break;
         // Unwind to previous stack frame
-        //ebp = ebp[0];
+        ebp = ebp[0];
         //unsigned int * arguments = &ebp[2];
         kprintf("  EIP: 0x%x\n", eip);
 		frame++;
@@ -290,6 +290,7 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
 	kprintf("\n");
 	StackTrace(8); //(uint32_t)&cpu);
+	sleep(2000);
 }
 
 extern struct vmm_context* kernel_context;
