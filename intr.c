@@ -256,16 +256,16 @@ void StackTrace(unsigned int MaxFrames)
 	int frame = 0;
     while(frame < MaxFrames)
     {
-		kprintf("%d: 0x%x - ",frame,ebp[1]);
-        //unsigned int eip = ebp[1];
-        if(ebp[1] == 0)
+        unsigned int eip = ebp[1];
+		kprintf("%d: 0x%x - ",frame,eip);
+        if(eip == 0)
             // No caller on stack
 			kprintf("End\n");
             break;
         // Unwind to previous stack frame
         ebp = ebp[0];
-        unsigned int * arguments = &ebp[2];
-        kprintf("  EIP: 0x%x\n", ebp[1]);
+        //unsigned int * arguments = &ebp[2];
+        kprintf("  EIP: 0x%x\n", eip);
 		frame++;
     }
 }
