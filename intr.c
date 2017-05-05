@@ -253,7 +253,7 @@ void StackTrace(unsigned int MaxFrames)
     //  EBP of calling function (pointed to by current EBP)
     unsigned int * ebp = &MaxFrames - 2;
     kprintf("Stack trace: 0x%x - 0x%x - 0x%x - 0x%x\n",ebp,ebp[0],ebp[1],ebp[2]);
-    for(unsigned int frame = 0; frame < MaxFrames; ++frame)
+    for(unsigned int frame = 0; frame < MaxFrames; frame++)
     {
         unsigned int eip = ebp[1];
         if(eip == 0)
