@@ -258,6 +258,7 @@ void StackTrace(unsigned int MaxFrames)
         unsigned int eip = ebp[1];
         if(eip == 0)
             // No caller on stack
+			kprintf("End\n");
             break;
         // Unwind to previous stack frame
         ebp = (unsigned int)(ebp[0]);
