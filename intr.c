@@ -268,25 +268,25 @@ void StackTrace(unsigned int MaxFrames)
 }
 
 void print_stack(struct cpu_state* cpu) {
-    kprintf("eax    -> %d (%x)\n",cpu->eax,cpu->eax);
-    kprintf("ebx    -> %d (%x)\n",cpu->ebx,cpu->ebx);
-    kprintf("ecx    -> %d (%x)\n",cpu->ecx,cpu->ecx);
-    kprintf("edx    -> %d (%x)\n",cpu->edx,cpu->edx);
-    kprintf("esi    -> %d (%x)\n",cpu->esi,cpu->esi);
-    kprintf("edi    -> %d (%x)\n",cpu->edi,cpu->edi);
-    kprintf("ebp    -> %d (%x)\n",cpu->ebp,cpu->ebp);
+    kprintf("eax    -> %d (0x%x)\n",cpu->eax,cpu->eax);
+    kprintf("ebx    -> %d (0x%x)\n",cpu->ebx,cpu->ebx);
+    kprintf("ecx    -> %d (0x%x)\n",cpu->ecx,cpu->ecx);
+    kprintf("edx    -> %d (0x%x)\n",cpu->edx,cpu->edx);
+    kprintf("esi    -> %d (0x%x)\n",cpu->esi,cpu->esi);
+    kprintf("edi    -> %d (0x%x)\n",cpu->edi,cpu->edi);
+    kprintf("ebp    -> %d (0x%x)\n",cpu->ebp,cpu->ebp);
 
-    kprintf("intr   -> %d (%x)\n",cpu->intr,cpu->intr);
-    kprintf("error  -> %d (%x)\n",cpu->error,cpu->error);
+    kprintf("intr   -> %d (0x%x)\n",cpu->intr,cpu->intr);
+    kprintf("error  -> %d (0x%x)\n",cpu->error,cpu->error);
 
     // Von der CPU gesichert
-    kprintf("eip    -> %d (%x)\n",cpu->eip,cpu->eip);
-    kprintf("cs     -> %d (%x)\n",cpu->cs,cpu->cs);
-    kprintf("eflags -> %d (%x)\n",cpu->eflags,cpu->eflags);
-    kprintf("esp    -> %d (%x)\n",cpu->esp,cpu->esp);
-    kprintf("ss     -> %d (%x)\n",cpu->ss,cpu->ss);
+    kprintf("eip    -> %d (0x%x)\n",cpu->eip,cpu->eip);
+    kprintf("cs     -> %d (0x%x)\n",cpu->cs,cpu->cs);
+    kprintf("eflags -> %d (0x%x)\n",cpu->eflags,cpu->eflags);
+    kprintf("esp    -> %d (0x%x)\n",cpu->esp,cpu->esp);
+    kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
 	kprintf("\n");
-	StackTrace((uint32_t)cpu);
+	StackTrace((uint32_t)&cpu);
 }
 
 extern struct vmm_context* kernel_context;
