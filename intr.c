@@ -252,7 +252,7 @@ void StackTrace(unsigned int MaxFrames)
     //  Return address in calling function
     //  EBP of calling function (pointed to by current EBP)
     unsigned int * ebp = &MaxFrames - 2;
-    kprintf("Stack trace: 0x%x - 0x%x\n",MaxFrames,ebp);
+    kprintf("Stack trace: 0x%x - 0x%x - 0x%x - 0x%x\n",ebp,ebp[0],ebp[1],ebp[2]);
     for(unsigned int frame = 0; frame < MaxFrames; ++frame)
     {
         unsigned int eip = ebp[1];
@@ -286,7 +286,7 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("esp    -> %d (0x%x)\n",cpu->esp,cpu->esp);
     kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
 	kprintf("\n");
-	StackTrace((uint32_t)&cpu);
+	StackTrace(8); //(uint32_t)&cpu);
 }
 
 extern struct vmm_context* kernel_context;
