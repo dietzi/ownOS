@@ -283,7 +283,9 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("cs     -> %d (%x)\n",cpu->cs,cpu->cs);
     kprintf("eflags -> %d (%x)\n",cpu->eflags,cpu->eflags);
     kprintf("esp    -> %d (%x)\n",cpu->esp,cpu->esp);
-    kprintf("ss     -> %d (%x)\n",cpu->ss,cpu->ss);	
+    kprintf("ss     -> %d (%x)\n",cpu->ss,cpu->ss);
+	kprintf("\n");
+	StackTrace(10);
 }
 
 extern struct vmm_context* kernel_context;
