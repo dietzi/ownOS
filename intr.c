@@ -256,7 +256,7 @@ void StackTrace(unsigned int MaxFrames)
 	int frame = 0;
     while(frame < MaxFrames)
     {
-		kprintf("%d: ",frame);
+		kprintf("%d: 0x%x - ",frame,ebp[1]);
         //unsigned int eip = ebp[1];
         if(ebp[1] == 0)
             // No caller on stack
