@@ -292,13 +292,13 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("esp    -> %d (0x%x)\n",cpu->esp,cpu->esp);
     kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
 	kprintf("\n");
-			uint8_t* ops = (cpu->eip + (cpu->cs << 4));
+    unsigned int * ebp = cpu->ebp;
+			uint8_t* ops = (ebp[1] + (cpu->cs << 4));
 			uint16_t opcode;
 			opcode = ops[0];
 			if (opcode == 0x66) {
 				opcode = 0x6600 | ops[1];
 			}
-    unsigned int * ebp = cpu->ebp;
 	kprintf("EIP: 0x%x\nOPCODE: 0x%x\n",ebp[1],opcode);
 	StackTrace(23); //(uint32_t)&cpu);
 	sleep(2000);
