@@ -54,11 +54,12 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		if(tcp_listeners[HTONS(temp_port)].con_est) {
 			if(!tcp.flags.rst) {
 				if(tcp.flags.ack && tcp.flags.psh) {
-					last_message = "//raise event / data_incoming";
 					tcp_listeners[HTONS(temp_port)].data = tcp.data;
 					tcp_listeners[HTONS(temp_port)].data_length = HTONS(ip.packetsize) - (ip.headerlen * 4) - (tcp.headerlen * 4);
 					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
 					callback_func(tcp_listeners[HTONS(temp_port)]);
+					kprintf("Callback called\n");
+					sleep(5000);
 				}
 			} else {
 				//do reset
