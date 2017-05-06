@@ -54,14 +54,15 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		if(tcp_listeners[HTONS(temp_port)].con_est) {
 			if(!tcp.flags.rst) {
 				if(tcp.flags.ack && tcp.flags.psh) {
-					kprintf("Callback...\n");
-					sleep(5000);
 					tcp_listeners[HTONS(temp_port)].data = tcp.data;
 					tcp_listeners[HTONS(temp_port)].data_length = HTONS(ip.packetsize) - (ip.headerlen * 4) - (tcp.headerlen * 4);
 					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
-					kprintf("Callback...\n");
+					
+					kprintf("Callback-Pointer: 0x%x\n",callback_func);
 					sleep(5000);
+
 					callback_func(tcp_listeners[HTONS(temp_port)]);
+					
 					kprintf("Callback called\n");
 					sleep(5000);
 				}
