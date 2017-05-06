@@ -7,6 +7,7 @@ void handle_telnet(struct tcp_callback cb) {
 	for(int i=0;i<cb.data_length;i++) {
 		kprintf("%c\n",cb.data[i]);
 	}
+	sleep(5000);
 }
 
 void init_telnet(void) {
