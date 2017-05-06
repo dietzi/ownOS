@@ -257,7 +257,7 @@ void StackTrace(unsigned int MaxFrames)
     while(frame < MaxFrames)
     {
         unsigned int eip = ebp[1];
-		kprintf("%d: 0x%x - ",frame,eip);
+		kprintf("%d: ",frame);
         if(eip == 0) {
             // No caller on stack
 			kprintf("End\n");
@@ -265,9 +265,8 @@ void StackTrace(unsigned int MaxFrames)
 		}
         // Unwind to previous stack frame
         ebp = ebp[0];
-        unsigned int * arguments = &ebp[2];
-        kprintf(" EIP: 0x%x - ARG1: 0x%x - ARG2: 0x%x\n", eip, arguments[0], arguments[1]);
-		kprintf(" EIP: %c - %s\n", &eip, &eip);
+        //unsigned int * arguments = &ebp[2];
+        kprintf("0x%x\n", eip);
 		frame++;
     }
 }
@@ -291,7 +290,7 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("esp    -> %d (0x%x)\n",cpu->esp,cpu->esp);
     kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
 	kprintf("\n");
-	StackTrace(8); //(uint32_t)&cpu);
+	StackTrace(24); //(uint32_t)&cpu);
 	sleep(2000);
 }
 
