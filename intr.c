@@ -254,8 +254,6 @@ void StackTrace(unsigned int MaxFrames)
     //  Return address in calling function
     //  EBP of calling function (pointed to by current EBP)
     unsigned int * ebp = &MaxFrames - 2;
-	
-    kprintf("Start: 0x%x     End: 0x%x\n",&kernel_start,&kernel_end);
 	kprintf("Stack trace:\n");
 	int frame = 0;
     while(frame < MaxFrames)
