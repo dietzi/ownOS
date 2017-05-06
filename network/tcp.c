@@ -55,9 +55,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			if(!tcp.flags.rst) {
 				if(tcp.flags.ack && tcp.flags.psh) {
 					tcp_listeners[HTONS(temp_port)].data = tcp.data;
-					tcp_listeners[HTONS(temp_port)].data_length = HTONS(ip.packetsize) - (ip.headerlen * 4) - (tcp.headerlen * 4);
-					kprintf("IP Data-Length: %d\n",HTONS(ip.packetsize));
-					kprintf("IP Data-Length: %d\n",(ip.packetsize));
+					tcp_listeners[HTONS(temp_port)].data_length = (ip.packetsize) - (ip.headerlen * 4) - (tcp.headerlen * 4);
 					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
 					callback_func(tcp_listeners[HTONS(temp_port)]);
 				}
