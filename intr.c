@@ -292,6 +292,8 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("esp    -> %d (0x%x)\n",cpu->esp,cpu->esp);
     kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
 	kprintf("\n");
+    unsigned int * ebp = &cpu->ebp;
+	kprintf("EIP: 0x%x\n",ebp[1]);
 	StackTrace(23); //(uint32_t)&cpu);
 	sleep(2000);
 }
