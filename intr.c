@@ -258,7 +258,7 @@ void StackTrace(unsigned int MaxFrames)
     {
         unsigned int eip = ebp[1];
 		kprintf("%d: ",frame);
-        if(eip == 0) {
+        if(eip == 0 || eip == 0xffffffff || strlen(eip) < 6) {
             // No caller on stack
 			kprintf("End\n");
             break;
