@@ -106,7 +106,7 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 		return false;
 	} else {
 		struct tcp_callback cb = {
-			.callback_pointer = &callback_pointer,
+			.callback_pointer = callback_pointer,
 			.port = 23,
 			.con_est = false,
 			.enabled = true,
