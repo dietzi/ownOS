@@ -202,5 +202,5 @@ struct tcp_callback {
 	struct tcp_header tcp;
 	int data_length;
 	uint8_t *data;
-};
+} __attribute__((packed));
 #endif

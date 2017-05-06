@@ -57,14 +57,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 					tcp_listeners[HTONS(temp_port)].data = tcp.data;
 					tcp_listeners[HTONS(temp_port)].data_length = HTONS(ip.packetsize) - (ip.headerlen * 4) - (tcp.headerlen * 4);
 					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
-					
-					kprintf("Callback-Pointer: 0x%x\n",callback_func);
-					sleep(5000);
-
 					callback_func(tcp_listeners[HTONS(temp_port)]);
-					
-					kprintf("Callback called\n");
-					sleep(5000);
 				}
 			} else {
 				//do reset
@@ -107,10 +100,14 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 	} else {
 		struct tcp_callback cb = {
 			.callback_pointer = callback_pointer,
-			.port = 23,
+			.port = port,
 			.con_est = false,
 			.enabled = true,
 		};
+		if(cb.callback_pointer == NULL) {
+			kprintf("Callback not set\n");
+			return false;
+		}
 		tcp_listeners[port] = cb;
 		tcp_listeners[port].enabled = true;
 		return true;
