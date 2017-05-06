@@ -1,4 +1,6 @@
 #include "includes.h"
+extern const unsigned int kernel_start;
+extern const unsigned int kernel_end;
 
 extern void intr_stub_0(void);
 extern void intr_stub_1(void);
@@ -258,7 +260,7 @@ void StackTrace(unsigned int MaxFrames)
     {
         unsigned int eip = ebp[1];
 		kprintf("%d: ",frame);
-        if(eip == 0 || eip == 0xffffffff || strlen(eip) < 6) {
+        if(eip < kernel_start || eip > kernel_end) {
             // No caller on stack
 			kprintf("End\n");
             break;
@@ -290,7 +292,7 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("esp    -> %d (0x%x)\n",cpu->esp,cpu->esp);
     kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
 	kprintf("\n");
-	StackTrace(24); //(uint32_t)&cpu);
+	StackTrace(23); //(uint32_t)&cpu);
 	sleep(2000);
 }
 
