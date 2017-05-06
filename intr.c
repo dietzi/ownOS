@@ -292,7 +292,7 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("esp    -> %d (0x%x)\n",cpu->esp,cpu->esp);
     kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
 	kprintf("\n");
-			uint8_t* ops = (uint8_t*)(cpu->eip + (cpu->cs << 4));
+			uint8_t* ops = (cpu->eip + (cpu->cs << 4));
 			uint16_t opcode;
 			opcode = ops[0];
 			if (opcode == 0x66) {
