@@ -266,7 +266,8 @@ void StackTrace(unsigned int MaxFrames)
         // Unwind to previous stack frame
         ebp = ebp[0];
         unsigned int * arguments = &ebp[2];
-        kprintf("  EIP: 0x%x\n", eip);
+        kprintf(" EIP: 0x%x - ARG1: 0x%x - ARG2: 0x%x\n", eip, arguments[0], arguments[1]);
+		kprintf(" EIP: %c - %s\n", &eip, &eip);
 		frame++;
     }
 }
