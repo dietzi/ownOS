@@ -4,10 +4,10 @@ void init_telnet(void);
 
 void handle_telnet(struct tcp_callback cb) {
 	kprintf("Telnet-Data:\n");
+	sleep(5000);
 	for(int i=0;i<cb.data_length;i++) {
 		kprintf("%c\n",cb.data[i]);
 	}
-	sleep(5000);
 }
 
 void init_telnet(void) {
