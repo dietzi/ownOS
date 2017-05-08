@@ -9,7 +9,8 @@ uint32_t last_seq = 0;
 uint32_t last_ack = 0;
 bool con_est = false;
 
-struct tcp_callback tcp_listeners[65535];
+bool listener_enabled[65535];
+struct tcp_callback tcp_listeners[65535][0xf];
 
 void (*callback_func)(struct tcp_callback);
 
@@ -41,53 +42,55 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.fragment = HTONS(ip.fragment);
 	ip.id = HTONS(ip.id);
 	
-	if(tcp_listeners[HTONS(temp_port)].enabled) {
-		tcp_listeners[HTONS(temp_port)].data = tcp_data;
-		tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
-		tcp_listeners[HTONS(temp_port)].tcp = tcp;
-		tcp_listeners[HTONS(temp_port)].ip = ip;
-		tcp_listeners[HTONS(temp_port)].ether = ether;
+	uint32_t socketID = (ip.sourceIP.ip1) + (ip.sourceIP.ip2 * 2) + (ip.sourceIP.ip3 * 3) + (ip.sourceIP.ip4 * 4) + (HTONS(tcp.source_port) * 5);
+	
+	if(listener_enabled[HTONS(temp_port)]) {
+		tcp_listeners[HTONS(temp_port)][socketID].data = tcp_data;
+		tcp_listeners[HTONS(temp_port)][socketID].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
+		tcp_listeners[HTONS(temp_port)][socketID].tcp = tcp;
+		tcp_listeners[HTONS(temp_port)][socketID].ip = ip;
+		tcp_listeners[HTONS(temp_port)][socketID].ether = ether;
 		
 		/*if(tcp.flags.ack) {
-			kprintf("ACK: %d - %d\n",tcp.ack_number,(tcp_listeners[HTONS(temp_port)].fin_seq + 1));
-			kprintf("SEQ: %d - %d\n",tcp.sequence_number,(tcp_listeners[HTONS(temp_port)].fin_ack));
+			kprintf("ACK: %d - %d\n",tcp.ack_number,(tcp_listeners[HTONS(temp_port)][socketID].fin_seq + 1));
+			kprintf("SEQ: %d - %d\n",tcp.sequence_number,(tcp_listeners[HTONS(temp_port)][socketID].fin_ack));
 		}*/
 		
 		if(tcp.flags.fin && tcp.flags.ack &&
-					tcp.ack_number != HTONL(tcp_listeners[HTONS(temp_port)].fin_seq + 1) &&
-					tcp.sequence_number != HTONL(tcp_listeners[HTONS(temp_port)].fin_ack)) {
+					tcp.ack_number != HTONL(tcp_listeners[HTONS(temp_port)][socketID].fin_seq + 1) &&
+					tcp.sequence_number != HTONL(tcp_listeners[HTONS(temp_port)][socketID].fin_ack)) {
 			tcp.flags.fin = 1;
 			tcp.flags.ack = 1;
 			uint32_t ack_temp = tcp.ack_number;
 			tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 			tcp.sequence_number = ack_temp;
-			tcp_listeners[HTONS(temp_port)].fin_seq = HTONL(tcp.sequence_number);
-			tcp_listeners[HTONS(temp_port)].fin_ack = HTONL(tcp.ack_number);
+			tcp_listeners[HTONS(temp_port)][socketID].fin_seq = HTONL(tcp.sequence_number);
+			tcp_listeners[HTONS(temp_port)][socketID].fin_ack = HTONL(tcp.ack_number);
 			sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 		} else if((!tcp.flags.fin && tcp.flags.ack &&
-					tcp.ack_number == HTONL(tcp_listeners[HTONS(temp_port)].fin_seq + 1) &&
-					tcp.sequence_number == HTONL(tcp_listeners[HTONS(temp_port)].fin_ack)) || tcp.flags.rst) {
-			tcp_listeners[HTONS(temp_port)].fin_seq = 0;
-			tcp_listeners[HTONS(temp_port)].fin_ack = 0;
+					tcp.ack_number == HTONL(tcp_listeners[HTONS(temp_port)][socketID].fin_seq + 1) &&
+					tcp.sequence_number == HTONL(tcp_listeners[HTONS(temp_port)][socketID].fin_ack)) || tcp.flags.rst) {
+			tcp_listeners[HTONS(temp_port)][socketID].fin_seq = 0;
+			tcp_listeners[HTONS(temp_port)][socketID].fin_ack = 0;
 			uint32_t ack_temp = tcp.ack_number;
 			tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 			tcp.sequence_number = ack_temp;
 			sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
-			tcp_listeners[HTONS(temp_port)].con_est = false;
+			tcp_listeners[HTONS(temp_port)][socketID].con_est = false;
 		} else {
-			if(tcp_listeners[HTONS(temp_port)].con_est) { //connection established
+			if(tcp_listeners[HTONS(temp_port)][socketID].con_est) { //connection established
 				if(tcp.flags.ack && tcp.flags.psh) { //got packet
 					//ACK received packet
 					tcp.flags.psh = 0;
 					uint32_t ack_temp = tcp.ack_number;
-					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + tcp_listeners[HTONS(temp_port)].data_length);
+					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + tcp_listeners[HTONS(temp_port)][socketID].data_length);
 					tcp.sequence_number = ack_temp;
-					tcp_listeners[HTONS(temp_port)].last_seq = HTONL(tcp.sequence_number);
-					tcp_listeners[HTONS(temp_port)].last_ack = HTONL(tcp.ack_number);
-					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp_listeners[HTONS(temp_port)].data, 0);
+					tcp_listeners[HTONS(temp_port)][socketID].last_seq = HTONL(tcp.sequence_number);
+					tcp_listeners[HTONS(temp_port)][socketID].last_ack = HTONL(tcp.ack_number);
+					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp_listeners[HTONS(temp_port)][socketID].data, 0);
 					
-					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
-					callback_func(tcp_listeners[HTONS(temp_port)]);
+					callback_func = tcp_listeners[HTONS(temp_port)][socketID].callback_pointer;
+					callback_func(tcp_listeners[HTONS(temp_port)][socketID]);
 				}
 			} else { //no connection
 				if(tcp.flags.syn && !tcp.flags.ack) { //asking for connection
@@ -95,20 +98,20 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 					tcp.flags.ack = 1;
 					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 					tcp.sequence_number = HTONL(tcp.sequence_number);
-					tcp_listeners[HTONS(temp_port)].last_seq = HTONL(tcp.sequence_number);
-					tcp_listeners[HTONS(temp_port)].last_ack = HTONL(tcp.ack_number);
+					tcp_listeners[HTONS(temp_port)][socketID].last_seq = HTONL(tcp.sequence_number);
+					tcp_listeners[HTONS(temp_port)][socketID].last_ack = HTONL(tcp.ack_number);
 					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 				}
 				if(!tcp.flags.syn && tcp.flags.ack) { //ack connection
-					if(tcp_listeners[HTONS(temp_port)].last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == tcp_listeners[HTONS(temp_port)].last_seq + 1) {
-						tcp_listeners[HTONS(temp_port)].con_est = true;
+					if(tcp_listeners[HTONS(temp_port)][socketID].last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == tcp_listeners[HTONS(temp_port)][socketID].last_seq + 1) {
+						tcp_listeners[HTONS(temp_port)][socketID].con_est = true;
 						tcp_data[0] = 0xff;
 						tcp_data[1] = 0xff;
 						tcp_data[2] = 0xff;
-						tcp_listeners[HTONS(temp_port)].data = tcp_data;
-						tcp_listeners[HTONS(temp_port)].data_length = 3;
-						callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
-						callback_func(tcp_listeners[HTONS(temp_port)]);
+						tcp_listeners[HTONS(temp_port)][socketID].data = tcp_data;
+						tcp_listeners[HTONS(temp_port)][socketID].data_length = 3;
+						callback_func = tcp_listeners[HTONS(temp_port)][socketID].callback_pointer;
+						callback_func(tcp_listeners[HTONS(temp_port)][socketID]);
 					}
 				}
 			}
@@ -117,27 +120,30 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 }
 
 bool register_tcp_listener(int port, void *callback_pointer) {
-	if(tcp_listeners[port].enabled) {
+	if(listener_enabled[port] == true) {
 		return false;
 	} else {
-		struct tcp_callback cb = {
-			.callback_pointer = callback_pointer,
-			.port = port,
-			.con_est = false,
-			.enabled = true,
-		};
-		if(cb.callback_pointer == NULL) {
-			kprintf("Callback not set\n");
-			return false;
+		listener_enabled[port] = true;
+		for(int i=0;i<330226;i++) {
+			struct tcp_callback cb = {
+				.callback_pointer = callback_pointer,
+				.port = port,
+				.con_est = false,
+				.enabled = true,
+			};
+			if(cb.callback_pointer == NULL) {
+				kprintf("Callback not set\n");
+				return false;
+			}
+			tcp_listeners[port][i] = cb;
+			tcp_listeners[port][i].enabled = true;
 		}
-		tcp_listeners[port] = cb;
-		tcp_listeners[port].enabled = true;
 		return true;
 	}
 }
 
 void closeCon(struct tcp_callback cb) {
-	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
+	if(tcp_listeners[cb.port][cb.socketID].enabled && tcp_listeners[cb.port][cb.socketID].con_est) {
 		sleep(1000);
 		uint32_t ack_temp = cb.tcp.sequence_number;
 		uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number) + cb.data_length);
@@ -153,14 +159,14 @@ void closeCon(struct tcp_callback cb) {
 		cb.tcp.flags.cwr = 0;
 		cb.fin_ack = HTONL(ack_temp) + 2;
 		cb.fin_seq = HTONL(seq_temp);
-		tcp_listeners[cb.port].fin_ack = cb.fin_ack;
-		tcp_listeners[cb.port].fin_seq = cb.fin_seq;
+		tcp_listeners[cb.port][cb.socketID].fin_ack = cb.fin_ack;
+		tcp_listeners[cb.port][cb.socketID].fin_seq = cb.fin_seq;
 		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, 0);
 	}	
 }
 
 void sendData(struct tcp_callback cb) {
-	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
+	if(tcp_listeners[cb.port][cb.socketID].enabled && tcp_listeners[cb.port][cb.socketID].con_est) {
 		uint32_t ack_temp = cb.tcp.sequence_number;
 		uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number));
 		cb.tcp.sequence_number = seq_temp;
