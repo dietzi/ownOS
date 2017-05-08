@@ -89,8 +89,8 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				if(!tcp.flags.syn && tcp.flags.ack) { //ack connection
 					if(tcp_listeners[HTONS(temp_port)].last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == tcp_listeners[HTONS(temp_port)].last_seq + 1) {
 						tcp_listeners[HTONS(temp_port)].con_est = true;
-						callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
-						callback_func(tcp_listeners[HTONS(temp_port)]);
+						//callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
+						//callback_func(tcp_listeners[HTONS(temp_port)]);
 					}
 				}
 			}
@@ -120,8 +120,10 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 
 void sendData(struct tcp_callback cb) {
 	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
-		cb.tcp.sequence_number = HTONL(HTONL(cb.tcp.sequence_number) + cb.data_length);
-		cb.tcp.ack_number = (cb.tcp.ack_number);
+		uint32_t ack_temp = cb.tcp.sequence_number;
+		uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number) + cb.data_length);
+		cb.tcp.sequence_number = seq_temp;
+		cb.tcp.ack_number = ack_temp;
 		cb.tcp.flags.ack = 0;
 		cb.tcp.flags.psh = 1;
 		cb.tcp.flags.rst = 0;
