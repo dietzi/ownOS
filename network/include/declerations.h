@@ -200,7 +200,7 @@ struct tcp_callback {
 	uint32_t last_seq;
 	uint32_t fin_seq;
 	uint32_t fin_ack;
-	uint32_t socketID;
+	uint32_t socketID; //30
 	bool enabled;
 	struct tcp_header tcp;
 	struct ether_header ether;

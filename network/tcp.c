@@ -9,8 +9,8 @@ uint32_t last_seq = 0;
 uint32_t last_ack = 0;
 bool con_est = false;
 
-bool listener_enabled[65535];
-struct tcp_callback tcp_listeners[65537][0x41];
+bool listener_enabled[65536];
+struct tcp_callback tcp_listeners[65536][51];
 
 void (*callback_func)(struct tcp_callback);
 
@@ -42,7 +42,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.fragment = HTONS(ip.fragment);
 	ip.id = HTONS(ip.id);
 	
-	uint32_t socketID = (ip.sourceIP.ip1) + (ip.sourceIP.ip2 * 2) + (ip.sourceIP.ip3 * 3) + (ip.sourceIP.ip4 * 4) + (HTONS(tcp.source_port) * 5);
+	uint32_t socketID = (ip.sourceIP.ip1) + (ip.sourceIP.ip2 * 2) + (ip.sourceIP.ip3 * 3) + (ip.sourceIP.ip4 * 4);
 	
 	if(listener_enabled[HTONS(temp_port)]) {
 		tcp_listeners[HTONS(temp_port)][socketID].data = tcp_data;
