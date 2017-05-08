@@ -50,7 +50,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		
 		if(tcp.flags.fin && tcp.flags.ack &&
 					tcp.ack_number == HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_seq) + 1) &&
-					tcp.sequence_number == tcp_listeners[HTONS(temp_port)].fin_ack) {
+					tcp.sequence_number == HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_ack) + 2)) {
 			tcp.flags.fin = 0;
 			tcp.flags.ack = 1;
 			uint32_t ack_temp = tcp.ack_number;
