@@ -260,7 +260,7 @@ void StackTrace(unsigned int MaxFrames)
     {
         unsigned int eip = ebp[1];
 		kprintf("%d: ",frame);
-        if(eip < &kernel_start || eip > &kernel_end) {
+        if(eip <= 0) { // &kernel_start || eip > &kernel_end) {
             // No caller on stack
 			kprintf("End\n");
             break;
