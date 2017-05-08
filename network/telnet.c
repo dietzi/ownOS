@@ -6,9 +6,9 @@ uint8_t *buffer;
 int buf_length = 0;
 
 void checker(uint8_t *cmd) {
+	kprintf("%s\n",cmd);
 	if(check_command("exit",cmd)) kprintf("Funktioniert 1\n");
 	if(check_command(cmd,"exit")) kprintf("Funktioniert 2\n");
-	kprintf("%s\n",cmd);
 }
 
 void check_telnet_command(void) {
