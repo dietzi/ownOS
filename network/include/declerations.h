@@ -198,6 +198,8 @@ struct tcp_callback {
 	bool con_est;
 	uint32_t last_ack;
 	uint32_t last_seq;
+	uint32_t fin_seq;
+	uint32_t fin_ack;
 	bool enabled;
 	struct tcp_header tcp;
 	int data_length;
