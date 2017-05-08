@@ -8,11 +8,15 @@ int buf_length = 0;
 bool check(char *cmd, char *input) {
 	kprintf("%d - %d\n",strlen(cmd),strlen(input));
 	if(strlen(input)+1!=strlen(cmd)+2) return false;
-	
+	for(int i=0;i<strlen(cmd)+2;i++) {
+		//if(cmd[i] != input[i]) return false;
+		kprintf("%c - %c\n",cmd[i],input[i]);
+	}
+	return true;
 }
 
 void checker(uint8_t *cmd) {
-	kprintf("%s\n",cmd);
+	//kprintf("%s\n",cmd);
 	if(check("exit",cmd)) kprintf("Funktioniert 1\n");
 	if(check("hello",cmd)) kprintf("Funktioniert 2\n");
 }
