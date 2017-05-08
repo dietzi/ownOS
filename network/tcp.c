@@ -127,11 +127,11 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 
 void closeCon(struct tcp_callback cb) {
 	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
-		uint32_t ack_temp = HTONL(cb.last_seq);
-		uint32_t seq_temp = HTONL(cb.last_ack);
+		uint32_t ack_temp = cb.tcp.ack_number;
+		uint32_t seq_temp = cb.tcp.sequence_number;
 		cb.tcp.sequence_number = seq_temp;
 		cb.tcp.ack_number = ack_temp;
-		cb.tcp.flags.ack = 1;
+		cb.tcp.flags.ack = 0;
 		cb.tcp.flags.psh = 0;
 		cb.tcp.flags.rst = 0;
 		cb.tcp.flags.syn = 0;
