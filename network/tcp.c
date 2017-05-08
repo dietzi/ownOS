@@ -25,8 +25,10 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	for(int i=20;i<(tcp.headerlen * 4);i++) {
 		tcp.options[i - 20] = ip.data[i];
 	}
+	uint8_t *tcp_data;
 	for(int i=(tcp.headerlen * 4);i< ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);i++) {
-		tcp.data[i - (tcp.headerlen * 4)] = ip.data[i];
+		tcp_data[i - (tcp.headerlen * 4)] = ip.data[i];
+		kprintf("Debug %d: %s\n",i - (tcp.headerlen * 4),ip.data[i]);
 	}
 	/*kprintf("Source-Port: %d\n",HTONS(tcp.source_port));
 	kprintf("Destination-Port: %d\n",HTONS(tcp.destination_port));
@@ -60,7 +62,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		if(tcp_listeners[HTONS(temp_port)].con_est) {
 			if(!tcp.flags.rst) {
 				if(tcp.flags.ack && tcp.flags.psh) {
-					tcp_listeners[HTONS(temp_port)].data = &tcp.data;
+					tcp_listeners[HTONS(temp_port)].data = &tcp_data;
 					tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
 					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
 					callback_func(tcp_listeners[HTONS(temp_port)]);
