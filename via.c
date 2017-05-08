@@ -340,6 +340,12 @@ void via_handle_intr(void) {
 				}
 			} else if(ether.type <= 0x05DC) { //Ethernet I
 				kprintf("Ethernet I Pakete werden nicht behandelt\n");
+				kprintf("Sender-MAC: %x:%x:%x:%x:%x:%x\n",ether.sender_mac.mac1,
+															ether.sender_mac.mac2,
+															ether.sender_mac.mac3,
+															ether.sender_mac.mac4,
+															ether.sender_mac.mac5,
+															ether.sender_mac.mac6);
 			}
 			rx1[i]->status = 0x80000000;
 		}
