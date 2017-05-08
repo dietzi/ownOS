@@ -66,6 +66,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			if(tcp_listeners[HTONS(temp_port)].con_est) { //connection established
 				if(tcp.flags.ack && tcp.flags.psh) { //got packet
 					//ACK received packet
+					tcp.flags.psh = 0;
 					uint32_t ack_temp = tcp.ack_number;
 					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + tcp_listeners[HTONS(temp_port)].data_length);
 					tcp.sequence_number = ack_temp;
