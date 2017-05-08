@@ -62,7 +62,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		if(tcp_listeners[HTONS(temp_port)].con_est) {
 			if(!tcp.flags.rst) {
 				if(tcp.flags.ack && tcp.flags.psh) {
-					tcp_listeners[HTONS(temp_port)].data = &tcp_data;
+					tcp_listeners[HTONS(temp_port)].data = tcp_data;
 					tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
 					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
 					callback_func(tcp_listeners[HTONS(temp_port)]);
