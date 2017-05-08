@@ -13,8 +13,7 @@ bool check(char *cmd, char *input) {
 
 void checker(uint8_t *cmd) {
 	kprintf("%s\n",cmd);
-	if(check((char*)&"exit",cmd)) kprintf("Funktioniert 1\n");
-	if(check(&"exit",cmd)) kprintf("Funktioniert 1\n");
+	if(check((uint8_t*)"exit",cmd)) kprintf("Funktioniert 1\n");
 }
 
 void check_telnet_command(void) {
