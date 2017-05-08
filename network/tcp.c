@@ -59,6 +59,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	
 	if(tcp_listeners[HTONS(temp_port)].enabled) {
 		if(tcp.flags.fin) {
+			tcp.flags.fin = 0;
 			tcp.flags.ack = 1;
 			tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 			tcp.sequence_number = HTONL(tcp.sequence_number);
