@@ -7,6 +7,7 @@ int buf_length = 0;
 
 void check_telnet_command(void) {
 	int last_i = 0;
+begin:
 	for(int i=0; i < buf_length; i++) {
 		if(buffer[i] == '\r' && buffer[i+1] == '\n') {
 			if(i>0) {
@@ -20,6 +21,7 @@ void check_telnet_command(void) {
 				for(int j=last_i;j<last_i + buf_length;j++) {
 					buffer[j - last_i] = buffer[j];
 				}
+				goto begin;
 			}
 		}
 	}
