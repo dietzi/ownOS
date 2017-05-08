@@ -47,7 +47,12 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		tcp_listeners[HTONS(temp_port)].tcp = tcp;
 		tcp_listeners[HTONS(temp_port)].ip = ip;
 		tcp_listeners[HTONS(temp_port)].ether = ether;
-
+		
+		if(tcp.flags.ack) {
+			kprintf("%d - %d\n",tcp.ack_number,HTONL(tcp_listeners[HTONS(temp_port)].fin_seq + 1));
+			kprintf("%d - %d\n",tcp.sequence_number,HTONL(tcp_listeners[HTONS(temp_port)].fin_ack));
+		}
+		
 		/*if(tcp.flags.ack &&
 					tcp.ack_number == HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_seq) + 1) &&
 					tcp.sequence_number == HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_ack) + 2)) {
