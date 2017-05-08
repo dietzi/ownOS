@@ -5,6 +5,14 @@ void init_telnet(void);
 uint8_t *buffer;
 int buf_length = 0;
 
+void check_telnet_command(void) {
+	for(int i=0; i < buf_length; i++) {
+		if(buffer[i] == '\r' && buffer[i+1] == '\n') {
+			
+		}
+	}
+}
+
 void handle_telnet(struct tcp_callback cb) {
 	/*kprintf("Telnet-Data: %d\n",cb.data_length);
 	for(int i=0;i<cb.data_length;i++) {
@@ -23,6 +31,7 @@ void handle_telnet(struct tcp_callback cb) {
 			buffer[buf_length] = cb.data[i];
 			buf_length++;
 		}
+		check_telnet_command();
 	}
 	sendData(cb);
 }
