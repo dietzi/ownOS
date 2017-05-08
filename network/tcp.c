@@ -120,6 +120,8 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 
 void sendData(struct tcp_callback cb) {
 	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
+		cb.tcp.sequence_number = HTONL(cb.tcp.sequence_number);
+		cb.tcp.ack_number = HTONL(cb.tcp.ack_number);
 		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, cb.data_length);
 	}
 }
