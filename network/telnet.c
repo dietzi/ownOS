@@ -6,9 +6,17 @@ uint8_t *buffer;
 int buf_length = 0;
 
 void check_telnet_command(void) {
+	int last_i = 0;
 	for(int i=0; i < buf_length; i++) {
 		if(buffer[i] == '\r' && buffer[i+1] == '\n') {
-			
+			if(i>0) {
+				for(int j=last_i;j<i;j++) {
+					kprintf("%c",buffer[j]);
+				}
+				kprintf("\n");
+				i++;
+				last_i = i;
+			}
 		}
 	}
 }
