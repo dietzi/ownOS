@@ -48,7 +48,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		tcp_listeners[HTONS(temp_port)].ip = ip;
 		tcp_listeners[HTONS(temp_port)].ether = ether;
 		
-		if(tcp.flags.fin && tcp.flags.ack &&
+		if(tcp.flags.ack &&
 					tcp.ack_number == HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_seq) + 1) &&
 					tcp.sequence_number == HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_ack) + 2)) {
 			tcp.flags.fin = 0;
