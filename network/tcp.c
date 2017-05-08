@@ -28,7 +28,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	uint8_t *tcp_data;
 	for(int i=(tcp.headerlen * 4);i< (tcp.headerlen * 4) + (ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4));i++) {
 		tcp_data[i - (tcp.headerlen * 4)] = ip.data[i];
-		kprintf("Debug %d: %c   -   %s\n",i - (tcp.headerlen * 4),tcp_data[i - (tcp.headerlen * 4)],tcp_data[i - (tcp.headerlen * 4)]);
 	}
 	/*kprintf("Source-Port: %d\n",HTONS(tcp.source_port));
 	kprintf("Destination-Port: %d\n",HTONS(tcp.destination_port));
@@ -59,16 +58,14 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.id = HTONS(ip.id);
 	
 	if(tcp_listeners[HTONS(temp_port)].enabled) {
-		if(tcp_listeners[HTONS(temp_port)].con_est) {
-			if(!tcp.flags.rst) {
-				if(tcp.flags.ack && tcp.flags.psh) {
+		if(!tcp.flags.rst) {
+			if(tcp_listeners[HTONS(temp_port)].con_est) { //connection established
+				if(tcp.flags.ack && tcp.flags.psh) { //got packet
 					tcp_listeners[HTONS(temp_port)].data = tcp_data;
 					tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
 					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
 					callback_func(tcp_listeners[HTONS(temp_port)]);
 					//ACK received packet
-					//tcp.flags.syn = 0;
-					//tcp.flags.ack = 1;
 					uint32_t ack_temp = tcp.ack_number;
 					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + tcp_listeners[HTONS(temp_port)].data_length);
 					tcp.sequence_number = ack_temp;
@@ -76,12 +73,8 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 					tcp_listeners[HTONS(temp_port)].last_ack = HTONL(tcp.ack_number);
 					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 				}
-			} else {
-				//do reset
-			}
-		} else {
-			if(!tcp.flags.rst) {
-				if(tcp.flags.syn && !tcp.flags.ack) {
+			} else { //no connection
+				if(tcp.flags.syn && !tcp.flags.ack) { //asking for connection
 					tcp.flags.syn = 1;
 					tcp.flags.ack = 1;
 					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
@@ -90,7 +83,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 					tcp_listeners[HTONS(temp_port)].last_ack = HTONL(tcp.ack_number);
 					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 				}
-				if(!tcp.flags.syn && tcp.flags.ack) {
+				if(!tcp.flags.syn && tcp.flags.ack) { //ack connection
 					if(tcp_listeners[HTONS(temp_port)].last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == tcp_listeners[HTONS(temp_port)].last_seq + 1) {
 						tcp_listeners[HTONS(temp_port)].con_est = true;
 						/*tcp.flags.psh = 1;
@@ -104,8 +97,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 						sendTCPpacket(ether, ip, tcp, tcp.options, 0, data, 24);*/
 					}
 				}
-			} else {
-				//do reset
 			}
 		}
 	}
