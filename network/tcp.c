@@ -62,7 +62,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 					//tcp.flags.syn = 0;
 					//tcp.flags.ack = 1;
 					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + tcp_listeners[HTONS(temp_port)].data_length);
-					tcp.sequence_number = HTONL(tcp.sequence_number);
+					tcp.sequence_number = (tcp.sequence_number);
 					tcp_listeners[HTONS(temp_port)].last_seq = HTONL(tcp.sequence_number);
 					tcp_listeners[HTONS(temp_port)].last_ack = HTONL(tcp.ack_number);
 					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
