@@ -155,8 +155,8 @@ void closeCon(struct tcp_callback cb) {
 		cb.tcp.flags.urg = 0;
 		cb.tcp.flags.ece = 0;
 		cb.tcp.flags.cwr = 0;
-		cb.fin_ack = (ack_temp);
-		cb.fin_seq = (seq_temp);
+		cb.fin_ack = HTONL(ack_temp);
+		cb.fin_seq = HTONL(seq_temp);
 		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, 0);
 		kprintf("CloseCon: Closing connection\n");
 	}	
