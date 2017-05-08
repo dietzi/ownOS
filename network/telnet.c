@@ -6,8 +6,8 @@ uint8_t *buffer;
 int buf_length = 0;
 
 void checker(uint8_t *cmd) {
-	if(check_command(cmd,"exit")) kprintf("Funktioniert 1\n");
-	if(check_command(cmd,"exit\0")) kprintf("Funktioniert 2\n");
+	if(check_command("exit",cmd)) kprintf("Funktioniert 1\n");
+	if(check_command(cmd,"exit")) kprintf("Funktioniert 2\n");
 	kprintf("%s\n",cmd);
 }
 
