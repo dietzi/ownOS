@@ -48,7 +48,19 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		tcp_listeners[HTONS(temp_port)].ip = ip;
 		tcp_listeners[HTONS(temp_port)].ether = ether;
 		
-		if(tcp.flags.fin) {
+		if(tcp.flags.fin && tcp.flags.ack &&
+					tcp.ack_number == HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_seq) + 1) &&
+					tcp.sequence_number == tcp_listeners[HTONS(temp_port)].fin_ack) {
+			tcp.flags.fin = 0;
+			tcp.flags.ack = 1;
+			uint32_t ack_temp = tcp.ack_number;
+			tcp.ack_number = HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_ack) + 1);
+			tcp.sequence_number = HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_seq) + 1);
+			tcp_listeners[HTONS(temp_port)].fin_seq = 0;
+			tcp_listeners[HTONS(temp_port)].fin_ack = 0;
+			sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
+			kprintf("CloseCon: Connection closed\n");
+		} else if(tcp.flags.fin && tcp.flags.ack) {
 			tcp.flags.fin = 1;
 			tcp.flags.ack = 1;
 			uint32_t ack_temp = tcp.ack_number;
@@ -141,9 +153,10 @@ void closeCon(struct tcp_callback cb) {
 		cb.tcp.flags.urg = 0;
 		cb.tcp.flags.ece = 0;
 		cb.tcp.flags.cwr = 0;
-		cb.fin_ack = (HTONL(seq_temp) + 2);
-		cb.fin_seq = HTONL(seq_temp);
+		cb.fin_ack = (ack_temp);
+		cb.fin_seq = (seq_temp);
 		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, 0);
+		kprintf("CloseCon: Closing connection\n");
 	}	
 }
 
