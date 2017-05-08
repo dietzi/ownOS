@@ -122,6 +122,14 @@ void sendData(struct tcp_callback cb) {
 	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
 		cb.tcp.sequence_number = HTONL(cb.tcp.sequence_number);
 		cb.tcp.ack_number = HTONL(cb.tcp.ack_number);
+		cb.tcp.flags.ack = 0;
+		cb.tcp.flags.psh = 1;
+		cb.tcp.flags.rst = 0;
+		cb.tcp.flags.syn = 0;
+		cb.tcp.flags.fin = 0;
+		cb.tcp.flags.urg = 0;
+		cb.tcp.flags.ece = 0;
+		cb.tcp.flags.cwr = 0;
 		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, cb.data_length);
 	}
 }
