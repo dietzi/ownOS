@@ -13,13 +13,13 @@ bool check(char *cmd, char *input) {
 	return true;
 }
 
-void checker(uint8_t *cmd) {
+void checker(uint8_t *cmd,struct tcp_callback cb) {
 	//kprintf("%s\n",cmd);
-	if(check("exit",cmd)) kprintf("Funktioniert 1\n");
+	if(check("exit",cmd)) closeCon(cb);
 	if(check("hello",cmd)) kprintf("Funktioniert 2\n");
 }
 
-void check_telnet_command(void) {
+void check_telnet_command(struct tcp_callback cb) {
 	int last_i = 0;
 begin:
 	for(int i=0; i < buf_length; i++) {
@@ -32,7 +32,7 @@ begin:
 					cmd[counter] = buffer[j];
 					counter++;
 				}
-				checker(cmd);
+				checker(cmd,cb);
 				pmm_free(cmd);
 				i++;
 				buf_length -= i;
@@ -59,14 +59,15 @@ void handle_telnet(struct tcp_callback cb) {
 		cb.data[4] = 0xfb;
 		cb.data[5] = 0x01;
 		cb.data_length = 6;
+		sendData(cb);
 	} else {
 		for(int i=0;i<cb.data_length;i++) {
 			buffer[buf_length] = cb.data[i];
 			buf_length++;
 		}
-		check_telnet_command();
+		sendData(cb);
+		check_telnet_command(cb);
 	}
-	sendData(cb);
 }
 
 void init_telnet(void) {

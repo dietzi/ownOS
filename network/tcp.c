@@ -3,6 +3,7 @@
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t *data, int data_length);
 bool register_tcp_listener(int port, void *callback_pointer);
 void sendData(struct tcp_callback cb);
+void closeCon(struct tcp_callback cb);
 
 uint32_t last_seq = 0;
 uint32_t last_ack = 0;
@@ -122,6 +123,26 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 		tcp_listeners[port].enabled = true;
 		return true;
 	}
+}
+
+void closeCon(struct tcp_callback cb) {
+	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
+		uint32_t ack_temp = cb.tcp.sequence_number;
+		uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number));
+		cb.tcp.sequence_number = seq_temp;
+		cb.tcp.ack_number = ack_temp;
+		cb.tcp.flags.ack = 1;
+		cb.tcp.flags.psh = 0;
+		cb.tcp.flags.rst = 0;
+		cb.tcp.flags.syn = 0;
+		cb.tcp.flags.fin = 1;
+		cb.tcp.flags.urg = 0;
+		cb.tcp.flags.ece = 0;
+		cb.tcp.flags.cwr = 0;
+		cb.fin_ack = 0;
+		cb.fin_seq = 0;
+		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, cb.data_length);
+	}	
 }
 
 void sendData(struct tcp_callback cb) {
