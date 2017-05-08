@@ -2,6 +2,7 @@
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t *data, int data_length);
 bool register_tcp_listener(int port, void *callback_pointer);
+void sendData(struct tcp_callback cb);
 
 uint32_t last_seq = 0;
 uint32_t last_ack = 0;
@@ -40,6 +41,12 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.id = HTONS(ip.id);
 	
 	if(tcp_listeners[HTONS(temp_port)].enabled) {
+		tcp_listeners[HTONS(temp_port)].data = tcp_data;
+		tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
+		tcp_listeners[HTONS(temp_port)].tcp = tcp;
+		tcp_listeners[HTONS(temp_port)].ip = ip;
+		tcp_listeners[HTONS(temp_port)].ether = ether;
+		
 		if(tcp.flags.fin) {
 			tcp.flags.fin = 1;
 			tcp.flags.ack = 1;
@@ -58,8 +65,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		} else if(!tcp.flags.rst) {
 			if(tcp_listeners[HTONS(temp_port)].con_est) { //connection established
 				if(tcp.flags.ack && tcp.flags.psh) { //got packet
-					tcp_listeners[HTONS(temp_port)].data = tcp_data;
-					tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
 					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
 					callback_func(tcp_listeners[HTONS(temp_port)]);
 					//ACK received packet
@@ -83,8 +88,8 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				if(!tcp.flags.syn && tcp.flags.ack) { //ack connection
 					if(tcp_listeners[HTONS(temp_port)].last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == tcp_listeners[HTONS(temp_port)].last_seq + 1) {
 						tcp_listeners[HTONS(temp_port)].con_est = true;
-						tcp_listeners[HTONS(temp_port)].data = tcp_data;
-						tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
+						//tcp_listeners[HTONS(temp_port)].data = tcp_data;
+						//tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
 						callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
 						callback_func(tcp_listeners[HTONS(temp_port)]);
 					}
@@ -123,9 +128,9 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 	}
 }
 
-void senData(struct tcp_callback cb) {
+void sendData(struct tcp_callback cb) {
 	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
-		
+		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, cb.data_length);
 	}
 }
 
@@ -138,6 +143,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	ip.checksum = 0;
 	ip.packetsize = HTONS((uint16_t)packetsize);
 	ip.headerlen = 5;
+	ip.version = 4;
 	tcp.checksum = 0;
 	tcp.headerlen = (packetsize - data_length - 20) / 4;
 	

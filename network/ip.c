@@ -44,11 +44,5 @@ void ip_handle(struct ip_header ip, struct ether_header ether) {
 				kprintf("Protokoll nicht implementiert: 0%x\n",ip.protocol);
 				break;
 		}
-		
-		/*kprintf("Daten: ");
-		for(int i=0;i < ip.data_length;i++) {
-			kprintf("0x%x ",ip.data[i]);
-		}
-		kprintf("\n");*/
 	}
 }
