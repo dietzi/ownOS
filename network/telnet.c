@@ -2,12 +2,14 @@
 
 void init_telnet(void);
 
+uint8_t *buffer;
+int buf_length = 0;
+
 void handle_telnet(struct tcp_callback cb) {
-	kprintf("Telnet-Data: %d\n",cb.data_length);
-	//sleep(5000);
+	/*kprintf("Telnet-Data: %d\n",cb.data_length);
 	for(int i=0;i<cb.data_length;i++) {
 		kprintf("%c\n",cb.data[i]);
-	}
+	}*/
 	if(cb.data_length == 3 && cb.data[0] == 0xff && cb.data[1] == 0xff && cb.data[2] == 0xff) {
 		cb.data[0] = 0xff;
 		cb.data[1] = 0xfd;
@@ -16,12 +18,18 @@ void handle_telnet(struct tcp_callback cb) {
 		cb.data[4] = 0xfb;
 		cb.data[5] = 0x01;
 		cb.data_length = 6;
+	} else {
+		for(int i=0;i<cb.data_length;i++) {
+			buffer[buf_length] = cb.data[i];
+			buf_length++;
+		}
 	}
 	sendData(cb);
 }
 
 void init_telnet(void) {
 	if(register_tcp_listener(23, handle_telnet)) {
+		buffer = pmm_alloc();
 		kprintf("Telnet registered\n");
 	} else {
 		kprintf("Telnet not registered\n");
