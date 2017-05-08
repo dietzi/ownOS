@@ -8,6 +8,15 @@ void handle_telnet(struct tcp_callback cb) {
 	for(int i=0;i<cb.data_length;i++) {
 		kprintf("%c\n",cb.data[i]);
 	}
+	if(cb.data_length == 3 && cb.data[0] == 0xff && cb.data[1] == 0xff && cb.data[2] == 0xff) {
+		cb.data[0] = 0xff;
+		cb.data[1] = 0xfd;
+		cb.data[2] = 0x01;
+		cb.data[3] = 0xff;
+		cb.data[4] = 0xfb;
+		cb.data[5] = 0x01;
+		cb.data_length = 6;
+	}
 	sendData(cb);
 }
 

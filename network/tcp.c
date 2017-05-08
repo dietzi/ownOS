@@ -90,8 +90,13 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				if(!tcp.flags.syn && tcp.flags.ack) { //ack connection
 					if(tcp_listeners[HTONS(temp_port)].last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == tcp_listeners[HTONS(temp_port)].last_seq + 1) {
 						tcp_listeners[HTONS(temp_port)].con_est = true;
-						//callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
-						//callback_func(tcp_listeners[HTONS(temp_port)]);
+						tcp_data[0] = 0xff;
+						tcp_data[1] = 0xff;
+						tcp_data[2] = 0xff;
+						tcp_listeners[HTONS(temp_port)].data = tcp_data;
+						tcp_listeners[HTONS(temp_port)].data_length = 3;
+						callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
+						callback_func(tcp_listeners[HTONS(temp_port)]);
 					}
 				}
 			}
