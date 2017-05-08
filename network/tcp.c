@@ -127,11 +127,11 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 
 void closeCon(struct tcp_callback cb) {
 	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
-		uint32_t ack_temp = 0; //cb.tcp.sequence_number;
+		uint32_t ack_temp = cb.tcp.sequence_number;
 		uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number) + cb.data_length);
 		cb.tcp.sequence_number = seq_temp;
 		cb.tcp.ack_number = ack_temp;
-		cb.tcp.flags.ack = 0;
+		cb.tcp.flags.ack = 1;
 		cb.tcp.flags.psh = 0;
 		cb.tcp.flags.rst = 0;
 		cb.tcp.flags.syn = 0;
@@ -141,7 +141,7 @@ void closeCon(struct tcp_callback cb) {
 		cb.tcp.flags.cwr = 0;
 		cb.fin_ack = ack_temp;
 		cb.fin_seq = seq_temp;
-		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, cb.data_length);
+		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, 0);
 	}	
 }
 
