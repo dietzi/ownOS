@@ -22,11 +22,14 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		tcpU.data[i] = ip.data[i];
 	}
 	tcp = tcpU.tcp;
+	int options_count = 0;
 	for(int i=20;i<(tcp.headerlen * 4);i++) {
 		tcp.options[i - 20] = ip.data[i];
+		options_count++;
 	}
+	kprintf("Options-Count: %d\n",options_count);
 	uint8_t *tcp_data;
-	for(int i=(tcp.headerlen * 4);i< ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);i++) {
+	for(int i=(tcp.headerlen * 4);i< (tcp.headerlen * 4) + (ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4));i++) {
 		tcp_data[i - (tcp.headerlen * 4)] = ip.data[i];
 		kprintf("Debug %d: %s\n",i - (tcp.headerlen * 4),ip.data[i]);
 	}
