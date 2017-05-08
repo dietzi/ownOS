@@ -29,24 +29,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	for(int i=(tcp.headerlen * 4);i< (tcp.headerlen * 4) + (ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4));i++) {
 		tcp_data[i - (tcp.headerlen * 4)] = ip.data[i];
 	}
-	/*kprintf("Source-Port: %d\n",HTONS(tcp.source_port));
-	kprintf("Destination-Port: %d\n",HTONS(tcp.destination_port));
-	kprintf("Sequence: %d\n",HTONL(tcp.sequence_number));
-	kprintf("ACK-Number: %d\n",HTONL(tcp.ack_number));
-	kprintf("Header-Length: %d\n",tcp.headerlen * 4);
-	kprintf("  CWR: %d\n",tcp.flags.cwr);
-	kprintf("  ECE: %d\n",tcp.flags.ece);
-	kprintf("  URG: %d\n",tcp.flags.urg);
-	kprintf("  ACK: %d\n",tcp.flags.ack);
-	kprintf("  PSH: %d\n",tcp.flags.psh);
-	kprintf("  RST: %d\n",tcp.flags.rst);
-	kprintf("  SYN: %d\n",tcp.flags.syn);
-	kprintf("  FIN: %d\n",tcp.flags.fin);
-	kprintf("Window-Size: %d\n",HTONS(tcp.window));
-	kprintf("Checksum: 0x%x\n",HTONS(tcp.checksum));
-	kprintf("Urgent-Pointer: 0x%x\n",HTONS(tcp.urgent_pointer));
-	
-	kprintf("\n");*/
 	
 	uint16_t temp_port = tcp.destination_port;
 	tcp.destination_port = tcp.source_port;
@@ -101,6 +83,8 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				if(!tcp.flags.syn && tcp.flags.ack) { //ack connection
 					if(tcp_listeners[HTONS(temp_port)].last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == tcp_listeners[HTONS(temp_port)].last_seq + 1) {
 						tcp_listeners[HTONS(temp_port)].con_est = true;
+						tcp_listeners[HTONS(temp_port)].data = tcp_data;
+						tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
 					}
 				}
 			}
@@ -111,8 +95,8 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			tcp_listeners[HTONS(temp_port)].last_ack = 0;
 			tcp_listeners[HTONS(temp_port)].fin_seq = 0;
 			tcp_listeners[HTONS(temp_port)].fin_ack = 0;
-			sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 			tcp_listeners[HTONS(temp_port)].con_est = false;
+			sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 		}
 	}
 }
