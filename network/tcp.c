@@ -10,7 +10,7 @@ uint32_t last_ack = 0;
 bool con_est = false;
 
 bool listener_enabled[65535];
-struct tcp_callback tcp_listeners[65535][0xf];
+struct tcp_callback tcp_listeners[65535][0x9f];
 
 void (*callback_func)(struct tcp_callback);
 
