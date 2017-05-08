@@ -28,7 +28,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	uint8_t *tcp_data;
 	for(int i=(tcp.headerlen * 4);i< (tcp.headerlen * 4) + (ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4));i++) {
 		tcp_data[i - (tcp.headerlen * 4)] = ip.data[i];
-		kprintf("Debug %d: %c   -   %s\n",i - (tcp.headerlen * 4),ip.data[i],ip.data[i]);
+		kprintf("Debug %d: %c   -   %s\n",i - (tcp.headerlen * 4),tcp_data[i - (tcp.headerlen * 4)],tcp_data[i - (tcp.headerlen * 4)]);
 	}
 	/*kprintf("Source-Port: %d\n",HTONS(tcp.source_port));
 	kprintf("Destination-Port: %d\n",HTONS(tcp.destination_port));
