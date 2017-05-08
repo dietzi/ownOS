@@ -6,11 +6,9 @@ uint8_t *buffer;
 int buf_length = 0;
 
 bool check(char *cmd, char *input) {
-	kprintf("%d - %d\n",strlen(cmd),strlen(input));
 	if(strlen(input)+1!=strlen(cmd)+2) return false;
 	for(int i=0;i<strlen(cmd)+2;i++) {
-		//if(cmd[i] != input[i]) return false;
-		kprintf("%c - %c\n",cmd[i],input[i]);
+		if(cmd[i] != input[i+1]) return false;
 	}
 	return true;
 }
