@@ -59,14 +59,17 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	
 	if(tcp_listeners[HTONS(temp_port)].enabled) {
 		if(tcp.flags.fin) {
-			tcp.flags.fin = 0;
+			tcp.flags.fin = 1;
 			tcp.flags.ack = 1;
+			uint32_t ack_temp = tcp.ack_number;
 			tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
-			tcp.sequence_number = HTONL(tcp.sequence_number);
+			tcp.sequence_number = ack_temp;
 			tcp_listeners[HTONS(temp_port)].fin_seq = HTONL(tcp.sequence_number);
 			tcp_listeners[HTONS(temp_port)].fin_ack = HTONL(tcp.ack_number);
 			sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
-		} else if(!tcp.flags.fin && tcp.flags.ack && tcp_listeners[HTONS(temp_port)].fin_ack == HTONL(tcp_listeners[HTONS(temp_port)].fin_seq + 1)) {
+		} else if(!tcp.flags.fin && tcp.flags.ack &&
+					tcp.ack_number == HTONL(tcp_listeners[HTONS(temp_port)].fin_seq + 1) &&
+					tcp.sequence_number == HTONL(tcp_listeners[HTONS(temp_port)].fin_ack)) {
 			tcp_listeners[HTONS(temp_port)].fin_seq = 0;
 			tcp_listeners[HTONS(temp_port)].fin_ack = 0;
 			tcp_listeners[HTONS(temp_port)].con_est = false;
