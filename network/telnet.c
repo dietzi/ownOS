@@ -7,7 +7,8 @@ int buf_length = 0;
 
 bool check(char cmd[], char *input) {
 	kprintf("%d - %d\n",strlen(cmd),strlen(input));
-
+	if(strlen(input)!=strlen(cmd)) return false;
+	
 }
 
 void checker(uint8_t *cmd) {
