@@ -16,6 +16,7 @@ begin:
 		if(buffer[i] == '\r' && buffer[i+1] == '\n') {
 			if(i>0) {
 				uint8_t *cmd = pmm_alloc();
+				memset(cmd,0,200);
 				int counter = 0;
 				for(int j=last_i;j<i;j++) {
 					cmd[counter] = buffer[j];
