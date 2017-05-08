@@ -5,7 +5,7 @@ void init_telnet(void);
 uint8_t *buffer;
 int buf_length = 0;
 
-bool check(char cmd[], char *input) {
+bool check(char *cmd, char *input) {
 	kprintf("%d - %d\n",strlen(cmd),strlen(input));
 	if(strlen(input)!=strlen(cmd)) return false;
 	
@@ -13,8 +13,8 @@ bool check(char cmd[], char *input) {
 
 void checker(uint8_t *cmd) {
 	kprintf("%s\n",cmd);
-	if(check("exit\0",cmd)) kprintf("Funktioniert 1\n");
-	if(check(cmd,"exit\0")) kprintf("Funktioniert 2\n");
+	if(check((char*)"exit\0",cmd)) kprintf("Funktioniert 1\n");
+	if(check(cmd,(char*)"exit\0")) kprintf("Funktioniert 2\n");
 }
 
 void check_telnet_command(void) {
