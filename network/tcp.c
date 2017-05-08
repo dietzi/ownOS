@@ -72,7 +72,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 					tcp.sequence_number = ack_temp;
 					tcp_listeners[HTONS(temp_port)].last_seq = HTONL(tcp.sequence_number);
 					tcp_listeners[HTONS(temp_port)].last_ack = HTONL(tcp.ack_number);
-					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp_listeners[HTONS(temp_port)].data, tcp_listeners[HTONS(temp_port)].data_length);
+					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp_listeners[HTONS(temp_port)].data, 0);
 					
 					callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
 					callback_func(tcp_listeners[HTONS(temp_port)]);
