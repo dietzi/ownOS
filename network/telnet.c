@@ -15,7 +15,11 @@ void check_telnet_command(void) {
 				}
 				kprintf("\n");
 				i++;
+				buf_length -= i;
 				last_i = i;
+				for(int j=last_i;j<last_i + buf_length;j++) {
+					buffer[j - last_i] = buffer[j];
+				}
 			}
 		}
 	}
