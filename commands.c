@@ -10,7 +10,6 @@ bool check_command(char *cmd, char *input);
 extern struct task* first_task;
 
 bool check_command(char *cmd, char *input) {
-	kprintf("%d - %d\n",strlen(cmd),strlen(input));
 	if(strlen(input)!=strlen(cmd)) return false;
 	while(*cmd) {
 		if(*cmd!=*input) return false;
