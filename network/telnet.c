@@ -13,7 +13,7 @@ bool check(char *cmd, char *input) {
 
 void checker(uint8_t *cmd) {
 	kprintf("%s\n",cmd);
-	char *input = "exit";
+	char input[] = "exit";
 	if(check(input,cmd)) kprintf("Funktioniert 1\n");
 }
 
