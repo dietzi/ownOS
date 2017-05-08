@@ -18,10 +18,16 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		uint8_t data[20];
 	};
 	union tcpU tcpU;
-	for(int i=0;i<ip.data_length;i++) {
+	for(int i=0;i<20/*ip.data_length*/;i++) {
 		tcpU.data[i] = ip.data[i];
 	}
 	tcp = tcpU.tcp;
+	for(int i=20;i<(tcp.headerlen * 4);i++) {
+		tcp.options[i - 20] = ip.data[i];
+	}
+	for(int i=(tcp.headerlen * 4);i< ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);i++) {
+		tcp.data[i - (tcp.headerlen * 4)] = ip.data[i];
+	}
 	/*kprintf("Source-Port: %d\n",HTONS(tcp.source_port));
 	kprintf("Destination-Port: %d\n",HTONS(tcp.destination_port));
 	kprintf("Sequence: %d\n",HTONL(tcp.sequence_number));
