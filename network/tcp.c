@@ -57,12 +57,14 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			tcp_listeners[HTONS(temp_port)].fin_seq = HTONL(tcp.sequence_number);
 			tcp_listeners[HTONS(temp_port)].fin_ack = HTONL(tcp.ack_number);
 			sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
+			kprintf("Closing connection\n");
 		} else if((!tcp.flags.fin && tcp.flags.ack &&
 					tcp.ack_number == HTONL(tcp_listeners[HTONS(temp_port)].fin_seq + 1) &&
 					tcp.sequence_number == HTONL(tcp_listeners[HTONS(temp_port)].fin_ack)) || tcp.flags.rst) {
 			tcp_listeners[HTONS(temp_port)].fin_seq = 0;
 			tcp_listeners[HTONS(temp_port)].fin_ack = 0;
 			tcp_listeners[HTONS(temp_port)].con_est = false;
+			kprintf("Connection closed\n");
 		} else {
 			if(tcp_listeners[HTONS(temp_port)].con_est) { //connection established
 				if(tcp.flags.ack && tcp.flags.psh) { //got packet
