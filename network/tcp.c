@@ -48,11 +48,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		tcp_listeners[HTONS(temp_port)].ip = ip;
 		tcp_listeners[HTONS(temp_port)].ether = ether;
 		
-		if(tcp.flags.ack) {
-			kprintf("ACK: %d - %d\n",tcp.ack_number,(tcp_listeners[HTONS(temp_port)].fin_seq + 1));
-			kprintf("SEQ: %d - %d\n",tcp.sequence_number,(tcp_listeners[HTONS(temp_port)].fin_ack));
-		}
-		
 		/*if(tcp.flags.ack &&
 					tcp.ack_number == HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_seq) + 1) &&
 					tcp.sequence_number == HTONL(HTONL(tcp_listeners[HTONS(temp_port)].fin_ack) + 2)) {
@@ -161,6 +156,8 @@ void closeCon(struct tcp_callback cb) {
 		cb.tcp.flags.cwr = 0;
 		cb.fin_ack = HTONL(ack_temp) + 2;
 		cb.fin_seq = HTONL(seq_temp);
+		tcp_listeners[cb.port].fin_ack = cb.fin_ack;
+		tcp_listeners[cb.port].fin_seq = cb.fin_seq;
 		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, 0);
 		kprintf("CloseCon: Closing connection\n");
 	}	
