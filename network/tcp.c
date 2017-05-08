@@ -78,8 +78,8 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		} else if((!tcp.flags.fin && tcp.flags.ack &&
 					tcp.ack_number == HTONL(tcp_listeners[HTONS(temp_port)].fin_seq + 1) &&
 					tcp.sequence_number == HTONL(tcp_listeners[HTONS(temp_port)].fin_ack)) || tcp.flags.rst) {
-			tcp_listeners[HTONS(temp_port)].fin_seq = 0;
-			tcp_listeners[HTONS(temp_port)].fin_ack = 0;
+			//tcp_listeners[HTONS(temp_port)].fin_seq = 0;
+			//tcp_listeners[HTONS(temp_port)].fin_ack = 0;
 			tcp_listeners[HTONS(temp_port)].con_est = false;
 			kprintf("Connection closed\n");
 		} else {
