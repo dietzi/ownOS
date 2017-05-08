@@ -85,6 +85,8 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 						tcp_listeners[HTONS(temp_port)].con_est = true;
 						tcp_listeners[HTONS(temp_port)].data = tcp_data;
 						tcp_listeners[HTONS(temp_port)].data_length = ip.packetsize - (ip.headerlen * 4) - (tcp.headerlen * 4);
+						callback_func = tcp_listeners[HTONS(temp_port)].callback_pointer;
+						callback_func(tcp_listeners[HTONS(temp_port)]);
 					}
 				}
 			}
@@ -122,7 +124,9 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 }
 
 void senData(struct tcp_callback cb) {
-	
+	if(tcp_listeners[cb.port].enabled && tcp_listeners[cb.port].con_est) {
+		
+	}
 }
 
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
