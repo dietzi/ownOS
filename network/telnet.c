@@ -5,16 +5,24 @@ void init_telnet(void);
 uint8_t *buffer;
 int buf_length = 0;
 
+void checker(uint8_t *cmd) {
+	kprintf("%s\n",cmd);
+}
+
 void check_telnet_command(void) {
 	int last_i = 0;
 begin:
 	for(int i=0; i < buf_length; i++) {
 		if(buffer[i] == '\r' && buffer[i+1] == '\n') {
 			if(i>0) {
+				uint8_t *cmd = pmm_alloc();
+				int counter = 0;
 				for(int j=last_i;j<i;j++) {
-					kprintf("%c",buffer[j]);
+					cmd[counter] = buffer[j];
+					counter++;
 				}
-				kprintf("\n");
+				checker(cmd);
+				pmm_free(cmd);
 				i++;
 				buf_length -= i;
 				last_i = i;
