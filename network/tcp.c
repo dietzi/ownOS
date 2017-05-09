@@ -99,7 +99,11 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	ip.fragment = HTONS(ip.fragment);
 	ip.id = HTONS(ip.id);
 	
-	uint32_t socketID = (ip.sourceIP.ip1) + (ip.sourceIP.ip2 * 2) + (ip.sourceIP.ip3 * 3) + (ip.sourceIP.ip4 * 4) + (HTONS(tcp.destination_port) * 5);
+	uint32_t socketID = (ip.sourceIP.ip1) + checksum(ip.sourceIP.ip1,1) +
+						(ip.sourceIP.ip2) + checksum(ip.sourceIP.ip2,1) +
+						(ip.sourceIP.ip3) + checksum(ip.sourceIP.ip3,1) +
+						(ip.sourceIP.ip4) + checksum(ip.sourceIP.ip4,1) +
+						(HTONS(tcp.destination_port)) + checksum(tcp.destination_port,2);
 	
 	if(listeners[HTONS(temp_port)].tcp_listener.enabled) {
 		listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
