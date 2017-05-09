@@ -9,11 +9,13 @@ uint32_t last_seq = 0;
 uint32_t last_ack = 0;
 bool con_est = false;
 
+struct listeners {
+	struct tcp_callback tcp_listeners[65536];
+	
+};
+
 bool listener_enabled[65536];
 struct tcp_callback tcp_listeners[65536][51];
-struct tcp_callback tcp_listeners1[330226];
-
-hashtable_t tables[65536];
 
 void (*callback_func)(struct tcp_callback);
 
