@@ -9,9 +9,18 @@ uint32_t last_seq = 0;
 uint32_t last_ack = 0;
 bool con_est = false;
 
+struct clients {
+	bool con_est;
+	uint32_t last_ack;
+	uint32_t last_seq;
+	uint32_t fin_seq;
+	uint32_t fin_ack;
+};
+
 struct listeners {
 	struct tcp_callback tcp_listener;
-	struct tcp_callback **tcp_listeners1;
+	struct clients **clients;
+	int client_count;
 };
 
 struct listeners listeners[65536];
