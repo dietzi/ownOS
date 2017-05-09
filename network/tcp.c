@@ -56,6 +56,21 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 	return client;
 }
 
+bool del_client(uint32_t client_id, uint16_t port) {
+	struct clients *client = listeners[port].clients;
+	if(client->client_id == client_id) {
+			client = client->next;
+			return true;		
+	}
+	while(client->next != NULL) {
+		if(client->next->client_id == client_id) {
+			client->next = client->next->next;
+			return true;			
+		}
+	}
+	return false;
+}
+
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	struct tcp_header tcp;
 	union tcpU {
