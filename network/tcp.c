@@ -10,17 +10,18 @@ uint32_t last_ack = 0;
 bool con_est = false;
 
 struct clients {
+	uint32_t client_id;
 	bool con_est;
 	uint32_t last_ack;
 	uint32_t last_seq;
 	uint32_t fin_seq;
 	uint32_t fin_ack;
+	struct clients *next;
 };
 
 struct listeners {
 	struct tcp_callback tcp_listener;
-	struct clients **clients;
-	int client_count;
+	struct clients *clients;
 };
 
 struct listeners listeners[65536];
@@ -29,6 +30,10 @@ bool listener_enabled[65536];
 struct tcp_callback tcp_listeners[65536][51];
 
 void (*callback_func)(struct tcp_callback);
+
+void find_client(uint32_t client_id, uint16_t port) {
+	struct clients *client = listeners[port].clients;
+}
 
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	struct tcp_header tcp;
