@@ -40,6 +40,15 @@ struct clients *find_client(uint32_t client_id, uint16_t port) {
 	return NULL;
 }
 
+struct clients *add_client(uint32_t client_id, uint16_t port) {
+	struct clients *client = listeners[port].clients;
+	while(client != NULL) {
+		client = client->next;
+	}
+
+	client = pmm_alloc();
+}
+
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
 	struct tcp_header tcp;
 	union tcpU {
