@@ -11,7 +11,7 @@ bool con_est = false;
 
 struct listeners {
 	struct tcp_callback tcp_listener;
-	int **clients;
+	struct tcp_callback **tcp_listeners1;
 };
 
 struct listeners listeners[65536];
