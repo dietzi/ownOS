@@ -10,9 +10,11 @@ uint32_t last_ack = 0;
 bool con_est = false;
 
 struct listeners {
-	struct tcp_callback tcp_listeners[65536];
+	struct tcp_callback tcp_listener;
 	int **clients;
 };
+
+struct listeners listeners[65536];
 
 bool listener_enabled[65536];
 struct tcp_callback tcp_listeners[65536][51];
