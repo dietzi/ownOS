@@ -17,13 +17,13 @@ struct clients {
 	uint32_t fin_ack;
 };
 
-struct listeners {
+typedef struct listeners {
 	struct tcp_callback tcp_listener;
 	struct clients **clients;
 	int client_count;
-};
+} listeners_t;
 
-struct listeners listeners[65536];
+listeners_t listeners[65536];
 
 bool listener_enabled[65536];
 struct tcp_callback tcp_listeners[65536][51];
