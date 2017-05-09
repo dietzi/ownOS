@@ -11,7 +11,7 @@ bool con_est = false;
 
 struct listeners {
 	struct tcp_callback tcp_listeners[65536];
-	
+	int **clients;
 };
 
 bool listener_enabled[65536];
