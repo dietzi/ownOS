@@ -47,6 +47,13 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 	}
 
 	client = pmm_alloc();
+	client->client_id = client_id;
+	client->con_est = false;
+	client->last_ack = 0;
+	client->last_seq = 0;
+	client->fin_ack = 0;
+	client->fin_seq = 0;
+	return client;
 }
 
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
