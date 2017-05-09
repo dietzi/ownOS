@@ -18,4 +18,5 @@
 #include "include/timer.h"
 #include "include/pci.h"
 #include "include/via.h"
+#include "include/hashtable.h"
 #include "network/include/declerations.h"

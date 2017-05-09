@@ -13,6 +13,8 @@ bool listener_enabled[65536];
 struct tcp_callback tcp_listeners[65536][51];
 struct tcp_callback tcp_listeners1[330226];
 
+hashtable_t tables[65536];
+
 void (*callback_func)(struct tcp_callback);
 
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
