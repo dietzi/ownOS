@@ -254,17 +254,17 @@ void StackTrace(unsigned int MaxFrames)
     //  Return address in calling function
     //  EBP of calling function (pointed to by current EBP)
     unsigned int * ebp = &MaxFrames - 2;
-	kprintf("Stack trace:\n");
+	//kprintf("Stack trace:\n");
 	int frame = 0;
     while(frame < MaxFrames)
     {
         unsigned int eip = ebp[1];
-		kprintf("%d: ",frame);
         if(eip <= 0) { // &kernel_start || eip > &kernel_end) {
             // No caller on stack
-			kprintf("End\n");
+			//kprintf("End\n");
             break;
 		}
+		kprintf("%d: ",frame);
         // Unwind to previous stack frame
         ebp = ebp[0];
         //unsigned int * arguments = &ebp[2];
@@ -291,17 +291,11 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("eflags -> %d (0x%x)\n",cpu->eflags,cpu->eflags);
     kprintf("esp    -> %d (0x%x)\n",cpu->esp,cpu->esp);
     kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
-	kprintf("\n");
     unsigned int * ebp = cpu->ebp;
-			uint8_t* ops = (ebp[1] + (cpu->cs << 4));
-			uint16_t opcode;
-			opcode = ops[0];
-			if (opcode == 0x66) {
-				opcode = 0x6600 | ops[1];
-			}
-	kprintf("EIP: 0x%x\nOPCODE: 0x%x\n",ebp[1],opcode);
+	kprintf("EIP    -> %d (0x%x)\n",ebp[1],ebp[1]);
 	StackTrace(23); //(uint32_t)&cpu);
-	sleep(2000);
+	kprintf("\n");
+	//sleep(2000);
 }
 
 extern struct vmm_context* kernel_context;
