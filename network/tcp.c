@@ -31,8 +31,13 @@ struct tcp_callback tcp_listeners[65536][51];
 
 void (*callback_func)(struct tcp_callback);
 
-void find_client(uint32_t client_id, uint16_t port) {
+struct clients *find_client(uint32_t client_id, uint16_t port) {
 	struct clients *client = listeners[port].clients;
+	while(client->next != NULL) {
+		if(client->client_id == client_id) return client;
+		client = client->next;
+	}
+	return NULL;
 }
 
 void tcp_handle(struct ip_header ip, struct ether_header ether) {
