@@ -116,19 +116,19 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		listeners[HTONS(temp_port)].tcp_listener.ip = ip;
 		listeners[HTONS(temp_port)].tcp_listener.ether = ether;
 		
-		if(find_client(socketID,HTONS(temp_port)) == NULL) { //no socketID
+			struct clients *client = find_client(socketID,HTONS(temp_port));
+		if(client == NULL) { //no socketID
 			if(tcp.flags.syn && !tcp.flags.ack) { //asking for connection
 				tcp.flags.syn = 1;
 				tcp.flags.ack = 1;
 				tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 				tcp.sequence_number = HTONL(tcp.sequence_number);
-				struct clients *client = add_client(socketID,HTONS(temp_port));
+				client = add_client(socketID,HTONS(temp_port));
 				client->last_seq = HTONL(tcp.sequence_number);
 				client->last_ack = HTONL(tcp.ack_number);
 				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 			}
 		} else {
-			struct clients *client = find_client(socketID,HTONS(temp_port));
 			kprintf("ID: 0x%x\n",client->client_id);
 			if(client->con_est) {
 				if(tcp.flags.fin && tcp.flags.ack &&
