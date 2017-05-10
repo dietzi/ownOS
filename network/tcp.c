@@ -124,6 +124,33 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		uint32_t fin_seq = find_client(socketID,HTONS(temp_port))->fin_seq;
 		uint32_t fin_ack = find_client(socketID,HTONS(temp_port))->fin_ack;
 		
+		if(find_client(socketID,HTONS(temp_port)) == NULL) { //no socketID
+			if(tcp.flags.syn && !tcp.flags.ack) { //asking for connection
+				tcp.flags.syn = 1;
+				tcp.flags.ack = 1;
+				tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
+				tcp.sequence_number = HTONL(tcp.sequence_number);
+				struct clients *client = add_client(socketID,HTONS(temp_port));
+				listeners[HTONS(temp_port)].tcp_listener.last_seq = HTONL(tcp.sequence_number);
+				listeners[HTONS(temp_port)].tcp_listener.last_ack = HTONL(tcp.ack_number);
+				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
+			}
+			if(!tcp.flags.syn && tcp.flags.ack) { //ack connection
+				if(listeners[HTONS(temp_port)].tcp_listener.last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == listeners[HTONS(temp_port)].tcp_listener.last_seq + 1) {
+					listeners[HTONS(temp_port)].tcp_listener.con_est = true;
+					tcp_data[0] = 0xff;
+					tcp_data[1] = 0xff;
+					tcp_data[2] = 0xff;
+					listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
+					listeners[HTONS(temp_port)].tcp_listener.data_length = 3;
+					callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
+					callback_func(listeners[HTONS(temp_port)].tcp_listener);
+				}
+			}
+		} else {
+			
+		}
+		
 		if(tcp.flags.fin && tcp.flags.ack &&
 					tcp.ack_number != HTONL(listeners[HTONS(temp_port)].tcp_listener.fin_seq + 1) &&
 					tcp.sequence_number != HTONL(listeners[HTONS(temp_port)].tcp_listener.fin_ack)) {
