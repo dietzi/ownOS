@@ -42,11 +42,7 @@ struct clients *find_client(uint32_t client_id, uint16_t port) {
 }
 
 struct clients *add_client(uint32_t client_id, uint16_t port) {
-	struct clients *client = listeners[port].clients;
-	while(client != NULL) {
-		client = client->next;
-	}
-
+	struct clients *client;
 	client = pmm_alloc();
 	client->client_id = client_id;
 	client->con_est = false;
@@ -54,6 +50,11 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 	client->last_seq = 0;
 	client->fin_ack = 0;
 	client->fin_seq = 0;
+	struct clients *client1 = listeners[port].clients;
+	while(client1 != NULL) {
+		client1 = client1->next;
+	}
+	client1->next=client;
 	return client;
 }
 
@@ -124,7 +125,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 				tcp.sequence_number = HTONL(tcp.sequence_number);
 				client = add_client(socketID,HTONS(temp_port));
-			kprintf("New connection: 0x%x\n",client->client_id);
+				kprintf("New connection: 0x%x\n",client->client_id);
 				client->last_seq = HTONL(tcp.sequence_number);
 				client->last_ack = HTONL(tcp.ack_number);
 				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
