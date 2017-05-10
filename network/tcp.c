@@ -33,6 +33,7 @@ void (*callback_func)(struct tcp_callback);
 
 struct clients *find_client(uint32_t client_id, uint16_t port) {
 	struct clients *client = listeners[port].clients;
+	if(client == NULL) return NULL;
 	while(client->next != NULL) {
 		if(client->client_id == client_id) return client;
 		client = client->next;
@@ -114,11 +115,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		listeners[HTONS(temp_port)].tcp_listener.tcp = tcp;
 		listeners[HTONS(temp_port)].tcp_listener.ip = ip;
 		listeners[HTONS(temp_port)].tcp_listener.ether = ether;
-		
-		/*if(tcp.flags.ack) {
-			kprintf("ACK: %d - %d\n",tcp.ack_number,(listeners[HTONS(temp_port)].tcp_listener.fin_seq + 1));
-			kprintf("SEQ: %d - %d\n",tcp.sequence_number,(listeners[HTONS(temp_port)].tcp_listener.fin_ack));
-		}*/
 		
 		if(find_client(socketID,HTONS(temp_port)) == NULL) { //no socketID
 			if(tcp.flags.syn && !tcp.flags.ack) { //asking for connection

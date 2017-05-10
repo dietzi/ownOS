@@ -293,7 +293,7 @@ void print_stack(struct cpu_state* cpu) {
     kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
     unsigned int * ebp = cpu->ebp;
 	kprintf("EIP    -> %d (0x%x)\n",ebp[1],ebp[1]);
-	StackTrace(23); //(uint32_t)&cpu);
+	StackTrace(4); //(uint32_t)&cpu);
 	kprintf("\n");
 	//sleep(2000);
 }
@@ -362,7 +362,7 @@ void error(struct cpu_state* cpu) {
 	print_stack(new_cpu);
 	
 	kprintf("Last Message: %s",last_message);
-		kprintf("Exception %d (%x), Kernel angehalten!\n", cpu->intr, cpu->intr);
+		//kprintf("Exception %d (%x), Kernel angehalten!\n", cpu->intr, cpu->intr);
 
 	/*regs16_t regs;
 	regs.ax = 0x0003;
