@@ -311,7 +311,7 @@ void sendData(struct tcp_callback cb) {
 						checksum(cb.tcp.destination_port,2);
 	if(find_client(socketID,cb.port) != NULL) {
 		struct clients *client = find_client(socketID,cb.port);
-		if(listeners[cb.port].tcp_listener.enabled && listeners[cb.port].tcp_listener.con_est) {
+		if(listeners[cb.port].tcp_listener.enabled && client->con_est) {
 			uint32_t ack_temp = cb.tcp.sequence_number;
 			uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number));
 			cb.tcp.sequence_number = seq_temp;
