@@ -129,6 +129,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			}
 		} else {
 			struct clients *client = find_client(socketID,HTONS(temp_port));
+			kprintf("ID: 0x%x\n",client->client_id);
 			if(client->con_est) {
 				if(tcp.flags.fin && tcp.flags.ack &&
 							tcp.ack_number != HTONL(client->fin_seq + 1) &&
