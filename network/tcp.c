@@ -269,43 +269,63 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 }
 
 void closeCon(struct tcp_callback cb) {
-	if(listeners[cb.port].tcp_listener.enabled && listeners[cb.port].tcp_listener.con_est) {
-		sleep(1000);
-		uint32_t ack_temp = cb.tcp.sequence_number;
-		uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number) + cb.data_length);
-		cb.tcp.sequence_number = seq_temp;
-		cb.tcp.ack_number = ack_temp;
-		cb.tcp.flags.ack = 1;
-		cb.tcp.flags.psh = 0;
-		cb.tcp.flags.rst = 0;
-		cb.tcp.flags.syn = 0;
-		cb.tcp.flags.fin = 1;
-		cb.tcp.flags.urg = 0;
-		cb.tcp.flags.ece = 0;
-		cb.tcp.flags.cwr = 0;
-		cb.fin_ack = HTONL(ack_temp) + 2;
-		cb.fin_seq = HTONL(seq_temp);
-		listeners[cb.port].tcp_listener.fin_ack = cb.fin_ack;
-		listeners[cb.port].tcp_listener.fin_seq = cb.fin_seq;
-		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, 0);
-	}	
+	uint32_t socketID = (cb.ip.sourceIP.ip1) +
+						(cb.ip.sourceIP.ip2) +
+						(cb.ip.sourceIP.ip3) +
+						(cb.ip.sourceIP.ip4) +
+						(HTONS(cb.tcp.destination_port)) +
+						checksum(cb.ip.sourceIP,4) +
+						checksum(cb.tcp.destination_port,2);
+	if(find_client(socketID,cb.port) != NULL) {
+		struct clients *client = find_client(socketID,cb.port);
+		if(listeners[cb.port].tcp_listener.enabled && client->con_est) {
+			sleep(1000);
+			uint32_t ack_temp = cb.tcp.sequence_number;
+			uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number) + cb.data_length);
+			cb.tcp.sequence_number = seq_temp;
+			cb.tcp.ack_number = ack_temp;
+			cb.tcp.flags.ack = 1;
+			cb.tcp.flags.psh = 0;
+			cb.tcp.flags.rst = 0;
+			cb.tcp.flags.syn = 0;
+			cb.tcp.flags.fin = 1;
+			cb.tcp.flags.urg = 0;
+			cb.tcp.flags.ece = 0;
+			cb.tcp.flags.cwr = 0;
+			cb.fin_ack = HTONL(ack_temp) + 2;
+			cb.fin_seq = HTONL(seq_temp);
+			client->fin_ack = cb.fin_ack;
+			client->fin_seq = cb.fin_seq;
+			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, 0);
+		}
+	}
 }
 
 void sendData(struct tcp_callback cb) {
-	if(listeners[cb.port].tcp_listener.enabled && listeners[cb.port].tcp_listener.con_est) {
-		uint32_t ack_temp = cb.tcp.sequence_number;
-		uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number));
-		cb.tcp.sequence_number = seq_temp;
-		cb.tcp.ack_number = ack_temp;
-		cb.tcp.flags.ack = 1;
-		cb.tcp.flags.psh = 1;
-		cb.tcp.flags.rst = 0;
-		cb.tcp.flags.syn = 0;
-		cb.tcp.flags.fin = 0;
-		cb.tcp.flags.urg = 0;
-		cb.tcp.flags.ece = 0;
-		cb.tcp.flags.cwr = 0;
-		sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, cb.data_length);
+	uint32_t socketID = (cb.ip.sourceIP.ip1) +
+						(cb.ip.sourceIP.ip2) +
+						(cb.ip.sourceIP.ip3) +
+						(cb.ip.sourceIP.ip4) +
+						(HTONS(cb.tcp.destination_port)) +
+						checksum(cb.ip.sourceIP,4) +
+						checksum(cb.tcp.destination_port,2);
+	if(find_client(socketID,cb.port) != NULL) {
+		struct clients *client = find_client(socketID,cb.port);
+		if(listeners[cb.port].tcp_listener.enabled && listeners[cb.port].tcp_listener.con_est) {
+			uint32_t ack_temp = cb.tcp.sequence_number;
+			uint32_t seq_temp = HTONL(HTONL(cb.tcp.ack_number));
+			cb.tcp.sequence_number = seq_temp;
+			cb.tcp.ack_number = ack_temp;
+			cb.tcp.flags.ack = 1;
+			cb.tcp.flags.psh = 1;
+			cb.tcp.flags.rst = 0;
+			cb.tcp.flags.syn = 0;
+			cb.tcp.flags.fin = 0;
+			cb.tcp.flags.urg = 0;
+			cb.tcp.flags.ece = 0;
+			cb.tcp.flags.cwr = 0;
+			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp.options, 0, cb.data, cb.data_length);
+		}
 	}
 }
 
