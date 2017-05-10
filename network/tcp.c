@@ -50,11 +50,19 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 	client->last_seq = 0;
 	client->fin_ack = 0;
 	client->fin_seq = 0;
+	client->next = NULL;
 	struct clients *client1 = listeners[port].clients;
+	if(client1 == NULL) {
+		client1 = client;
+		return client;
+	}
 	while(client1 != NULL) {
+		if(client1->next == NULL) {
+			client1->next = client;
+			break;
+		}
 		client1 = client1->next;
 	}
-	client1->next=client;
 	return client;
 }
 
