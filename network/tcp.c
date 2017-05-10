@@ -136,36 +136,37 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 			}
 		} else {
-			if(find_client(socketID,HTONS(temp_port))->con_est) {
+			struct clients *client = find_client(socketID,HTONS(temp_port));
+			if(client->con_est) {
 				if(tcp.flags.fin && tcp.flags.ack &&
-							tcp.ack_number != HTONL(listeners[HTONS(temp_port)].tcp_listener.fin_seq + 1) &&
-							tcp.sequence_number != HTONL(listeners[HTONS(temp_port)].tcp_listener.fin_ack)) {
+							tcp.ack_number != HTONL(client->fin_seq + 1) &&
+							tcp.sequence_number != HTONL(client->fin_ack)) {
 					tcp.flags.fin = 1;
 					tcp.flags.ack = 1;
 					uint32_t ack_temp = tcp.ack_number;
 					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 					tcp.sequence_number = ack_temp;
-					listeners[HTONS(temp_port)].tcp_listener.fin_seq = HTONL(tcp.sequence_number);
-					listeners[HTONS(temp_port)].tcp_listener.fin_ack = HTONL(tcp.ack_number);
+					client->fin_seq = HTONL(tcp.sequence_number);
+					client->fin_ack = HTONL(tcp.ack_number);
 					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 				} else if((!tcp.flags.fin && tcp.flags.ack &&
-							tcp.ack_number == HTONL(listeners[HTONS(temp_port)].tcp_listener.fin_seq + 1) &&
-							tcp.sequence_number == HTONL(listeners[HTONS(temp_port)].tcp_listener.fin_ack)) || tcp.flags.rst) {
-					listeners[HTONS(temp_port)].tcp_listener.fin_seq = 0;
-					listeners[HTONS(temp_port)].tcp_listener.fin_ack = 0;
+							tcp.ack_number == HTONL(client->fin_seq + 1) &&
+							tcp.sequence_number == HTONL(client->fin_ack)) || tcp.flags.rst) {
+					client->fin_seq = 0;
+					client->fin_ack = 0;
 					uint32_t ack_temp = tcp.ack_number;
 					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 					tcp.sequence_number = ack_temp;
 					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
-					listeners[HTONS(temp_port)].tcp_listener.con_est = false;
+					client->con_est = false;
 				} else if(tcp.flags.ack && tcp.flags.psh) { //got packet
 					//ACK received packet
 					tcp.flags.psh = 0;
 					uint32_t ack_temp = tcp.ack_number;
 					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + listeners[HTONS(temp_port)].tcp_listener.data_length);
 					tcp.sequence_number = ack_temp;
-					listeners[HTONS(temp_port)].tcp_listener.last_seq = HTONL(tcp.sequence_number);
-					listeners[HTONS(temp_port)].tcp_listener.last_ack = HTONL(tcp.ack_number);
+					client->last_seq = HTONL(tcp.sequence_number);
+					client->last_ack = HTONL(tcp.ack_number);
 					sendTCPpacket(ether, ip, tcp, tcp.options, 0, listeners[HTONS(temp_port)].tcp_listener.data, 0);
 					
 					callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
@@ -173,7 +174,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				}
 			} else {
 				if(!tcp.flags.syn && tcp.flags.ack) { //ack connection
-					if(last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == last_seq + 1) {
+					if(client->last_ack == HTONL(tcp.sequence_number) && HTONL(tcp.ack_number) == client->last_seq + 1) {
 						find_client(socketID,HTONS(temp_port))->con_est = true;
 						tcp_data[0] = 0xff;
 						tcp_data[1] = 0xff;
