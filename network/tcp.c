@@ -116,7 +116,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		listeners[HTONS(temp_port)].tcp_listener.ip = ip;
 		listeners[HTONS(temp_port)].tcp_listener.ether = ether;
 		
-			struct clients *client = find_client(socketID,HTONS(temp_port));
+		struct clients *client = find_client(socketID,HTONS(temp_port));
 		if(client == NULL) { //no socketID
 			if(tcp.flags.syn && !tcp.flags.ack) { //asking for connection
 				tcp.flags.syn = 1;
