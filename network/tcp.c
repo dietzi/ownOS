@@ -54,13 +54,11 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 	struct clients *client1 = listeners[port].clients;
 	if(client1 == NULL) {
 		listeners[port].clients = client;
-		kprintf("Got next1\n");
 		return client;
 	}
 	while(client1 != NULL) {
 		if(client1->next == NULL) {
 			client1->next = client;
-			kprintf("Got next2\n");
 			break;
 		}
 		client1 = client1->next;
@@ -135,13 +133,12 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 				tcp.sequence_number = HTONL(tcp.sequence_number);
 				client = add_client(socketID,HTONS(temp_port));
-				kprintf("New connection: 0x%x\n",client->client_id);
+				//kprintf("New connection: 0x%x\n",client->client_id);
 				client->last_seq = HTONL(tcp.sequence_number);
 				client->last_ack = HTONL(tcp.ack_number);
 				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 			}
 		} else {
-			kprintf("ID: 0x%x\n",client->client_id);
 			if(client->con_est) {
 				if(tcp.flags.fin && tcp.flags.ack &&
 							tcp.ack_number != HTONL(client->fin_seq + 1) &&
@@ -164,6 +161,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 					tcp.sequence_number = ack_temp;
 					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 					client->con_est = false;
+					del_client(client->client_id,HTONS(temp_port));
 				} else if(tcp.flags.ack && tcp.flags.psh) { //got packet
 					//ACK received packet
 					tcp.flags.psh = 0;
