@@ -119,10 +119,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			kprintf("ACK: %d - %d\n",tcp.ack_number,(listeners[HTONS(temp_port)].tcp_listener.fin_seq + 1));
 			kprintf("SEQ: %d - %d\n",tcp.sequence_number,(listeners[HTONS(temp_port)].tcp_listener.fin_ack));
 		}*/
-		uint32_t last_ack = find_client(socketID,HTONS(temp_port))->last_ack;
-		uint32_t last_seq = find_client(socketID,HTONS(temp_port))->last_seq;
-		uint32_t fin_seq = find_client(socketID,HTONS(temp_port))->fin_seq;
-		uint32_t fin_ack = find_client(socketID,HTONS(temp_port))->fin_ack;
 		
 		if(find_client(socketID,HTONS(temp_port)) == NULL) { //no socketID
 			if(tcp.flags.syn && !tcp.flags.ack) { //asking for connection
