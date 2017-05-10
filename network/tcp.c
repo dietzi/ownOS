@@ -34,7 +34,7 @@ void (*callback_func)(struct tcp_callback);
 struct clients *find_client(uint32_t client_id, uint16_t port) {
 	struct clients *client = listeners[port].clients;
 	if(client == NULL) return NULL;
-	while(client->next != NULL) {
+	while(client != NULL) {
 		if(client->client_id == client_id) return client;
 		client = client->next;
 	}
@@ -124,7 +124,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 				tcp.sequence_number = HTONL(tcp.sequence_number);
 				client = add_client(socketID,HTONS(temp_port));
-			kprintf("ID: 0x%x\n",client->client_id);
+			kprintf("New connection: 0x%x\n",client->client_id);
 				client->last_seq = HTONL(tcp.sequence_number);
 				client->last_ack = HTONL(tcp.ack_number);
 				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
