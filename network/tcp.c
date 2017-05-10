@@ -54,11 +54,13 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 	struct clients *client1 = listeners[port].clients;
 	if(client1 == NULL) {
 		client1 = client;
+		kprintf("Got next1\n");
 		return client;
 	}
 	while(client1 != NULL) {
 		if(client1->next == NULL) {
 			client1->next = client;
+			kprintf("Got next2\n");
 			break;
 		}
 		client1 = client1->next;
