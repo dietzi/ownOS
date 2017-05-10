@@ -53,7 +53,7 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 	client->next = NULL;
 	struct clients *client1 = listeners[port].clients;
 	if(client1 == NULL) {
-		client1 = client;
+		listeners[port].clients = client;
 		kprintf("Got next1\n");
 		return client;
 	}
