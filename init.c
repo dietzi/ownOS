@@ -61,50 +61,5 @@ void init(struct multiboot_info *mb_info) {
 	
 	init_telnet();
 	
-	struct ip_addr ip = {
-		.ip1 = 10,
-		.ip2 = 0,
-		.ip3 = 0,
-		.ip4 = 100,
-	};
-	uint16_t port = HTONS(6356);
-	uint32_t socketID = (ip.ip1) +
-						(ip.ip2) +
-						(ip.ip3) +
-						(ip.ip4) +
-						(HTONS(port)) +
-						checksum(ip,4) +
-						checksum(port,2);
-	kprintf("Socket-ID: 0x%x\n",socketID);
-	port = HTONS(54296);
-	socketID = (ip.ip1) +
-				(ip.ip2) +
-				(ip.ip3) +
-				(ip.ip4) +
-				(HTONS(port)) +
-				checksum(ip,4) +
-				checksum(port,2);
-	kprintf("Socket-ID: 0x%x\n",socketID);
-	ip.ip1 = 100;
-	ip.ip4 = 10;
-	socketID = (ip.ip1) +
-				(ip.ip2) +
-				(ip.ip3) +
-				(ip.ip4) +
-				(HTONS(port)) +
-				checksum(ip,4) +
-				checksum(port,2);
-	kprintf("Socket-ID: 0x%x\n",socketID);
-	port = HTONS(6356);
-	socketID = (ip.ip1) +
-				(ip.ip2) +
-				(ip.ip3) +
-				(ip.ip4) +
-				(HTONS(port)) +
-				checksum(ip,4) +
-				checksum(port,2);
-	kprintf("Socket-ID: 0x%x\n",socketID);
-	
-	
 	kprintf("\n");
 }

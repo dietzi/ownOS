@@ -106,7 +106,7 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 						(HTONS(tcp.destination_port)) +
 						checksum(ip.sourceIP,4) +
 						checksum(tcp.destination_port,2);
-	kprintf("Socket-ID: 0x%x\n",socketID);
+	//kprintf("Socket-ID: 0x%x\n",socketID);
 	
 	if(listeners[HTONS(temp_port)].tcp_listener.enabled) {
 		listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
@@ -119,6 +119,10 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 			kprintf("ACK: %d - %d\n",tcp.ack_number,(listeners[HTONS(temp_port)].tcp_listener.fin_seq + 1));
 			kprintf("SEQ: %d - %d\n",tcp.sequence_number,(listeners[HTONS(temp_port)].tcp_listener.fin_ack));
 		}*/
+		uint32_t last_ack = find_client(socketID,HTONS(temp_port))->last_ack;
+		uint32_t last_seq = find_client(socketID,HTONS(temp_port))->last_seq;
+		uint32_t fin_seq = find_client(socketID,HTONS(temp_port))->fin_seq;
+		uint32_t fin_ack = find_client(socketID,HTONS(temp_port))->fin_ack;
 		
 		if(tcp.flags.fin && tcp.flags.ack &&
 					tcp.ack_number != HTONL(listeners[HTONS(temp_port)].tcp_listener.fin_seq + 1) &&
