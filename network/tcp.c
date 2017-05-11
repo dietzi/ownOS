@@ -21,7 +21,7 @@ struct clients {
 
 struct listeners {
 	struct tcp_callback tcp_listener;
-	struct clients *clients;
+	struct clients **clients;
 };
 
 struct listeners listeners[65536];
