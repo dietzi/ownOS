@@ -73,10 +73,7 @@ static inline void* memcpy(void* dest, const void* src, size_t n)
     return dest;
 }
 
-static inline void* memmove (destaddr, sourceaddr, length)
-     void *destaddr;
-     const void *sourceaddr;
-     unsigned length;
+static inline void* memmove(void *destaddr, const void *sourceaddr, unsigned length)
 {
   char *dest = destaddr;
   const char *source = sourceaddr;
