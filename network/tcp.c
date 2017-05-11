@@ -66,8 +66,10 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 bool del_client(uint32_t client_id, uint16_t port) {
 	struct clients *client = listeners[port].clients;
 	if(client->client_id == client_id) {
-			client = client->next;
-			kprintf("Deleted1: 0x%x\n",client_id);
+			struct clients *client1 = client;
+			listeners[port].clients = client->next;
+			kprintf("Deleted1: 0x%x\n",client1->client_id);
+			pmm_free(client1);
 			return true;		
 	}
 	while(client->next != NULL) {
