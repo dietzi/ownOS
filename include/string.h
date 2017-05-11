@@ -73,6 +73,25 @@ static inline void* memcpy(void* dest, const void* src, size_t n)
     return dest;
 }
 
+static inline void* memmove (destaddr, sourceaddr, length)
+     void *destaddr;
+     const void *sourceaddr;
+     unsigned length;
+{
+  char *dest = destaddr;
+  const char *source = sourceaddr;
+  if (source < dest)
+    /* Moving from low mem to hi mem; start at end.  */
+    for (source += length, dest += length; length; --length)
+      *--dest = *--source;
+  else if (source != dest)
+    /* Moving from hi mem to low mem; start at beginning.  */
+    for (; length; --length)
+      *dest++ = *source++;
+
+  return destaddr;
+}
+
 static inline int strlen(char *string) {
 	int i=0;
 	while(*string) {

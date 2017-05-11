@@ -6,7 +6,7 @@ LD = ld
 
 INCLUDES = -I include -I .
 ASFLAGS = -m32 -g
-CFLAGS = -w -m32 -Wall -g -fno-stack-protector $(INCLUDES) -march=i486 -O2 -Wextra
+CFLAGS = -w -m32 -Wall -g -fno-stack-protector $(INCLUDES) -march=i486 -O3 -Wextra -ffreestanding
 LDFLAGS = -melf_i386 -Tkernel.ld
 
 all:
