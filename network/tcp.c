@@ -146,7 +146,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 		
 		struct clients *client = find_client(socketID,HTONS(temp_port));
 		if(client == NULL) { //no socketID
-			kprintf("No client found\n");
 			if(tcp.flags.syn && !tcp.flags.ack) { //asking for connection
 				tcp.flags.syn = 1;
 				tcp.flags.ack = 1;
@@ -159,7 +158,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 			}
 		} else {
-			kprintf("Client found: 0x%x\n",client->client_id);
 			if(client->con_est) {
 				if(tcp.flags.fin && tcp.flags.ack &&
 							tcp.ack_number != HTONL(client->fin_seq + 1) &&
@@ -175,7 +173,6 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				} else if((!tcp.flags.fin && tcp.flags.ack &&
 							tcp.ack_number == HTONL(client->fin_seq + 1) &&
 							tcp.sequence_number == HTONL(client->fin_ack)) || tcp.flags.rst) {
-					kprintf("Closing...\n");
 					client->fin_seq = 0;
 					client->fin_ack = 0;
 					uint32_t ack_temp = tcp.ack_number;
