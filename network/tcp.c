@@ -41,6 +41,15 @@ struct clients *find_client(uint32_t client_id, uint16_t port) {
 	return NULL;
 }
 
+void show_clients(uint16_t port) {
+	struct clients *client1 = listeners[port].clients;
+	while(client1 != NULL) {
+		kprintf("0x%x -> ",client1->client_id);
+		client1 = client1->next;
+	}
+	kprintf("\n");
+}
+
 struct clients *add_client(uint32_t client_id, uint16_t port) {
 	struct clients *client;
 	client = pmm_alloc();
@@ -60,6 +69,7 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 		client1 = client1->next;
 	}
 	client1->next = client;
+	show_clients(port);
 	return client;
 }
 
@@ -70,6 +80,7 @@ bool del_client(uint32_t client_id, uint16_t port) {
 			listeners[port].clients = client->next;
 			kprintf("Deleted1: 0x%x\n",client1->client_id);
 			pmm_free(client1);
+			show_clients(port);
 			return true;		
 	}
 	while(client->next != NULL) {
@@ -78,6 +89,7 @@ bool del_client(uint32_t client_id, uint16_t port) {
 			client->next = client->next->next;
 			kprintf("Deleted2: 0x%x\n",client1->client_id);
 			pmm_free(client1);
+			show_clients(port);
 			return true;			
 		}
 	}
