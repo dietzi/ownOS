@@ -77,7 +77,7 @@ bool del_client(uint32_t client_id, uint16_t port) {
 			} else {
 				client->next = client->next->next;
 			}
-			kprintf("Deleted1: 0x%x\n",client_id);
+			kprintf("Deleted2: 0x%x\n",client_id);
 			return true;			
 		}
 	}
@@ -261,7 +261,6 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 	if(listeners[port].tcp_listener.enabled == true) {
 		return false;
 	} else {
-	listeners[port].tcp_listener.enabled = true;
 		struct tcp_callback cb = {
 			.callback_pointer = callback_pointer,
 			.port = port,
