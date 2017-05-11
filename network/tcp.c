@@ -180,7 +180,11 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 					tcp.sequence_number = ack_temp;
 					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 					client->con_est = false;
-					del_client(client->client_id,HTONS(temp_port));
+					if(del_client(client->client_id,HTONS(temp_port))) {
+						kprintf("closed\n");
+					} else {
+						kprintf("error\n");
+					}
 				} else if(tcp.flags.ack && tcp.flags.psh) { //got packet
 					//ACK received packet
 					tcp.flags.psh = 0;
