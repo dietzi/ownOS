@@ -40,16 +40,7 @@ static inline uint16_t inw(uint16_t _port)
     return result;
 }
 
-static inline void* memset(void* buf, int c, int n)
-{
-    unsigned char* p = buf;
-
-    while (n--) {
-        *p++ = c;
-    }
-
-    return buf;
-}
+void* memset(void* buf, int c, int n);
 
 static inline void* kmemset(void *ptr, int val, size_t num) {
         size_t i;
