@@ -173,18 +173,19 @@ void tcp_handle(struct ip_header ip, struct ether_header ether) {
 				} else if((!tcp.flags.fin && tcp.flags.ack &&
 							tcp.ack_number == HTONL(client->fin_seq + 1) &&
 							tcp.sequence_number == HTONL(client->fin_ack)) || tcp.flags.rst) {
+					kprintf("Closinng...");
 					client->fin_seq = 0;
 					client->fin_ack = 0;
 					uint32_t ack_temp = tcp.ack_number;
 					tcp.ack_number = HTONL(HTONL(tcp.sequence_number) + 1);
 					tcp.sequence_number = ack_temp;
-					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 					client->con_est = false;
 					if(del_client(client->client_id,HTONS(temp_port))) {
 						kprintf("closed\n");
 					} else {
 						kprintf("error\n");
 					}
+					sendTCPpacket(ether, ip, tcp, tcp.options, 0, tcp.data, 0);
 				} else if(tcp.flags.ack && tcp.flags.psh) { //got packet
 					//ACK received packet
 					tcp.flags.psh = 0;
