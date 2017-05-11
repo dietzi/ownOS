@@ -51,7 +51,7 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 	client->fin_ack = 0;
 	client->fin_seq = 0;
 	client->next = NULL;
-	struct clients *client1 = &listeners[port].clients;
+	struct clients *client1 = listeners[port].clients;
 	if(client1 == NULL) {
 		listeners[port].clients = client;
 		return client;
@@ -60,6 +60,11 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 		client1 = client1->next;
 	}
 	client1->next = client;
+	client1 = listeners[port].clients;
+	while(client1 != NULL) {
+		kprintf("0x%x -> ",client1->client_id);
+		client1 = client1->next;
+	}
 	return client;
 }
 
