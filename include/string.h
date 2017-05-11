@@ -54,21 +54,7 @@ static inline void* kmemset(void *ptr, int val, size_t num) {
 
 void* memcpy(void* dest, const void* src, size_t n);
 
-static inline void* memmove(void *destaddr, const void *sourceaddr, unsigned length)
-{
-  char *dest = destaddr;
-  const char *source = sourceaddr;
-  if (source < dest)
-    /* Moving from low mem to hi mem; start at end.  */
-    for (source += length, dest += length; length; --length)
-      *--dest = *--source;
-  else if (source != dest)
-    /* Moving from hi mem to low mem; start at beginning.  */
-    for (; length; --length)
-      *dest++ = *source++;
-
-  return destaddr;
-}
+void* memmove(void *destaddr, const void *sourceaddr, unsigned length);
 
 static inline int strlen(char *string) {
 	int i=0;
