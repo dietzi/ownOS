@@ -1,5 +1,7 @@
 #include "includes.h"
 
+#ifdef TEST123
+
 #define str(x) #x
 
 bool proc(void);
@@ -21,8 +23,6 @@ bool check_command(char *cmd, char *input) {
 }
 
 void doNothing(void) {}
-
-
 
 bool vesa_parameter(char *parameter) {
 	char *ptr;
@@ -103,3 +103,5 @@ bool reboot(void)
     asm("cli; hlt");
 	return true;
 }
+
+#endif

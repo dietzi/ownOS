@@ -57,7 +57,7 @@ static void kputc(char c)
 			char_pos_x=0;
 			char_pos_y+=14;
 		} else {
-			draw_char((char*)ccc,-1,-1,0x000000,-1);
+			//draw_char((char*)ccc,-1,-1,0x000000,-1);
 		}
 	}
 again:

@@ -6,6 +6,7 @@
 #include "includes.h"
 #include "fonts.h"
 
+#ifdef TEST123
 /** @brief int32() führt einen Bios-Interrupt im Real-Mode aus */
 extern void int32(unsigned char intnum, regs16_t *regs);
 
@@ -286,3 +287,4 @@ void draw_line(int x0, int y0, int x1, int y1, uint32_t color) {
 volatile void PutPixel(int x, int y, uint32_t color) {
 	if(color >= 0x000000 && color <= 0xFFFFFF) *(uint32_t *)(vga + y * info_set->BytesPerScanLine + x * (info_set->BitsPerPixel / 8)) = color;
 }
+#endif
