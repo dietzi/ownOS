@@ -12,6 +12,7 @@ LDFLAGS = -melf_i386 -Tkernel.ld
 all:
 	make clean -i
 	make kernel
+	objcopy --only-keep-debug kernel kernel.sym
 	cp kernel grub/
 	grub-mkrescue -o boot.iso grub
 #	doxygen test.xml
