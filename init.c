@@ -15,6 +15,8 @@
 #include "includes.h"
 
 void init(struct multiboot_info *mb_info) {
+	kprintf("Start\n");
+	while(1);
 /*	init_complete=false;
 	screen.x = 80;
 	screen.y = 25;
