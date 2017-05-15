@@ -294,7 +294,7 @@ void print_stack(struct cpu_state* cpu) {
     unsigned int * ebp = cpu->ebp;
 	kprintf("EIP    -> %d (0x%x)\n",ebp[1],ebp[1]);
 	//StackTrace(4); //(uint32_t)&cpu);
-	kprintf("\n");
+	//kprintf("\n");
 	//sleep(2000);
 }
 
@@ -342,11 +342,11 @@ void error(struct cpu_state* cpu) {
 			break;
 		case 0x0e:
 			errcode=0;
-			int bit0 = cpu->error << 1;
-			int bit1 = cpu->error << 2;
-			int bit2 = cpu->error << 3;
-			int bit3 = cpu->error << 4;
-			int bit4 = cpu->error << 5;
+			int bit0 = cpu->error >> 1;
+			int bit1 = cpu->error >> 2;
+			int bit2 = cpu->error >> 3;
+			int bit3 = cpu->error >> 4;
+			int bit4 = cpu->error >> 5;
 			kprintf("Fehlercode: %d (0x%x) (%b)\n",cpu->error, cpu->error, cpu->error);
 			kprintf(" --> Bit 0: %x\n",bit0);
 			kprintf(" --> Bit 1: %x\n",bit1);
@@ -361,8 +361,7 @@ void error(struct cpu_state* cpu) {
 	
 	print_stack(new_cpu);
 	
-	kprintf("Last Message: %s",last_message);
-		//kprintf("Exception %d (%x), Kernel angehalten!\n", cpu->intr, cpu->intr);
+	//kprintf("Last Message: %s",last_message);
 
 	/*regs16_t regs;
 	regs.ax = 0x0003;
