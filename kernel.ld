@@ -11,7 +11,7 @@ SECTIONS
      * . ist die aktuelle Position in der Datei. Wir wollen den Kernel wie gehabt
      * an 1 MB laden, also muessen wir dort die erste Sektion hinlegen
      */
-    . = 0x400000;
+    . = 0x100000;
 
     /* Symbol fuer den Kernelanfang definieren */
     kernel_start = .;
