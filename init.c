@@ -26,6 +26,7 @@ void init(struct multiboot_info *mb_info) {
 	init_status();
 	kprintf("Starting OS ...\n");
 	kprintf("Initialization physical memory\n");
+	last_message="pmm_init";
 	pmm_init(mb_info);
 	kprintf("Initialization paging\n");
 	vmm_init();

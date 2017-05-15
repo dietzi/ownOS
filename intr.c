@@ -361,7 +361,7 @@ void error(struct cpu_state* cpu) {
 	
 	print_stack(new_cpu);
 	
-	//kprintf("Last Message: %s",last_message);
+	kprintf("Last Message: %s",last_message);
 
 	/*regs16_t regs;
 	regs.ax = 0x0003;
