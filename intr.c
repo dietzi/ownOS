@@ -307,7 +307,7 @@ void error(struct cpu_state* cpu) {
 
 	clrscr_color(0x17);
 	set_color(0x17);
-	kprintf("Exception %d (%x), Kernel angehalten!\n", cpu->intr, cpu->intr);
+	kprintf("Exception %d (0x%x), Kernel angehalten!\n", cpu->intr, cpu->intr);
 	uint8_t errcode;
 
 	switch(cpu->intr) {
@@ -317,7 +317,7 @@ void error(struct cpu_state* cpu) {
 		case 0x0c:
 		case 0x11:
 		case 0x1e:
-			kprintf("Fehlercode: %d (%x)\n",cpu->error, cpu->error);
+			kprintf("Fehlercode: %d (0x%x)\n",cpu->error, cpu->error);
 			break;
 		case 0x0d:
 			errcode=(uint32_t)cpu->error;
@@ -327,10 +327,10 @@ void error(struct cpu_state* cpu) {
 				((errcode << 8) & 0x01) + ((errcode << 9) & 0x01) + ((errcode << 10) & 0x01) + ((errcode << 11) & 0x01) &
 				((errcode << 12) & 0x01) + ((errcode << 13) & 0x01) + ((errcode << 14) & 0x01) + ((errcode << 15) & 0x01) &
 				((errcode << 16) & 0x01);
-			kprintf("Fehlercode: %b (%x)\n",errcode, errcode);
-			kprintf("  External: %d (%x)\n",external,external);
-			kprintf("  Tbl     : %d (%x)\n",tbl,tbl);
-			kprintf("  Index   : %d (%x)\n",index,index);
+			kprintf("Fehlercode: %b (0x%x)\n",errcode, errcode);
+			kprintf("  External: %d (0x%x)\n",external,external);
+			kprintf("  Tbl     : %d (0x%x)\n",tbl,tbl);
+			kprintf("  Index   : %d (0x%x)\n",index,index);
 			
 			uint8_t* ops = (uint8_t*)(cpu->eip + (cpu->cs << 4));
 			uint16_t opcode;
@@ -342,17 +342,17 @@ void error(struct cpu_state* cpu) {
 			break;
 		case 0x0e:
 			errcode=0;
-			int bit0 = cpu->error >> 1;
-			int bit1 = cpu->error >> 2;
-			int bit2 = cpu->error >> 3;
-			int bit3 = cpu->error >> 4;
-			int bit4 = cpu->error >> 5;
-			kprintf("Fehlercode: %d (%x) (%b)\n",cpu->error, cpu->error, cpu->error);
-			/*kprintf(" --> Bit 0: %x\n",bit0);
+			int bit0 = cpu->error << 1;
+			int bit1 = cpu->error << 2;
+			int bit2 = cpu->error << 3;
+			int bit3 = cpu->error << 4;
+			int bit4 = cpu->error << 5;
+			kprintf("Fehlercode: %d (0x%x) (%b)\n",cpu->error, cpu->error, cpu->error);
+			kprintf(" --> Bit 0: %x\n",bit0);
 			kprintf(" --> Bit 1: %x\n",bit1);
 			kprintf(" --> Bit 2: %x\n",bit2);
 			kprintf(" --> Bit 3: %x\n",bit3);
-			kprintf(" --> Bit 4: %x\n",bit4);*/
+			kprintf(" --> Bit 4: %x\n",bit4);
 			kprintf(" --> Task-Context: %x\n",current_task->context);
 			kprintf(" --> Kernel-Context: %x\n",kernel_context);
 			kprintf(" --> Last Adress: %x\n",last_addr);
