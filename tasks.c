@@ -280,7 +280,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	task->type=type;
 	task->state=RUNNING;
 	
-	/*struct vmm_context* task_context = vmm_create_context_user();
+	struct vmm_context* task_context = vmm_create_context_user();
 	
 	int i=0;
 	uint32_t temp_addr=last_addr;
@@ -289,7 +289,7 @@ struct task* init_task(void* entry,enum task_type type) {
 		i+=0x1000;
     }
 	last_addr += 0x1000;
-	task->context = task_context;*/
+	task->context = task_context;
 	
 	pid++;
     first_task = task;
