@@ -224,6 +224,7 @@ int counter=0;
 
 struct task* init_task(void* entry,enum task_type type) {
 	//kprintf("Initialization Task PID: %d\n", pid);
+	last_message="pmm_alloc";
     uint8_t* stack = pmm_alloc();
     uint8_t* user_stack = pmm_alloc();
 
@@ -266,12 +267,14 @@ struct task* init_task(void* entry,enum task_type type) {
      * worden. So kann man dem Interrupthandler den neuen Task unterschieben
      * und er stellt einfach den neuen Prozessorzustand "wieder her".
      */
+	last_message="define state";
     struct cpu_state* state = (void*) (stack + 4096 - sizeof(new_state));
     *state = new_state;
 
     /*
      * Neue Taskstruktur anlegen und in die Liste einhaengen
      */
+	last_message="task pmm_alloc";
     struct task* task = pmm_alloc();
     task->cpu_state = state;
     task->next = first_task;
@@ -280,19 +283,24 @@ struct task* init_task(void* entry,enum task_type type) {
 	task->type=type;
 	task->state=RUNNING;
 	
+	last_message="create_user_context";
+	
 	struct vmm_context* task_context = vmm_create_context_user();
 	
 	int i=0;
 	uint32_t temp_addr=last_addr;
+	last_message="mapping";
     for (; last_addr < temp_addr + 4096 * 1024; last_addr += 0x1000) {
         vmm_map_page_user(task_context, i, last_addr);
 		i+=0x1000;
     }
+	last_message="mapping end";
 	last_addr += 0x1000;
 	task->context = task_context;
 	
 	pid++;
     first_task = task;
+	last_message="returning";
     return task;
 }
 
@@ -353,6 +361,7 @@ void init_multitasking(struct multiboot_info* mb_info)
          * Ohne Module machen wir dasselbe wie bisher auch. Eine genauso gute
          * Alternative waere es, einfach mit einer Fehlermeldung abzubrechen.
          */
+		last_message="init_task(idle,IDLE)";
 		init_task(idle,IDLE);
         //init_task(task_a,NORMAL);
         //init_task(task_b,NORMAL);
