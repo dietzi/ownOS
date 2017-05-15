@@ -398,6 +398,8 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 		if(cpu->intr==0x20) {
 			timer_ticks++;
 			if(timer_ticks>=60000) timer_ticks=0;
+		} else if (cpu->intr <= 0x1f) {
+			error(new_cpu);
 		}
         if (cpu->intr >= 0x28) {
             // EOI an Slave-PIC
