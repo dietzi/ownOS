@@ -65,8 +65,9 @@ int vmm_map_page_user(struct vmm_context* context, uintptr_t virt, uintptr_t phy
 
     /* Neues Mapping in the Page Table eintragen */
     page_table[pt_index] = phys | PTE_PRESENT | PTE_WRITE | PTE_USER;
+	last_message="doing asm";
     asm volatile("invlpg %0" : : "m" (*(char*)virt));
-
+	last_message="asm end";
     return 0;
 }
 
