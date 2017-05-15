@@ -291,7 +291,8 @@ struct task* init_task(void* entry,enum task_type type) {
 	uint32_t temp_addr=last_addr;
 	last_message="mapping";
     for (; last_addr < temp_addr + 4096 * 1024; last_addr += 0x1000) {
-		last_message=itoa(last_addr,16);
+		uint32_t *addr = itoa(last_addr,16);
+		last_message=&addr;
         vmm_map_page_user(task_context, i, last_addr);
 		i+=0x1000;
     }
