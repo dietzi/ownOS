@@ -1,5 +1,7 @@
 #include "includes.h"
 
+#define PAGE_SIZE 0x1000;
+
 /*
  * Dieser Speicherkontext wird nur waehrend der Initialisierung verwendet.
  * Spaeter laeuft der Kernel immer im Kontext des aktuellen Prozesses.
