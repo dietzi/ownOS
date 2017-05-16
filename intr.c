@@ -469,7 +469,9 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
         }
     }
 	if(init_complete) {
-		if(cpu != new_cpu) vmm_activate_context(current_task->context);
+		if(current_task->context != NULL) {
+			if(cpu != new_cpu) vmm_activate_context(current_task->context);
+		}
 	}
 	last_message = "Returning new_cpu";
     return new_cpu;
