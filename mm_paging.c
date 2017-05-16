@@ -1,6 +1,6 @@
 #include "includes.h"
 
-#define PAGE_SIZE 0x1000;
+#define PAGE_SIZE 0x1000
 
 /*
  * Dieser Speicherkontext wird nur waehrend der Initialisierung verwendet.
@@ -39,7 +39,7 @@ struct vmm_context* vmm_create_context_user(void)
 
 int vmm_map_page_user(struct vmm_context* context, uintptr_t virt, uintptr_t phys)
 {
-    uint32_t page_index = virt / 0x1000;
+    uint32_t page_index = virt / PAGE_SIZE;
     uint32_t pd_index = page_index / 1024;
     uint32_t pt_index = page_index % 1024;
 
@@ -75,7 +75,7 @@ int vmm_map_page_user(struct vmm_context* context, uintptr_t virt, uintptr_t phy
 
 int vmm_map_page(struct vmm_context* context, uintptr_t virt, uintptr_t phys)
 {
-    uint32_t page_index = virt / 0x1000;
+    uint32_t page_index = virt / PAGE_SIZE;
     uint32_t pd_index = page_index / 1024;
     uint32_t pt_index = page_index % 1024;
 
@@ -116,13 +116,11 @@ void vmm_activate_context(struct vmm_context* context)
 extern struct task* current_task;
 
 void* vmm_alloc(void) {
-	for(int i=0; i < 1024; i++) {
-		if(current_task->context->pagedir[i] & PTE_PRESENT) {
-			kprintf("Addr: 0x%x\n",current_task->context->pagedir[i]);
-			//kprintf("Ende\n");
-			//break;
-		}
-	}
+	uint32_t page_index = 4096 / PAGE_SIZE;
+    uint32_t pd_index = page_index / 1024;
+    uint32_t pt_index = page_index % 1024;
+	
+	kprintf("Addr: 0x%x\n",current_task->context->pagedir[page_index]);
 }
 
 void vmm_init(void)
@@ -136,12 +134,12 @@ void vmm_init(void)
 	last_addr=0;
 	
     /* Die ersten 4 MB an dieselbe physische wie virtuelle Adresse mappen */
-    for (; last_addr < /* 4096 */ 8192 * 1024; last_addr += 0x1000) {
+    for (; last_addr < /* 4096 */ 8192 * 1024; last_addr += PAGE_SIZE) {
         vmm_map_page(kernel_context, last_addr, last_addr);
     }
-	last_addr += 0x1000;
+	last_addr += PAGE_SIZE;
 	
-	for (i = 0xB8000; i < 0xC0000; i += 0x1000) {
+	for (i = 0xB8000; i < 0xC0000; i += PAGE_SIZE) {
         vmm_map_page(kernel_context, i, i);
     }
 	
