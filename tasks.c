@@ -223,9 +223,7 @@ einen Einsprungspunkt.
 int counter=0;
 
 struct task* init_task(void* entry,enum task_type type) {
-	//kprintf("Initialization Task PID: %d\n", pid);
-	vmm_activate_context(kernel_context);
-	
+	//kprintf("Initialization Task PID: %d\n", pid);	
 	last_message="pmm_alloc";
     uint8_t* stack = pmm_alloc();
     uint8_t* user_stack = pmm_alloc();
