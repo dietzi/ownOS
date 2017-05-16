@@ -120,7 +120,7 @@ void* vmm_alloc(void) {
     uint32_t pd_index = page_index / 1024;
     uint32_t pt_index = page_index % 1024;
 	
-	kprintf("Addr: 0x%x\n",current_task->context->pagedir[page_index]);
+	kprintf("Addr: 0x%x\n",current_task->context->pagedir[pd_index]);
 }
 
 void vmm_init(void)
