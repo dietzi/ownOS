@@ -342,17 +342,17 @@ void error(struct cpu_state* cpu) {
 			break;
 		case 0x0e:
 			errcode=0;
-			int bit0 = cpu->error >> 1;
+			kprintf("Fehlercode: %d (0x%x) (%b)\n",cpu->error, cpu->error, cpu->error);
+			/*int bit0 = cpu->error >> 1;
 			int bit1 = cpu->error >> 2;
 			int bit2 = cpu->error >> 3;
 			int bit3 = cpu->error >> 4;
 			int bit4 = cpu->error >> 5;
-			kprintf("Fehlercode: %d (0x%x) (%b)\n",cpu->error, cpu->error, cpu->error);
 			kprintf(" --> Bit 0: %x\n",bit0);
 			kprintf(" --> Bit 1: %x\n",bit1);
 			kprintf(" --> Bit 2: %x\n",bit2);
 			kprintf(" --> Bit 3: %x\n",bit3);
-			kprintf(" --> Bit 4: %x\n",bit4);
+			kprintf(" --> Bit 4: %x\n",bit4);*/
 			kprintf(" --> Task-Context: %x\n",current_task->context);
 			kprintf(" --> Kernel-Context: %x\n",kernel_context);
 			kprintf(" --> Last Adress: %x\n",last_addr);
