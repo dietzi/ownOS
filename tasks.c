@@ -267,6 +267,8 @@ struct task* init_task(void* entry,enum task_type type) {
      * worden. So kann man dem Interrupthandler den neuen Task unterschieben
      * und er stellt einfach den neuen Prozessorzustand "wieder her".
      */
+	last_message="task pmm_alloc";
+    struct task* task = pmm_alloc();
 	last_message="define state";
     struct cpu_state* state = (void*) (stack + 4096 - sizeof(new_state));
     *state = new_state;
@@ -274,8 +276,6 @@ struct task* init_task(void* entry,enum task_type type) {
     /*
      * Neue Taskstruktur anlegen und in die Liste einhaengen
      */
-	last_message="task pmm_alloc";
-    struct task* task = pmm_alloc();
     task->cpu_state = state;
     task->next = first_task;
 	task->pid = pid;
