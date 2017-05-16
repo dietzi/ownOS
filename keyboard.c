@@ -218,7 +218,7 @@ static void send_key_event(uint8_t keycode, bool release)
 						cc=codeToChar(keycode,shift,shiftG,strg,alt,altGR);
 						if(cc=='\n') {
 							kprintf("\n");
-							//send_command(input);
+							send_command(input);
 							c=0;
 							for(int i=0;i<1000;i++) input[i]=NULL;
 						} else {

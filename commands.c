@@ -1,7 +1,5 @@
 #include "includes.h"
 
-#ifdef TEST123
-
 #define str(x) #x
 
 bool proc(void);
@@ -103,5 +101,3 @@ bool reboot(void)
     asm("cli; hlt");
 	return true;
 }
-
-#endif
