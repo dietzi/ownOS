@@ -342,7 +342,16 @@ void error(struct cpu_state* cpu) {
 			break;
 		case 0x0e:
 			errcode=0;
-			kprintf("Fehlercode: %d (0x%x) (%b)\n",cpu->error, cpu->error, cpu->error);
+			kprintf("Fehlercode: %d (0x%x) (%b) ",cpu->error, cpu->error, cpu->error);
+			if(cpu->error & 0x1) kprintf("Page-Protection; ");
+			else kprintf("Page not Present; ");
+			if(cpu->error & 0x2) kprintf("Page-Write; ");
+			else kprintf("Page-Read; ");
+			if(cpu->error & 0x4) kprintf("Ring 3; ");
+			else kprintf("Ring 0; ");
+			if(cpu->error & 0x8) kprintf("Reserved; ");
+			if(cpu->error & 0x10) kprintf("Instruction; ");
+			kprintf("\n");
 			/*int bit0 = cpu->error >> 1;
 			int bit1 = cpu->error >> 2;
 			int bit2 = cpu->error >> 3;
