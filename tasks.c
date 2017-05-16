@@ -468,9 +468,9 @@ redo:
 	
 	update_status();
 	
-    if (cpu != current_task->cpu_state && current_task->type != IDLE) {
+    /*if (cpu != current_task->cpu_state && current_task->type != IDLE) {
         vmm_activate_context(current_task->context);
-    }
+    }*/
     cpu = current_task->cpu_state;
 	
     return cpu;
