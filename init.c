@@ -64,6 +64,7 @@ void init(struct multiboot_info *mb_info) {
 	init_complete=true;
 	show_prefix=true;
 	
+	vmm_alloc();
 	//init_telnet();
 	
 	kprintf("\n");
