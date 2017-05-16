@@ -362,7 +362,8 @@ void init_multitasking(struct multiboot_info* mb_info)
          * Alternative waere es, einfach mit einer Fehlermeldung abzubrechen.
          */
 		last_message="init_task(idle,IDLE)";
-		init_task(idle,IDLE);
+		//init_task(idle,IDLE);
+		kprintf("idle-address: 0x%x\n",init_task(idle,IDLE)->context);
         //init_task(task_a,NORMAL);
         //init_task(task_b,NORMAL);
         //init_task(task_c);
