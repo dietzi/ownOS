@@ -353,9 +353,24 @@ void error(struct cpu_state* cpu) {
 			kprintf(" --> Bit 2: %x\n",bit2);
 			kprintf(" --> Bit 3: %x\n",bit3);
 			kprintf(" --> Bit 4: %x\n",bit4);*/
-			kprintf(" --> Task-Context: %x\n",current_task->context);
-			kprintf(" --> Kernel-Context: %x\n",kernel_context);
-			kprintf(" --> Last Adress: %x\n",last_addr);
+			kprintf(" --> Task-Context: 0x%x\n",current_task->context);
+			kprintf(" --> Kernel-Context: 0x%x\n",kernel_context);
+			kprintf(" --> Last Adress: 0x%x\n",last_addr);
+			uint32_t cr0,cr2,cr3;
+			__asm__ __volatile__ (
+					"mov %%cr0, %%eax\n\t"
+					"mov %%eax, %0\n\t"
+					"mov %%cr2, %%eax\n\t"
+					"mov %%eax, %1\n\t"
+					"mov %%cr3, %%eax\n\t"
+					"mov %%eax, %2\n\t"
+				: "=m" (cr0), "=m" (cr2), "=m" (cr3)
+				: /* no input */
+				: "%eax"
+				);
+			kprintf(" --> CR0: 0x%x\n",cr0);
+			kprintf(" --> CR2: 0x%x\n",cr2);
+			kprintf(" --> CR3: 0x%x\n",cr3);
 			break;
 	}
 	
