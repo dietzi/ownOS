@@ -122,7 +122,7 @@ void vmm_init(void)
 	last_addr=0;
 	
     /* Die ersten 4 MB an dieselbe physische wie virtuelle Adresse mappen */
-    for (; last_addr < 8192 * 1024; last_addr += 0x1000) {
+    for (; last_addr < /* 4096 */ 8192 * 1024; last_addr += 0x1000) {
         vmm_map_page(kernel_context, last_addr, last_addr);
     }
 	last_addr += 0x1000;
