@@ -115,11 +115,11 @@ extern struct task* current_task;
 
 void* vmm_alloc(void) {
 	for(int i=0; i < 1024; i++) {
-		kprintf("Addr: 0x%x\n",current_task->context->pagedir[i]);
 		if(current_task->context->pagedir[i] == 0) {
 			
 			break;
 		}
+		kprintf("Addr: 0x%x\n",current_task->context->pagedir[i]);
 	}
 }
 
