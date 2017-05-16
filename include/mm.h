@@ -19,6 +19,7 @@ struct vmm_context* vmm_create_context_user(void);
 int vmm_map_page(struct vmm_context* context, uintptr_t virt, uintptr_t phys);
 int vmm_map_page_user(struct vmm_context* context, uintptr_t virt, uintptr_t phys);
 void vmm_activate_context(struct vmm_context* context);
+void* vmm_alloc(void);
 
 uint32_t last_addr;
 

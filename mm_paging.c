@@ -111,6 +111,18 @@ void vmm_activate_context(struct vmm_context* context)
     asm volatile("mov %0, %%cr3" : : "r" (context->pagedir));
 }
 
+extern struct task* current_task;
+
+void* vmm_alloc(void) {
+	for(int i=0; i < 1024; i++) {
+		kprintf("Addr: 0x%x\n",current_task->context->pagedir[i]);
+		if(current_task->context->pagedir[i] == 0) {
+			
+			break;
+		}
+	}
+}
+
 void vmm_init(void)
 {
     uint32_t cr0;
