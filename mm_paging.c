@@ -52,7 +52,6 @@ int vmm_map_page_user(struct vmm_context* context, uintptr_t virt, uintptr_t phy
     /* Page Table heraussuchen bzw. anlegen */
     if (context->pagedir[pd_index] & PTE_PRESENT & PTE_USER) {
         /* Page Table ist schon vorhanden */
-		asm("xchg %%bx,%%bx");
         page_table = (uint32_t*) (context->pagedir[pd_index] & ~0xFFF);
     } else {
         /* Neue Page Table muss angelegt werden */
