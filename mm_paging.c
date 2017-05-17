@@ -123,7 +123,16 @@ void* vmm_alloc(void) {
 	
 	kprintf("Task: 0x%x\n",current_task);
 	kprintf("Context: 0x%x\n",current_task->context);
+	
 	sleep(5000);
+	
+	if(current_task == NULL || current_task == 0) {
+		kprintf("Raising Interrupt\n");
+		sleep(1000);
+		asm("int $0x20");
+		kprintf("Interrupt raised\n");
+		sleep(1000);
+	}
 	
 	if(current_task->context->pagedir[pd_index] & PTE_PRESENT) {
         page_table = (uint32_t*) (current_task->context->pagedir[pd_index] & ~0xFFF);
