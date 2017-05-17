@@ -292,6 +292,8 @@ struct task* init_task(void* entry,enum task_type type) {
 	uint32_t temp_addr=last_addr;
 	last_message="mapping";
     for (; last_addr < temp_addr + (4096 * 1024); last_addr += 0x1000) {
+		kprintf("map: 0x%x\n",i);
+		sleep(1000);
         vmm_map_page_user(task->context, i, last_addr);
 		i+=0x1000;
     }
@@ -365,7 +367,6 @@ void init_multitasking(struct multiboot_info* mb_info)
 		last_message="init_task(idle,IDLE)";
 		//init_task(idle,IDLE);
 		kprintf("idle-address: 0x%x\n",init_task(idle,IDLE)->context);
-			//vmm_alloc();
 
         //init_task(task_a,NORMAL);
         //init_task(task_b,NORMAL);
