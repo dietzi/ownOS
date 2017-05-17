@@ -98,11 +98,11 @@ int vmm_map_page(struct vmm_context* context, uintptr_t virt, uintptr_t phys)
             page_table[i] = 0;
         }
         context->pagedir[pd_index] =
-            (uint32_t) page_table | PTE_PRESENT | PTE_WRITE | PTE_USER;
+            (uint32_t) page_table | PTE_PRESENT | PTE_WRITE;
     }
 
     /* Neues Mapping in the Page Table eintragen */
-    page_table[pt_index] = phys | PTE_PRESENT | PTE_WRITE | PTE_USER;
+    page_table[pt_index] = phys | PTE_PRESENT | PTE_WRITE;
     asm volatile("invlpg %0" : : "m" (*(char*)virt));
 
     return 0;
@@ -120,6 +120,10 @@ void* vmm_alloc(void) {
     uint32_t pd_index = page_index / 1024;
     uint32_t pt_index = page_index % 1024;
 	uint32_t* page_table;
+	
+	kprintf("Task: 0x%x\n",current_task);
+	kprintf("Context: 0x%x\n",current_task->context);
+	sleep(5000);
 	
 	if(current_task->context->pagedir[pd_index] & PTE_PRESENT) {
         page_table = (uint32_t*) (current_task->context->pagedir[pd_index] & ~0xFFF);
