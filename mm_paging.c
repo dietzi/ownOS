@@ -115,38 +115,28 @@ void vmm_activate_context(struct vmm_context* context)
 
 extern struct task* current_task;
 
+struct vmm_context* alloc_context;
+
 void* vmm_alloc(void) {
 	uint32_t page_index = 4096 / PAGE_SIZE;
     uint32_t pd_index = page_index / 1024;
     uint32_t pt_index = page_index % 1024;
 	uint32_t* page_table;
 	
-test1:
-	kprintf("Task: 0x%x\n",current_task);
-	kprintf("Context: 0x%x\n",current_task->context);
+	if(alloc_context == NULL) alloc_context = pmm_alloc();
 	
-	sleep(2000);
-	
-	if(current_task == NULL || current_task == 0) {
-		kprintf("Changing to Kernel-Context\n");
-		sleep(1000);
-		current_task->context = kernel_context;
-		kprintf("Kernel-Context activated\n");
-		sleep(1000);
-		//goto test1;
-	}
-	
-	if(current_task->context->pagedir[pd_index] & PTE_PRESENT) {
-        page_table = (uint32_t*) (current_task->context->pagedir[pd_index] & ~0xFFF);
+	if(alloc_context->pagedir[pd_index] & PTE_PRESENT) {
+        page_table = (uint32_t*) (alloc_context->pagedir[pd_index] & ~0xFFF);
 	} else {
         page_table = pmm_alloc();
         for (int i = 0; i < 1024; i++) {
             page_table[i] = 0;
         }
-        current_task->context->pagedir[pd_index] =
+        alloc_context->pagedir[pd_index] =
             (uint32_t) page_table | PTE_PRESENT | PTE_WRITE | PTE_USER;
 	}
-	kprintf("Addr: 0x%x\n",page_table);
+	kprintf("Addr: 0x%x\n",alloc_context);
+	sleep(2000);
 }
 
 void vmm_init(void)
