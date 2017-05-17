@@ -125,17 +125,11 @@ void* vmm_alloc(void) {
 	
 	if(alloc_context == NULL) alloc_context = vmm_create_context();
 	
-	if(alloc_context->pagedir[pd_index] & PTE_PRESENT) {
-        page_table = (uint32_t*) (alloc_context->pagedir[pd_index] & ~0xFFF);
-	} else {
-        page_table = pmm_alloc();
-        for (int i = 0; i < 1024; i++) {
-            page_table[i] = 0;
-        }
-        alloc_context->pagedir[pd_index] =
-            (uint32_t) page_table | PTE_PRESENT | PTE_WRITE | PTE_USER;
-	}
-	kprintf("Addr: 0x%x\n",alloc_context);
+    for (int i=0; last_addr < 4096 * 1024; last_addr += PAGE_SIZE) {
+        vmm_map_page(alloc_context, i, last_addr);
+		i+=PAGE_SIZE;
+    }
+	kprintf("Addr: 0x%x\n",alloc_context->pagedir[0]);
 	sleep(2000);
 }
 
