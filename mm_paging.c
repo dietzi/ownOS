@@ -119,8 +119,19 @@ void* vmm_alloc(void) {
 	uint32_t page_index = 4096 / PAGE_SIZE;
     uint32_t pd_index = page_index / 1024;
     uint32_t pt_index = page_index % 1024;
+	uint32_t* page_table;
 	
-	kprintf("Addr: 0x%x\n",current_task->context->pagedir[pd_index]);
+	if(current_task->context->pagedir[pd_index] & PTE_PRESENT) {
+        page_table = (uint32_t*) (current_task->context->pagedir[pd_index] & ~0xFFF);
+	} else {
+        page_table = pmm_alloc();
+        for (int i = 0; i < 1024; i++) {
+            page_table[i] = 0;
+        }
+        current_task->context->pagedir[pd_index] =
+            (uint32_t) page_table | PTE_PRESENT | PTE_WRITE | PTE_USER;
+	}
+	kprintf("Addr: 0x%x 0x%x\n",page_table,*page_table);
 }
 
 void vmm_init(void)
