@@ -133,7 +133,7 @@ test1:
 		current_task->context = kernel_context;
 		kprintf("Kernel-Context activated\n");
 		sleep(1000);
-		goto test1;
+		//goto test1;
 	}
 	
 	if(current_task->context->pagedir[pd_index] & PTE_PRESENT) {
