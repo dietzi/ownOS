@@ -146,7 +146,7 @@ test1:
         current_task->context->pagedir[pd_index] =
             (uint32_t) page_table | PTE_PRESENT | PTE_WRITE | PTE_USER;
 	}
-	kprintf("Addr: 0x%x\n",*page_table);
+	kprintf("Addr: 0x%x\n",&page_table);
 }
 
 void vmm_init(void)
