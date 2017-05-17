@@ -125,7 +125,7 @@ test1:
 	kprintf("Task: 0x%x\n",current_task);
 	kprintf("Context: 0x%x\n",current_task->context);
 	
-	sleep(5000);
+	sleep(2000);
 	
 	if(current_task == NULL || current_task == 0) {
 		kprintf("Raising Interrupt\n");
