@@ -128,10 +128,10 @@ test1:
 	sleep(2000);
 	
 	if(current_task == NULL || current_task == 0) {
-		kprintf("Raising Interrupt\n");
+		kprintf("Changing to Kernel-Context\n");
 		sleep(1000);
-		asm("int $0x20");
-		kprintf("Interrupt raised\n");
+		current_task->context = kernel_context;
+		kprintf("Kernel-Context activated\n");
 		sleep(1000);
 		goto test1;
 	}
