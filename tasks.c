@@ -225,8 +225,8 @@ int counter=0;
 struct task* init_task(void* entry,enum task_type type) {
 	//kprintf("Initialization Task PID: %d\n", pid);	
 	last_message="pmm_alloc";
-    uint8_t* stack = pmm_alloc();
-    uint8_t* user_stack = pmm_alloc();
+    uint8_t* stack = vmm_alloc();
+    uint8_t* user_stack = vmm_alloc();
 
     /*
      * CPU-Zustand fuer den neuen Task festlegen
@@ -268,7 +268,7 @@ struct task* init_task(void* entry,enum task_type type) {
      * und er stellt einfach den neuen Prozessorzustand "wieder her".
      */
 	last_message="task pmm_alloc";
-    struct task* task = pmm_alloc();
+    struct task* task = vmm_alloc();
 	last_message="define state";
     struct cpu_state* state = (void*) (stack + 4096 - sizeof(new_state));
     *state = new_state;
@@ -291,7 +291,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	int i=0;
 	uint32_t temp_addr=last_addr;
 	last_message="mapping";
-    for (; last_addr < temp_addr + (4096); last_addr += 0x1000) {
+    for (; last_addr < last_addr + (4096 * 1024); last_addr += 0x1000) {
         vmm_map_page_user(task->context, i, last_addr);
 		i+=0x1000;
     }
