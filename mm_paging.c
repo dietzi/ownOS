@@ -123,7 +123,7 @@ void* vmm_alloc(void) {
     uint32_t pt_index = page_index % 1024;
 	uint32_t* page_table;
 	
-	if(alloc_context == NULL) alloc_context = pmm_alloc();
+	if(alloc_context == NULL) alloc_context = vmm_create_context();
 	
 	if(alloc_context->pagedir[pd_index] & PTE_PRESENT) {
         page_table = (uint32_t*) (alloc_context->pagedir[pd_index] & ~0xFFF);
