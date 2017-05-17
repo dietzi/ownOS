@@ -121,6 +121,7 @@ void* vmm_alloc(void) {
     uint32_t pt_index = page_index % 1024;
 	uint32_t* page_table;
 	
+test1:
 	kprintf("Task: 0x%x\n",current_task);
 	kprintf("Context: 0x%x\n",current_task->context);
 	
@@ -132,6 +133,7 @@ void* vmm_alloc(void) {
 		asm("int $0x20");
 		kprintf("Interrupt raised\n");
 		sleep(1000);
+		goto test1;
 	}
 	
 	if(current_task->context->pagedir[pd_index] & PTE_PRESENT) {
