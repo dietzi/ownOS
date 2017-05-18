@@ -122,7 +122,7 @@ void* vmm_alloc(void) {
     uint32_t pt_index = page_index % 1024;
 	uint32_t* page_table;
 	
-	struct vmm_context* alloc_context = &current_task->context; //vmm_create_context();
+	struct vmm_context* alloc_context = vmm_create_context();
 	
     for (int i=0; i < 4096; i += PAGE_SIZE) {
         vmm_map_page(alloc_context, i, last_addr);
