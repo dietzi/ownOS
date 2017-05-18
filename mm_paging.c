@@ -153,7 +153,7 @@ void vmm_init(void)
         vmm_map_page(kernel_context, i, i);
     }
 	
-    vmm_activate_context(kernel_context);
+    //vmm_activate_context(kernel_context);
 
     asm volatile("mov %%cr0, %0" : "=r" (cr0));
     cr0 |= (1 << 31);
