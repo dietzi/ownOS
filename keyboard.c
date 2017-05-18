@@ -63,7 +63,7 @@ void keyboard_init(void)
 {
     // So, mal hoeren was uns die Tastatur noch so alles zu erzaehlen hat von
     // eventuell gedrueckten Tasten waerend dem Booten.
-	*input==vmm_alloc();
+	*input==pmm_alloc();
 	for(int i=0;i<1000;i++) input[i]=NULL;
 	
     while ((inb(0x64) & 0x1)) {
