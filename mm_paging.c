@@ -115,7 +115,6 @@ void vmm_activate_context(struct vmm_context* context)
 
 extern struct task* current_task;
 
-
 void* vmm_alloc(void) {
 	uint32_t page_index = 4096 / PAGE_SIZE;
     uint32_t pd_index = page_index / 1024;
