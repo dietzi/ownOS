@@ -125,9 +125,9 @@ void* vmm_alloc(void) {
 	
 	if(alloc_context == NULL) alloc_context = vmm_create_context();
 	
-    for (int i=0; last_addr < 4096 * 1024; last_addr += PAGE_SIZE) {
+    for (int i=0; i < 4096; i += PAGE_SIZE) {
         vmm_map_page(alloc_context, i, last_addr);
-		i+=PAGE_SIZE;
+		last_addr+=PAGE_SIZE;
     }
 	//vmm_activate_context(alloc_context);
 	kprintf("Addr: 0x%x\n",alloc_context->pagedir[0]);
