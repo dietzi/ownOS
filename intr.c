@@ -478,11 +478,12 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
         }
     }
 	if(init_complete) {
+		kprintf("Context\n");
 		if (cpu != new_cpu && current_task != NULL && current_task->context != NULL /*&& current_task->type != IDLE*/) {
 			kprintf("Changing Context\n");
-			sleep(1000);
+			//sleep(1000);
 			vmm_activate_context(current_task->context);
-			sleep(5000);
+			//sleep(5000);
 		}
 	}
 	last_message = "Returning new_cpu";
