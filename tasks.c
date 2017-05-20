@@ -304,6 +304,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	pid++;
     first_task = task;
 	last_message="returning";
+	kprintf("Returning\n");
     return task;
 }
 
