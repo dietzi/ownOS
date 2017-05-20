@@ -225,7 +225,9 @@ int counter=0;
 struct task* init_task(void* entry,enum task_type type) {
 	//kprintf("Initialization Task PID: %d\n", pid);	
 	last_message="pmm_alloc";
+	kprintf("t1\n");
     uint8_t* stack = vmm_alloc();
+	kprintf("t2\n");
     uint8_t* user_stack = vmm_alloc();
 
     /*
@@ -268,6 +270,7 @@ struct task* init_task(void* entry,enum task_type type) {
      * und er stellt einfach den neuen Prozessorzustand "wieder her".
      */
 	last_message="task pmm_alloc";
+	kprintf("t3\n");
     struct task* task = vmm_alloc();
 	last_message="define state";
     struct cpu_state* state = (void*) (stack + 4096 - sizeof(new_state));
