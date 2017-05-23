@@ -130,7 +130,7 @@ void* vmm_alloc(void) {
 	//vmm_activate_context(alloc_context);
 	kprintf("Addr: 0x1000 -> 0x%x\n",alloc_context->pagedir[0] & ~0x3);
 	//sleep(100);
-	return (void*)0x1000;
+	return (void*)0x0;
 }
 
 void vmm_init(void)
