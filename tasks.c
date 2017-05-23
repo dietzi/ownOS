@@ -226,13 +226,13 @@ struct task* init_task(void* entry,enum task_type type) {
 	kprintf("Current: 0x%x 0x%x\n",current_task,current_task->allocated);
 	sleep(2000);
 	//kprintf("Initialization Task PID: %d\n", pid);	
-	last_message="alloc stack";
+	last_message="alloc context";
 	
 	struct vmm_context* temp_context = vmm_create_context();
 	struct vmm_context* temp_context_alt = current_task->context;
-	
 	current_task->context = temp_context;
 	
+	last_message="alloc stack";
     uint8_t* stack = vmm_alloc();
     uint8_t* user_stack = vmm_alloc();
 
