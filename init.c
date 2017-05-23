@@ -31,6 +31,7 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("Initialization paging\n");
 	last_message="vmm_init";
 	vmm_init();
+	asm volatile("sti");
 	kprintf("Initialization keyboard\n");
 	last_message="keyboard_init";
 	//keyboard_init();
