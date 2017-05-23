@@ -308,6 +308,7 @@ struct task* init_task(void* entry,enum task_type type) {
     first_task = task;
 	last_message="returning";
 	kprintf("Returning\n");
+	sleep(250);
     return task;
 }
 
