@@ -481,6 +481,6 @@ redo:
         vmm_activate_context(current_task->context);
     }*/
     cpu = current_task->cpu_state;
-	
+	vmm_activate_context(current_task->context);
     return cpu;
 }
