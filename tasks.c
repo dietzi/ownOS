@@ -224,6 +224,7 @@ int counter=0;
 
 struct task* init_task(void* entry,enum task_type type) {
 	kprintf("Current: 0x%x 0x%x\n",current_task,current_task->allocated);
+	sleep(2000);
 	//kprintf("Initialization Task PID: %d\n", pid);	
 	last_message="pmm_alloc";
     uint8_t* stack = vmm_alloc();
