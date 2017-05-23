@@ -128,7 +128,7 @@ void* vmm_alloc(void) {
 		last_addr += 1024;
     }
 	//vmm_activate_context(alloc_context);
-	kprintf("Addr: 0x%x\n",alloc_context->pagedir[0]);
+	kprintf("Addr: 0x%x\n",alloc_context->pagedir[0] & ~0x3);
 	//sleep(100);
 	return 0;
 }
