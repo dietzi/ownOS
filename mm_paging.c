@@ -123,14 +123,14 @@ void* vmm_alloc(void) {
 	
 	struct vmm_context* alloc_context = vmm_create_context();
 	
-    for (int i=0x0; i < 0x1000; i += 1024) {
+    for (int i=0x1000; i < 0x2000; i += 1024) {
         vmm_map_page(alloc_context, i, last_addr);
 		last_addr += 1024;
     }
 	//vmm_activate_context(alloc_context);
-	kprintf("Addr: 0x%x\n",alloc_context->pagedir[0] & ~0x3);
+	kprintf("Addr: 0x1000 -> 0x%x\n",alloc_context->pagedir[0] & ~0x3);
 	//sleep(100);
-	return 0;
+	return (void*)0x1000;
 }
 
 void vmm_init(void)
