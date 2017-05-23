@@ -135,7 +135,7 @@ void* vmm_alloc_context(struct vmm_context* context) {
         vmm_map_page(context, i, last_addr);
 		last_addr += 1024;
     }
-	current_task->context->last_addr += 0x1000;
+	context->last_addr += 0x1000;
 	//vmm_activate_context(alloc_context);
 	//sleep(100);
 	return returner;
