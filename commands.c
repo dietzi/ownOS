@@ -77,6 +77,7 @@ void send_command(char input[1000]) {
 
 bool proc(void) {
 	struct task* temp=first_task;
+	kprintf("Prozesse:\n");
 	while(temp!=NULL) {
 		kprintf("PID: %d     EIP: %x     Type: ",temp->pid,temp->cpu_state->eip);
 		if(temp->type == NORMAL) {

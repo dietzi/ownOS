@@ -16,6 +16,7 @@ enum task_type {
 struct vmm_context {
     uint32_t* pagedir;
 	int page_count;
+	uint32_t last_addr;
 };
 
 

@@ -121,14 +121,14 @@ void* vmm_alloc(void) {
     uint32_t pt_index = page_index % 1024;
 	uint32_t* page_table;
 	
-	struct vmm_context* alloc_context = vmm_create_context();
+	//struct vmm_context* alloc_context = vmm_create_context();
 	
     for (int i=0x1000; i < 0x2000; i += 1024) {
-        vmm_map_page(alloc_context, i, last_addr);
+        vmm_map_page(current_task->context, i, last_addr);
 		last_addr += 1024;
     }
 	//vmm_activate_context(alloc_context);
-	kprintf("Addr: 0x1000 -> 0x%x\n",alloc_context->pagedir[0] & ~0x3);
+	kprintf("Addr: 0x1000 -> 0x%x\n",current_task->context->pagedir[0] & ~0x3);
 	//sleep(100);
 	return (void*)0x0;
 }
@@ -144,7 +144,7 @@ void vmm_init(void)
 	last_addr=0x0;
 	
     /* Die ersten 4 MB an dieselbe physische wie virtuelle Adresse mappen */
-    for (; last_addr < /* 4096 */ 8192 * 1024; last_addr += 1024) {
+    for (; last_addr < /* 4096 */ 0x2000 * 1024; last_addr += 1024) {
         vmm_map_page(kernel_context, last_addr, last_addr);
     }
 	//last_addr += PAGE_SIZE;
