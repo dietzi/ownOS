@@ -475,7 +475,10 @@ redo:
 			if(current_task==NULL) current_task=first_task;
 		}
 	}
-	if(current_task == NULL && first_task == NULL) init_task(idle,IDLE);
+	if(current_task == NULL && first_task == NULL) {
+		kprintf("Idle re-init\n");
+		init_task(idle,IDLE);
+	}
     /* Prozessorzustand des neuen Tasks aktivieren */
 	
 	update_status();
