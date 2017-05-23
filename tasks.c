@@ -363,8 +363,6 @@ void init_elf(void* image)
 void init_multitasking(struct multiboot_info* mb_info)
 {
 	//memcpy(&bios_data, 0, 4096);
-	kprintf("Modcount: %d\n",mb_info->mbs_mods_count);
-	sleep(1000);
     if (mb_info->mbs_mods_count == 0) {
         /*
          * Ohne Module machen wir dasselbe wie bisher auch. Eine genauso gute
@@ -373,8 +371,8 @@ void init_multitasking(struct multiboot_info* mb_info)
 		last_message="init_task(idle,IDLE)";
 		//init_task(idle,IDLE);
 		kprintf("Initializating Idle\n");
-		sleep(500);
-		kprintf("idle-address: 0x%x\n",init_task(idle,IDLE)->context);
+		struct task *addr = init_task(idle,IDLE);
+		kprintf("idle-address: 0x%x\n",addr->context);
 
         //init_task(task_a,NORMAL);
         //init_task(task_b,NORMAL);
