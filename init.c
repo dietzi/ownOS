@@ -50,7 +50,6 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("Initialization multitasking\n");
 	last_message="init_multitasking";
 	init_multitasking(mb_info);
-	sleep(100);
 	last_message="ready";
 	//set_vesa_mode(0x11b);
 	//kprintf("Initialization Network\n");

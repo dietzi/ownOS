@@ -225,9 +225,7 @@ int counter=0;
 struct task* init_task(void* entry,enum task_type type) {
 	//kprintf("Initialization Task PID: %d\n", pid);	
 	last_message="pmm_alloc";
-	kprintf("t1\n");
     uint8_t* stack = vmm_alloc();
-	kprintf("t2\n");
     uint8_t* user_stack = vmm_alloc();
 
     /*
@@ -270,7 +268,6 @@ struct task* init_task(void* entry,enum task_type type) {
      * und er stellt einfach den neuen Prozessorzustand "wieder her".
      */
 	last_message="task pmm_alloc";
-	kprintf("t3\n");
     struct task* task = vmm_alloc();
 	last_message="define state";
     struct cpu_state* state = (void*) (stack + 4096 - sizeof(new_state));
@@ -295,9 +292,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	uint32_t temp_addr=last_addr;
 	last_message="mapping";
     for (int i=0; i < 4096; i += 0x1000) {
-		kprintf("map: 0x%x -> 0x%x\n",i, last_addr);
         vmm_map_page_user(task->context, i, last_addr);
-		kprintf("Ende1\n");
 		last_addr+=0x1000;
     }
 	last_message="mapping end";
@@ -307,7 +302,6 @@ struct task* init_task(void* entry,enum task_type type) {
 	pid++;
     first_task = task;
 	last_message="returning";
-	kprintf("Returning 0x%x\n",first_task);
 	sleep(250);
     return task;
 }
@@ -371,9 +365,7 @@ void init_multitasking(struct multiboot_info* mb_info)
          */
 		last_message="init_task(idle,IDLE)";
 		//init_task(idle,IDLE);
-		kprintf("Initializating Idle\n");
 		struct task *addr = init_task(idle,IDLE);
-		kprintf("idle-address: 0x%x\n",addr->context);
 
         //init_task(task_a,NORMAL);
         //init_task(task_b,NORMAL);
