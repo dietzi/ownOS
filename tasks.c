@@ -357,6 +357,7 @@ void init_elf(void* image)
 */
 void init_multitasking(struct multiboot_info* mb_info)
 {
+	kprintf("Current: 0x%x 0x%x\n",current_task,current_task->context);
 	//memcpy(&bios_data, 0, 4096);
     if (mb_info->mbs_mods_count == 0) {
         /*
