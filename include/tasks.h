@@ -35,6 +35,7 @@ struct task {
 	enum task_state		state;
 	char*				name;
 	struct vmm_context* context;
+	void*				allocated;
 };
 
 void task_a(uint32_t arg);

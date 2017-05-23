@@ -359,6 +359,14 @@ void init_elf(void* image)
 */
 void init_multitasking(struct multiboot_info* mb_info)
 {
+	first_task = NULL;
+	first_task->allocated = NULL;
+	first_task->next = NULL;
+	first_task->next->allocated = NULL;
+	current_task = NULL;
+	current_task->allocated = NULL;
+	current_task->next = NULL;
+	current_task->next->allocated = NULL;
 	//memcpy(&bios_data, 0, 4096);
     if (mb_info->mbs_mods_count == 0) {
         /*
@@ -411,7 +419,7 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
      * gerade zum ersten Mal in einen Task. Diesen Prozessorzustand brauchen
      * wir spaeter nicht wieder.
      */
-    if (current_task != NULL) {
+    if (current_task->allocated != NULL) {
         current_task->cpu_state = cpu;
     }
 
@@ -422,7 +430,7 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 	//kprintf("IDLE: %x - %x\n",current_task->cpu_state->eip,(void*)idle);
 	//kprintf("V86:  %x - %x\n",current_task->cpu_state->eip,(void*)v86);
 	 
-    if (current_task == NULL) {
+    if (current_task->allocated == NULL) {
         current_task = first_task;
 		//if(current_task->state==EXIT) goto redo;
     } else {
@@ -438,9 +446,9 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 				current_task = current_task->next;
 			}
 			current_task = current_task->next;
-			if (current_task == NULL) {
+			if (current_task->allocated == NULL) {
 				current_task = first_task;
-				if(current_task->type==IDLE && (current_task->next != NULL)) current_task=current_task->next;
+				if(current_task->type==IDLE && (current_task->next->allocated != NULL)) current_task=current_task->next;
 			}
 		}
 	}
@@ -466,10 +474,10 @@ redo:
 			current_task->type=RUNNING;
 		} else {
 			remove_task(current_task);
-			if(current_task==NULL) current_task=first_task;
+			if(current_task->allocated==NULL) current_task=first_task;
 		}
 	}
-	if(current_task == NULL && first_task == NULL) {
+	if(current_task->allocated == NULL && first_task->allocated == NULL) {
 		kprintf("Idle re-init\n");
 		init_task(idle,IDLE);
 	}
