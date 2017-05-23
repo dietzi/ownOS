@@ -289,7 +289,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	last_message="create_user_context";
 	
 	//struct vmm_context* task_context = vmm_create_context_user();
-	task->context = vmm_create_context_user();
+	task->context = vmm_create_context();
 	
 	
 	uint32_t temp_addr=last_addr;
