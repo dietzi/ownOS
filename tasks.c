@@ -300,7 +300,6 @@ struct task* init_task(void* entry,enum task_type type) {
 		kprintf("Ende1\n");
 		last_addr+=0x1000;
     }
-		sleep(100);
 	last_message="mapping end";
 	//last_addr += 0x1000;
 	//task->context = task_context;
