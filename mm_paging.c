@@ -116,12 +116,8 @@ void vmm_activate_context(struct vmm_context* context)
 extern struct task* current_task;
 
 void* vmm_alloc(void) {
-	uint32_t page_index = 4096 / PAGE_SIZE;
-    uint32_t pd_index = page_index / 1024;
-    uint32_t pt_index = page_index % 1024;
-	uint32_t* page_table;
-	
 	//struct vmm_context* alloc_context = vmm_create_context();
+
 	uint32_t returner = current_task->context->last_addr;
 	
     for (int i=current_task->context->last_addr; i < current_task->context->last_addr + 0x1000; i += 1024) {
@@ -129,7 +125,6 @@ void* vmm_alloc(void) {
 		last_addr += 1024;
     }
 	//vmm_activate_context(alloc_context);
-	kprintf("Addr: 0x1000 -> 0x%x\n",current_task->context->pagedir[0] & ~0x3);
 	//sleep(100);
 	return returner;
 }
