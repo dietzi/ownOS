@@ -296,8 +296,8 @@ struct task* init_task(void* entry,enum task_type type) {
 	last_message="mapping";
     for (int i=0; i < 4096; i += 0x1000) {
 		kprintf("map: 0x%x -> 0x%x\n",i, last_addr);
-		sleep(100);
         vmm_map_page_user(task->context, i, last_addr);
+		sleep(100);
 		kprintf("Ende1\n");
 		last_addr+=0x1000;
     }
