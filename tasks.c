@@ -283,6 +283,7 @@ struct task* init_task(void* entry,enum task_type type) {
 
 	task->type=type;
 	task->state=RUNNING;
+	task->allocated = 0x1;
 	
 	last_message="create_user_context";
 	
@@ -375,7 +376,7 @@ void init_multitasking(struct multiboot_info* mb_info)
          */
 		last_message="init_task(idle,IDLE)";
 		//init_task(idle,IDLE);
-		struct task *addr = init_task(idle,IDLE);
+		init_task(idle,IDLE);
 
         //init_task(task_a,NORMAL);
         //init_task(task_b,NORMAL);
