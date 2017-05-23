@@ -284,6 +284,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	task->type=type;
 	task->state=RUNNING;
 	task->allocated = 0x1;
+	task->context->last_addr = 0;
 	
 	last_message="create_user_context";
 	
