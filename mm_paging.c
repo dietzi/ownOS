@@ -101,7 +101,7 @@ int vmm_map_page(struct vmm_context* context, uintptr_t virt, uintptr_t phys)
             (uint32_t) page_table | PTE_PRESENT | PTE_WRITE;
     }
 
-    /* Neues Mapping in the Page Table eintragen */
+    /* Neues Mapping in die Page Table eintragen */
     page_table[pt_index] = phys | PTE_PRESENT | PTE_WRITE;
     asm volatile("invlpg %0" : : "m" (*(char*)virt));
 
@@ -144,10 +144,10 @@ void vmm_init(void)
 	last_addr=0;
 	
     /* Die ersten 4 MB an dieselbe physische wie virtuelle Adresse mappen */
-    for (; last_addr < /* 4096 */ 8192 * 1024; last_addr += PAGE_SIZE) {
+    for (; last_addr < /* 4096 */ 8192 * 1024; last_addr += 1024) {
         vmm_map_page(kernel_context, last_addr, last_addr);
     }
-	last_addr += PAGE_SIZE;
+	//last_addr += PAGE_SIZE;
 	
 	for (i = 0xB8000; i < 0xC0000; i += PAGE_SIZE) {
         vmm_map_page(kernel_context, i, i);
