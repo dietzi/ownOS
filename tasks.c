@@ -362,7 +362,8 @@ void init_elf(void* image)
 */
 void init_multitasking(struct multiboot_info* mb_info)
 {
-	memcpy(&bios_data, 0, 4096);
+	//memcpy(&bios_data, 0, 4096);
+	kprintf("Modcount: %d\n",mb_info->mbs_mods_count);
     if (mb_info->mbs_mods_count == 0) {
         /*
          * Ohne Module machen wir dasselbe wie bisher auch. Eine genauso gute
