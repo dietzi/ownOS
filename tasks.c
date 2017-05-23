@@ -223,6 +223,7 @@ einen Einsprungspunkt.
 int counter=0;
 
 struct task* init_task(void* entry,enum task_type type) {
+	kprintf("Current: 0x%x 0x%x\n",current_task,current_task->context);
 	//kprintf("Initialization Task PID: %d\n", pid);	
 	last_message="pmm_alloc";
     uint8_t* stack = vmm_alloc();
@@ -302,6 +303,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	pid++;
     first_task = task;
 	last_message="returning";
+	kprintf("Current: 0x%x 0x%x\n",current_task,current_task->context);
 	sleep(250);
     return task;
 }
@@ -357,7 +359,6 @@ void init_elf(void* image)
 */
 void init_multitasking(struct multiboot_info* mb_info)
 {
-	kprintf("Current: 0x%x 0x%x\n",current_task,current_task->context);
 	//memcpy(&bios_data, 0, 4096);
     if (mb_info->mbs_mods_count == 0) {
         /*
