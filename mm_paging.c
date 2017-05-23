@@ -123,7 +123,7 @@ void* vmm_alloc(void) {
 	
 	struct vmm_context* alloc_context = vmm_create_context();
 	
-    for (int i=0; i < 4096; i += PAGE_SIZE) {
+    for (int i=0x1000; i < 0x2000; i += PAGE_SIZE) {
         vmm_map_page(alloc_context, i, last_addr);
 		last_addr+=PAGE_SIZE;
     }

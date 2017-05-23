@@ -410,7 +410,7 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
      * gerade zum ersten Mal in einen Task. Diesen Prozessorzustand brauchen
      * wir spaeter nicht wieder.
      */
-    if (current_task->type != NULL) {
+    if (current_task != NULL) {
         current_task->cpu_state = cpu;
     }
 
@@ -421,7 +421,7 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 	//kprintf("IDLE: %x - %x\n",current_task->cpu_state->eip,(void*)idle);
 	//kprintf("V86:  %x - %x\n",current_task->cpu_state->eip,(void*)v86);
 	 
-    if (current_task->type == NULL) {
+    if (current_task == NULL) {
         current_task = first_task;
 		//if(current_task->state==EXIT) goto redo;
     } else {
@@ -437,9 +437,9 @@ struct cpu_state* schedule(struct cpu_state* cpu) {
 				current_task = current_task->next;
 			}
 			current_task = current_task->next;
-			if (current_task->type == NULL) {
+			if (current_task == NULL) {
 				current_task = first_task;
-				if(current_task->type==IDLE && (current_task->next->type != NULL)) current_task=current_task->next;
+				if(current_task->type==IDLE && (current_task->next != NULL)) current_task=current_task->next;
 			}
 		}
 	}
@@ -465,10 +465,10 @@ redo:
 			current_task->type=RUNNING;
 		} else {
 			remove_task(current_task);
-			if(current_task->type==NULL) current_task=first_task;
+			if(current_task==NULL) current_task=first_task;
 		}
 	}
-	if(current_task->type == NULL && first_task->type == NULL) {
+	if(current_task == NULL && first_task == NULL) {
 		kprintf("Idle re-init\n");
 		init_task(idle,IDLE);
 	}
