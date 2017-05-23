@@ -31,7 +31,6 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("Initialization paging\n");
 	last_message="vmm_init";
 	vmm_init();
-	asm volatile("sti");
 	kprintf("Initialization keyboard\n");
 	last_message="keyboard_init";
 	//keyboard_init();
@@ -47,6 +46,7 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("Initialization IDT\n");
 	last_message="init_intr";
 	init_intr();
+	asm volatile("sti");
 	kprintf("Initialization multitasking\n");
 	last_message="init_multitasking";
 	init_multitasking(mb_info);
