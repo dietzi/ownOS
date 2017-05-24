@@ -229,7 +229,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	last_message="alloc context";
 	
 	struct vmm_context* temp_context;
-	temp_context = vmm_create_context_user();
+	temp_context = vmm_create_context();
 	
 	last_message="alloc stack";
     uint8_t* stack = vmm_alloc_context(temp_context);
@@ -260,8 +260,8 @@ struct task* init_task(void* entry,enum task_type type) {
 	//if(type!=V86) {
 		new_state.esp = (uint32_t) user_stack + 4096;
 		//kprintf("ESP: %x\n",new_state.esp);
-		new_state.cs  = 0x18 | 0x03;
-		new_state.ss  = 0x20 | 0x03;
+		new_state.cs  = 0x18;// | 0x03;
+		new_state.ss  = 0x20;// | 0x03;
 		new_state.eflags = 0x200;
 	//}
 	if(type == V86) {
@@ -301,7 +301,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	uint32_t temp_addr=last_addr;
 	last_message="mapping";
     for (int i=0; i < 4096; i += 0x1000) {
-        vmm_map_page_user(task->context, i, last_addr);
+        vmm_map_page(task->context, i, last_addr);
 		last_addr+=0x1000;
     }
 	last_message="mapping end";
@@ -375,7 +375,6 @@ void init_multitasking(struct multiboot_info* mb_info)
 	current_task->allocated = NULL;
 	current_task->next = NULL;
 	current_task->next->allocated = NULL;
-	vmm_map_page_user(kernel_context,idle,idle);
 	//memcpy(&bios_data, 0, 4096);
     if (mb_info->mbs_mods_count == 0) {
         /*
