@@ -301,7 +301,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	uint32_t temp_addr=last_addr;
 	last_message="mapping";
     for (int i=0; i < 4096; i += 0x1000) {
-        vmm_map_page_user(task->context, i, last_addr);
+        vmm_map_page(task->context, i, last_addr);
 		last_addr+=0x1000;
     }
 	last_message="mapping end";

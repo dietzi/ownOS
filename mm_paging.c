@@ -52,7 +52,7 @@ int vmm_map_page_user(struct vmm_context* context, uintptr_t virt, uintptr_t phy
     }
 
     /* Page Table heraussuchen bzw. anlegen */
-    if (context->pagedir[pd_index] & PTE_PRESENT /*& PTE_USER*/) {
+    if (context->pagedir[pd_index] & PTE_PRESENT & PTE_USER) {
         /* Page Table ist schon vorhanden */
         page_table = (uint32_t*) (context->pagedir[pd_index] & ~0xFFF);
     } else {
@@ -62,11 +62,11 @@ int vmm_map_page_user(struct vmm_context* context, uintptr_t virt, uintptr_t phy
             page_table[i] = 0;
         }
         context->pagedir[pd_index] =
-            (uint32_t) page_table | PTE_PRESENT | PTE_WRITE /*| PTE_USER*/;
+            (uint32_t) page_table | PTE_PRESENT | PTE_WRITE | PTE_USER;
     }
 
     /* Neues Mapping in the Page Table eintragen */
-    page_table[pt_index] = phys | PTE_PRESENT | PTE_WRITE /*| PTE_USER*/;
+    page_table[pt_index] = phys | PTE_PRESENT | PTE_WRITE | PTE_USER;
 	last_message="doing asm";
     asm volatile("invlpg %0" : : "m" (*(char*)virt));
 	last_message="asm end";
