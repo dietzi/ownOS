@@ -260,9 +260,9 @@ struct task* init_task(void* entry,enum task_type type) {
 	//if(type!=V86) {
 		new_state.esp = (uint32_t) user_stack + 4096;
 		//kprintf("ESP: %x\n",new_state.esp);
-		new_state.cs  = 0x18;// | 0x03;
-		new_state.ss  = 0x20;// | 0x03;
-		new_state.eflags = 0x200;
+		//new_state.cs  = 0x18 | 0x03;
+		//new_state.ss  = 0x20 | 0x03;
+		//new_state.eflags = 0x200;
 	//}
 	if(type == V86) {
 		//new_state.eflags = 0x20000;
