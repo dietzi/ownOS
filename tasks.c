@@ -375,6 +375,7 @@ void init_multitasking(struct multiboot_info* mb_info)
 	current_task->allocated = NULL;
 	current_task->next = NULL;
 	current_task->next->allocated = NULL;
+	vmm_map_page_user(kernel_context,idle,idle);
 	//memcpy(&bios_data, 0, 4096);
     if (mb_info->mbs_mods_count == 0) {
         /*
