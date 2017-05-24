@@ -229,7 +229,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	last_message="alloc context";
 	
 	struct vmm_context* temp_context;
-	temp_context = vmm_create_context();
+	temp_context = vmm_create_context_user();
 	
 	last_message="alloc stack";
     uint8_t* stack = vmm_alloc_context(temp_context);
@@ -301,7 +301,7 @@ struct task* init_task(void* entry,enum task_type type) {
 	uint32_t temp_addr=last_addr;
 	last_message="mapping";
     for (int i=0; i < 4096; i += 0x1000) {
-        vmm_map_page(task->context, i, last_addr);
+        vmm_map_page_user(task->context, i, last_addr);
 		last_addr+=0x1000;
     }
 	last_message="mapping end";
