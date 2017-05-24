@@ -228,7 +228,8 @@ struct task* init_task(void* entry,enum task_type type) {
 	//kprintf("Initialization Task PID: %d\n", pid);	
 	last_message="alloc context";
 	
-	struct vmm_context *temp_context = vmm_create_context();
+	struct vmm_context* temp_context;
+	temp_context = vmm_create_context();
 	
 	last_message="alloc stack";
     uint8_t* stack = vmm_alloc_context(temp_context);

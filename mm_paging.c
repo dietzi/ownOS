@@ -116,7 +116,7 @@ void vmm_activate_context(struct vmm_context* context)
 extern struct task* current_task;
 
 void* vmm_alloc(void) {
-	uint32_t returner = current_task->context->last_addr;
+	uint32_t *returner = current_task->context->last_addr;
 	
     for (int i=current_task->context->last_addr; i < current_task->context->last_addr + 0x1000; i += 1024) {
         vmm_map_page(current_task->context, i, last_addr);
@@ -129,7 +129,7 @@ void* vmm_alloc(void) {
 }
 
 void* vmm_alloc_context(struct vmm_context* context) {
-	uint32_t returner = context->last_addr;
+	uint32_t *returner = context->last_addr;
 	
     for (int i=context->last_addr; i < context->last_addr + 0x1000; i += 1024) {
         vmm_map_page(context, i, last_addr);
