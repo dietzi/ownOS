@@ -31,7 +31,8 @@ struct vmm_context* vmm_create_context_user(void)
     /* Page Directory anlegen und mit Nullen initialisieren */
     context->pagedir = pmm_alloc();
     for (i = 0; i < 1024; i++) {
-        context->pagedir[i] = 0 | PTE_USER;
+        //context->pagedir[i] = 0 | PTE_USER;
+		context->pagedir[i] = kernel_context->pagedir[i] | PTE_USER;
     }
 
     return context;

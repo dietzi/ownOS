@@ -384,7 +384,6 @@ void init_multitasking(struct multiboot_info* mb_info)
 		last_message="init_task(idle,IDLE)";
 		//init_task(idle,IDLE);
 		init_task(idle,IDLE);
-		init_task(task_a,NORMAL);
 
         //init_task(task_a,NORMAL);
         //init_task(task_b,NORMAL);
