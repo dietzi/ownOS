@@ -69,14 +69,12 @@ int vmm_map_page_user(struct vmm_context* context, uintptr_t virt, uintptr_t phy
         /* Neue Page Table muss angelegt werden */
         page_table = pmm_alloc();
         for (i = 0; i < 1024; i++) {
-			kprintf("%d\n",i);
-			sleep(100);
             page_table[i] = 0;
         }
         context->pagedir[pd_index] =
             (uint32_t) page_table | PTE_PRESENT | PTE_WRITE | PTE_USER;
     }
-
+	kprintf("Table-Addr: 0x%x\n",page_table);
     /* Neues Mapping in the Page Table eintragen */
     page_table[pt_index] = phys | PTE_PRESENT | PTE_WRITE | PTE_USER;
 	last_message="doing asm";
