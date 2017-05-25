@@ -34,10 +34,6 @@ struct vmm_context* vmm_create_context_user(void)
         context->pagedir[i] = 0 | PTE_USER;
     }
 
-    for (i=0; i < /* 4096 */ 0x2000 * 1024; i += 1024) {
-        vmm_map_page(context, i, i);
-    }
-	context->last_addr = i + 1024;
     return context;
 }
 
