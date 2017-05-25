@@ -139,7 +139,7 @@ void* vmm_alloc_context(struct vmm_context* context) {
 		last_addr += 1024;
     }
 	context->last_addr += 0x1000 + 1024;
-	return returner;
+	return (void*)returner;
 }
 
 void vmm_init(void)
