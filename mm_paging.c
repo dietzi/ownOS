@@ -123,11 +123,11 @@ extern struct task* current_task;
 void* vmm_alloc(void) {
 	uint32_t *returner = current_task->context->last_addr;
 	
-    for (int i=current_task->context->last_addr; i < current_task->context->last_addr + 0x1000; i += 1024) {
+    for (int i=current_task->context->last_addr; i < current_task->context->last_addr + 0x2000; i += 1024) {
         vmm_map_page(current_task->context, i, last_addr);
 		last_addr += 1024;
     }
-	current_task->context->last_addr += 0x1000;
+	current_task->context->last_addr += 0x1000 + 1024;
 	//sleep(100);
 	return returner;
 }
