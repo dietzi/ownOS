@@ -140,7 +140,7 @@ void* vmm_alloc_context(struct vmm_context* context) {
 		last_addr += 1;
     }
 	context->last_addr += 0x1000 + 1024;
-	sleep(2000);
+	//sleep(2000);
 	return returner;
 }
 
