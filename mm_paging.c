@@ -123,7 +123,8 @@ void* vmm_alloc(void) {
 		last_addr += 1024;
     }
 	current_task->context->last_addr += 0x1000;
-	//vmm_activate_context(alloc_context);
+	last_message = "activate alloc_context (alloc)";
+	vmm_activate_context(current_task->context);
 	//sleep(100);
 	return returner;
 }
@@ -136,7 +137,8 @@ void* vmm_alloc_context(struct vmm_context* context) {
 		last_addr += 1024;
     }
 	context->last_addr += 0x1000;
-	//vmm_activate_context(alloc_context);
+	last_message = "activate alloc_context (alloc_context)";
+	vmm_activate_context(context);
 	//sleep(100);
 	return returner;
 }
