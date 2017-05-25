@@ -230,6 +230,8 @@ struct task* init_task(void* entry,enum task_type type) {
 	struct vmm_context* temp_context;
 	temp_context = vmm_create_context_user();
 	
+	vmm_activate_context(temp_context);
+	
 	last_message="alloc stack";
     uint8_t* stack = vmm_alloc_context(temp_context);
     uint8_t* user_stack = vmm_alloc_context(temp_context);
