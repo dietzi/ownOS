@@ -224,7 +224,7 @@ int counter=0;
 
 struct task* init_task(void* entry,enum task_type type) {
 	kprintf("Current: 0x%x 0x%x\n",current_task,current_task->allocated);
-	sleep(2000);
+	//sleep(2000);
 	//kprintf("Initialization Task PID: %d\n", pid);	
 	last_message="alloc context";
 	
@@ -312,7 +312,7 @@ struct task* init_task(void* entry,enum task_type type) {
     first_task = task;
 	last_message="returning";
 	kprintf("Current: 0x%x 0x%x\n",current_task,current_task->allocated);
-	sleep(1000);
+	//sleep(1000);
     return task;
 }
 
