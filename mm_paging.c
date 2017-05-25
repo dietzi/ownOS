@@ -169,6 +169,7 @@ void vmm_init(void)
     }
 	
 	kprintf("Mapping: 0x%x bis 0x%x\n",*bitmap,*bitmap + sizeof(bitmap));
+	sleep(2000);
 	
 	for(i = *bitmap; i < *bitmap + sizeof(bitmap); i += 1024) {
 		vmm_map_page(kernel_context,i,i);
