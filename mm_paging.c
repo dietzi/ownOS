@@ -37,7 +37,7 @@ struct vmm_context* vmm_create_context_user(void)
     for (i=0; i < /* 4096 */ 0x2000 * 1024; i += 1024) {
         vmm_map_page_user(context, i, i);
     }
-	context->last_addr = i;
+	context->last_addr = i + 1024;
     return context;
 }
 
@@ -138,7 +138,7 @@ void* vmm_alloc_context(struct vmm_context* context) {
         vmm_map_page_user(context, i, last_addr);
 		last_addr += 1024;
     }
-	context->last_addr += 0x1000;
+	context->last_addr += 0x1000 + 1024;
 	//sleep(100);
 	return returner;
 }
