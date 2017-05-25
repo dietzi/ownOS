@@ -277,6 +277,8 @@ struct task* init_task(void* entry,enum task_type type) {
     struct task* task = vmm_alloc_context(temp_context);
 	last_message="define state";
     struct cpu_state* state = (void*) (stack + 4096 - sizeof(new_state));
+	kprintf("State: 0x%x\n",state);
+	sleep(2000);
     *state = new_state;
 
     /*
