@@ -20,6 +20,7 @@
 .global _start
 _start:
     // Stack initialisieren
+	xchg %bx,%bx
     mov $kernel_stack, %esp
 
     // C-Code aufrufen und Multiboot-Infostruktur als Parameter uebergeben

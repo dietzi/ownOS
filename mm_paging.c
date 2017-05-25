@@ -128,7 +128,6 @@ void* vmm_alloc(void) {
 		last_addr += 1024;
     }
 	current_task->context->last_addr += 0x1000 + 1024;
-	//sleep(100);
 	return returner;
 }
 
@@ -140,7 +139,6 @@ void* vmm_alloc_context(struct vmm_context* context) {
 		last_addr += 1024;
     }
 	context->last_addr += 0x1000 + 1024;
-	//sleep(100);
 	return returner;
 }
 
