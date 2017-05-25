@@ -134,10 +134,9 @@ void* vmm_alloc(void) {
 void* vmm_alloc_context(struct vmm_context* context) {
 	uint32_t *returner = context->last_addr;
 	
-    for (int i=context->last_addr; i < context->last_addr + 0x2000; i += 1) {
-        //kprintf("Mapping: 0x%x -> 0x%x\n",i,last_addr);
+    for (int i=context->last_addr; i < context->last_addr + 0x2000; i += 1024) {
 		vmm_map_page_user(context, i, last_addr);
-		last_addr += 1;
+		last_addr += 1024;
     }
 	context->last_addr += 0x1000 + 1024;
 	//sleep(2000);
@@ -166,7 +165,17 @@ void vmm_init(void)
 	
     vmm_activate_context(kernel_context);
 
-    asm volatile("mov %%cr0, %0" : "=r" (cr0));
+    /*asm volatile("mov %%cr0, %0" : "=r" (cr0));
     cr0 |= (1 << 31);
-    asm volatile("mov %0, %%cr0" : : "r" (cr0));
+    asm volatile("mov %0, %%cr0" : : "r" (cr0));*/
+    __asm__(
+        
+        // Page directory laden
+        "movl %0, %%cr3\n\t"
+        // Paging aktivieren
+        "mov %%cr0, %%eax\n\t"
+        "or $0x80000000, %%eax\n\t"
+        "mov %%eax, %%cr0\n\t"
+        
+    : : "r"(kernel_context->pagedir) : "eax");
 }
