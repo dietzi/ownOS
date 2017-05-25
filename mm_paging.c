@@ -135,11 +135,13 @@ void* vmm_alloc_context(struct vmm_context* context) {
 	uint32_t *returner = context->last_addr;
 	
     for (int i=context->last_addr; i < context->last_addr + 0x2000; i += 1024) {
-        vmm_map_page_user(context, i, last_addr);
+        kprintf("Mapping: 0x%x -> 0x%x\n",i,last_addr);
+		vmm_map_page_user(context, i, last_addr);
 		last_addr += 1024;
     }
 	context->last_addr += 0x1000 + 1024;
-	return (void*)returner;
+	sleep(2000);
+	return returner;
 }
 
 void vmm_init(void)
