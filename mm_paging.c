@@ -154,9 +154,9 @@ void vmm_init(void)
     int i;
 
     /* Speicherkontext anlegen */
+	last_addr=0x0;
     kernel_context = vmm_create_context();
 	
-	last_addr=0x0;
 	
     /* Die ersten 4 MB an dieselbe physische wie virtuelle Adresse mappen 
     for (; last_addr < 0x2000 * 1024; last_addr += 1024) {
