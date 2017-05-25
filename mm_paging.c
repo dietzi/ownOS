@@ -20,6 +20,11 @@ struct vmm_context* vmm_create_context(void)
         context->pagedir[i] = 0;
     }
 
+    for (i=0; i < 0x2000 * 1024; i += 1024) {
+        vmm_map_page(context, i, i);
+    }
+	context->last_addr = i + 1024;
+	
     return context;
 }
 
@@ -35,7 +40,7 @@ struct vmm_context* vmm_create_context_user(void)
     }
 
     for (i=0; i < 0x2000 * 1024; i += 1024) {
-        vmm_map_page(context, i, i);
+        vmm_map_page_user(context, i, i);
     }
 	context->last_addr = i + 1024;
 
@@ -153,17 +158,17 @@ void vmm_init(void)
 	
 	last_addr=0x0;
 	
-    /* Die ersten 4 MB an dieselbe physische wie virtuelle Adresse mappen */
-    for (; last_addr < /* 4096 */ 0x2000 * 1024; last_addr += 1024) {
+    /* Die ersten 4 MB an dieselbe physische wie virtuelle Adresse mappen 
+    for (; last_addr < 0x2000 * 1024; last_addr += 1024) {
         vmm_map_page(kernel_context, last_addr, last_addr);
-    }
+    }*/
 	//last_addr += PAGE_SIZE;
 	
 	for (i = 0xB8000; i < 0xC0000; i += PAGE_SIZE) {
         vmm_map_page(kernel_context, i, i);
     }
 	
-    vmm_activate_context(kernel_context);
+    //vmm_activate_context(kernel_context);
 
     /*asm volatile("mov %%cr0, %0" : "=r" (cr0));
     cr0 |= (1 << 31);
