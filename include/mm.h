@@ -13,6 +13,9 @@ void pmm_free(void* page);
 #define PTE_WRITE   0x2
 #define PTE_USER    0x4
 
+#define BITMAP_SIZE 32768
+static uint32_t bitmap[BITMAP_SIZE];
+
 void vmm_init(void);
 struct vmm_context* vmm_create_context(void);
 struct vmm_context* vmm_create_context_user(void);

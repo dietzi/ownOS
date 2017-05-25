@@ -10,8 +10,6 @@
  *
  * Willkuerliche Festlegung: 1 = Speicher frei, 0 = Speicher belegt
  */
-#define BITMAP_SIZE 32768
-static uint32_t bitmap[BITMAP_SIZE];
 
 static void pmm_mark_used(void* page);
 
