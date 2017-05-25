@@ -295,18 +295,18 @@ struct task* init_task(void* entry,enum task_type type) {
 	task->context = temp_context;
 	task->context->last_addr = 0;
 	
-	last_message="create_user_context";
+	//last_message="create_user_context";
 	
 	//struct vmm_context* task_context = vmm_create_context_user();
 	
 	
-	uint32_t temp_addr=last_addr;
+	/*uint32_t temp_addr=last_addr;
 	last_message="mapping";
     for (int i=0; i < 4096; i += 0x1000) {
         vmm_map_page_user(task->context, i, last_addr);
 		last_addr+=0x1000;
     }
-	last_message="mapping end";
+	last_message="mapping end";*/
 	//last_addr += 0x1000;
 	//task->context = task_context;
 	
