@@ -69,6 +69,8 @@ int vmm_map_page_user(struct vmm_context* context, uintptr_t virt, uintptr_t phy
         /* Neue Page Table muss angelegt werden */
         page_table = pmm_alloc();
         for (i = 0; i < 1024; i++) {
+			kprintf("%d: %d\n",i,page_table[i]);
+			sleep(200);
             page_table[i] = 0;
         }
         context->pagedir[pd_index] =
