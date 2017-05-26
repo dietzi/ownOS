@@ -87,4 +87,7 @@ last_message = "via_send...";
 
 void handle_new_packet(struct network_packet *packet) {
 	kprintf("Got %d Bytes\n",packet->data_length);
+	
+	pmm_free(packet->bytes);
+	pmm_free(packet);
 }
