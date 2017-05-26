@@ -30,7 +30,7 @@ void init(struct multiboot_info *mb_info) {
 	pmm_init(mb_info);
 	//kprintf("Initialization paging\n");
 	//last_message="vmm_init";
-	vmm_init();
+	//vmm_init();
 	kprintf("Initialization keyboard\n");
 	last_message="keyboard_init";
 	keyboard_init();
