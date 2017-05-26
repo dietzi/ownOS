@@ -388,7 +388,7 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	sendPacket(ether,buffer,pos);
 }
 
-bool tcp_open_con(int port, void *callback_pointer) {
+/*bool tcp_open_con(int port, void *callback_pointer) {
 	int i;
 	for(i = 60000; i < 65536; i++) {
 		if(connections[i].in_use == false) {
@@ -398,4 +398,4 @@ bool tcp_open_con(int port, void *callback_pointer) {
 	connections[i].in_use = true;
 	connections[i].remote_port = port;
 	register_tcp_listener(port,callback_pointer);
-}
+}*/
