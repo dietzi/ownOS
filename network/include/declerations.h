@@ -25,7 +25,7 @@ struct network_packet {
 	bool is_broadcast_packet;
 	bool is_multicast_packet;
 	uint16_t data_length;
-	uint8_t bytes[];
+	uint8_t *bytes;
 };
 
 struct ip_addr {
