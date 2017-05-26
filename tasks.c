@@ -368,14 +368,14 @@ void init_elf(void* image)
 */
 void init_multitasking(struct multiboot_info* mb_info)
 {
-	first_task = NULL;
+	//first_task = NULL;
 	first_task->allocated = NULL;
-	first_task->next = NULL;
-	first_task->next->allocated = NULL;
-	current_task = NULL;
+	//first_task->next = NULL;
+	//first_task->next->allocated = NULL;
+	//current_task = NULL;
 	current_task->allocated = NULL;
-	current_task->next = NULL;
-	current_task->next->allocated = NULL;
+	//current_task->next = NULL;
+	//current_task->next->allocated = NULL;
 	//memcpy(&bios_data, 0, 4096);
     if (mb_info->mbs_mods_count == 0) {
         /*
