@@ -242,7 +242,7 @@ void via_handle_intr(void) {
 			dhcp_get_ip();
 			recv_size = (status & 0xFFFF0000) >> 16;
 			int b;
-			kprintf("Got %d Bytes\n",recv_size);
+			kprintf("Got %d Bytes\n%d - 0x%x\n",recv_size,status,status);
 			/*uint8_t bytes[recv_size];
 			for(b=0;b < recv_size;b++) {
 				bytes[b] = ((uint8_t*)rx1[i]->addr)[b];
