@@ -86,8 +86,6 @@ last_message = "via_send...";
 }
 
 void handle_new_packet(struct network_packet *packet) {
-	kprintf("Got %d Bytes\n",packet->data_length);
-
 	struct ether_header ether = {
 		.receipt_mac.mac1 = ((uint8_t*)packet->bytes)[0],
 		.receipt_mac.mac2 = ((uint8_t*)packet->bytes)[1],
@@ -176,7 +174,7 @@ void handle_new_packet(struct network_packet *packet) {
 				kprintf("Nicht behandeltes Protokoll: %x\n",ether.type);
 		}
 	} else if(ether.type <= 0x05DC) { //Ethernet I
-		kprintf("Ethernet I Pakete werden nicht behandelt\n");
+		kprintf("Ethernet I Pakete werden nicht behandelt: ");
 		kprintf("Sender-MAC: %x:%x:%x:%x:%x:%x\n",ether.sender_mac.mac1,
 													ether.sender_mac.mac2,
 													ether.sender_mac.mac3,
