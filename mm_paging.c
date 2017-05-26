@@ -23,7 +23,12 @@ struct vmm_context* vmm_create_context(void)
     for (i=0; i < 0x2000 * 1024; i += PAGE_SIZE) {
         vmm_map_page(context, i, i);
     }
-	context->last_addr = i + 1024;
+	context->last_addr = i + PAGE_SIZE;
+	for(i=context->last_addr; i<context->last_addr + 0x1000; i+= PAGE_SIZE) {
+        vmm_map_page_user(context, i, last_addr);
+		last_addr += PAGE_SIZE;
+	}
+	context->last_addr = i + PAGE_SIZE;
 	
     return context;
 }
@@ -38,11 +43,19 @@ struct vmm_context* vmm_create_context_user(void)
     for (i = 0; i < 1024; i++) {
         context->pagedir[i] = 0 | PTE_USER;
     }
-
+	
+	//Kernel mappen
     for (i=0; i < 0x2000 * 1024; i += PAGE_SIZE) {
         vmm_map_page_user(context, i, i);
     }
-	context->last_addr = i + 1024;
+	context->last_addr = i + PAGE_SIZE;
+	
+	//freien Speicher für den Context mappen
+	for(i=context->last_addr; i<context->last_addr + 0x1000; i+= PAGE_SIZE) {
+        vmm_map_page_user(context, i, last_addr);
+		last_addr += PAGE_SIZE;
+	}
+	context->last_addr = i + PAGE_SIZE;
 
     return context;
 }
