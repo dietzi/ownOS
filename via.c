@@ -245,7 +245,7 @@ void via_handle_intr(void) {
 			kprintf("Got %d Bytes\n",recv_size);
 			uint8_t bytes[recv_size];
 			for(b=0;b < recv_size;b++) {
-				bytes[b] = ((uint8_t*)rx1[i]->addr)[b];
+				//bytes[b] = ((uint8_t*)rx1[i]->addr)[b];
 			}
 			
 			struct ether_header ether = {
