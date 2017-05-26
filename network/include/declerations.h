@@ -20,6 +20,12 @@ static uint16_t packet_id = 0x0000;
 
 struct ip_addr my_ip;
 
+struct network_packet {
+	uint16_t data_length;
+	uint8_t bytes[];
+	
+};
+
 struct ip_addr {
 	uint8_t ip1;
 	uint8_t ip2;
