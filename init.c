@@ -36,7 +36,7 @@ void init(struct multiboot_info *mb_info) {
 	keyboard_init();
 	kprintf("Initialization mouse\n");
 	last_message="mouse_install";
-	mouse_install();
+	//mouse_install();
 	kprintf("Initialization Timer\n");
 	last_message="pit_init";
 	pit_init();
