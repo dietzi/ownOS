@@ -242,13 +242,14 @@ void via_handle_intr(void) {
 			dhcp_get_ip();
 			recv_size = (status & 0xFFFF0000) >> 16;
 			int b;
-			struct network_packet packet;
+			struct network_packet packet = {
+				.data_length = (status & 0xFFFF0000) >> 16,
+				.bytes = pmm_alloc()
+			};
 			if(status & 0x800) packet.is_phys_packet = true;
 			if(status & 0x1000) packet.is_broadcast_packet = true;
 			if(status & 0x2000) packet.is_multicast_packet = true;
 			
-			packet.data_length = (status & 0xFFFF0000) >> 16;
-
 			for(b = 0; b < packet.data_length; b++) {
 				packet.bytes[b] = ((uint8_t*)rx1[i]->addr)[b];
 			}
