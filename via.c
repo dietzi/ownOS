@@ -247,7 +247,7 @@ void via_handle_intr(void) {
 			for(b=0;b < recv_size;b++) {
 				bytes[b] = ((uint8_t*)rx1[i]->addr)[b];
 			}*/
-			
+			/*
 			struct ether_header ether = {
 				.receipt_mac.mac1 = ((uint8_t*)rx1[i]->addr)[0],
 				.receipt_mac.mac2 = ((uint8_t*)rx1[i]->addr)[1],
@@ -295,11 +295,6 @@ void via_handle_intr(void) {
 							.receipt_ip.ip3 = (((uint8_t*)rx1[i]->addr)[40]),
 							.receipt_ip.ip4 = (((uint8_t*)rx1[i]->addr)[41])
 						};
-						/*kprintf("Receipt-IP: %d.%d.%d.%d\n", arp1.receipt_ip.ip1,
-																arp1.receipt_ip.ip2,
-																arp1.receipt_ip.ip3,
-																arp1.receipt_ip.ip4);
-						kprintf("Own-IP: %d.%d.%d.%d\n",my_ip.ip1,my_ip.ip2,my_ip.ip3,my_ip.ip4);*/
 						if(arp1.receipt_ip.ip1 == my_ip.ip1 &&
 								arp1.receipt_ip.ip2 == my_ip.ip2 &&
 								arp1.receipt_ip.ip3 == my_ip.ip3 &&
@@ -348,7 +343,7 @@ void via_handle_intr(void) {
 															ether.sender_mac.mac4,
 															ether.sender_mac.mac5,
 															ether.sender_mac.mac6);
-			}
+			}*/
 			rx1[i]->status = 0x80000000;
 		}
 	}
