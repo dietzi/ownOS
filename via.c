@@ -244,13 +244,12 @@ void via_handle_intr(void) {
 			int b;
 			struct network_packet packet;
 			packet.data_length = recv_size;
-			memcpy(packet.bytes,(uint8_t*)rx1[i]->addr,recv_size);
-			kprintf("Got %d Bytes\n",packet.data_length);
-			/*uint8_t bytes[recv_size];
+			uint8_t bytes[recv_size];
 			for(b=0;b < recv_size;b++) {
-				bytes[b] = ((uint8_t*)rx1[i]->addr)[b];
+				packet.bytes[b] = ((uint8_t*)rx1[i]->addr)[b];
 			}
-			
+			kprintf("Got %d Bytes\n",packet.data_length);
+			/*
 			struct ether_header ether = {
 				.receipt_mac.mac1 = ((uint8_t*)rx1[i]->addr)[0],
 				.receipt_mac.mac2 = ((uint8_t*)rx1[i]->addr)[1],
