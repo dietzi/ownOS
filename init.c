@@ -31,12 +31,12 @@ void init(struct multiboot_info *mb_info) {
 	//kprintf("Initialization paging\n");
 	//last_message="vmm_init";
 	//vmm_init();
-	kprintf("Initialization mouse\n");
-	last_message="mouse_install";
-	mouse_install();
 	kprintf("Initialization keyboard\n");
 	last_message="keyboard_init";
 	keyboard_init();
+	kprintf("Initialization mouse\n");
+	last_message="mouse_install";
+	mouse_install();
 	kprintf("Initialization Timer\n");
 	last_message="pit_init";
 	pit_init();
