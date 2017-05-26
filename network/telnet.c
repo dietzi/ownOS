@@ -16,7 +16,7 @@ bool check(char *cmd, char *input) {
 void checker(uint8_t *cmd,struct tcp_callback cb) {
 	//kprintf("%s\n",cmd);
 	if(check("exit",cmd)) closeCon(cb);
-	if(check("hello",cmd)) kprintf("Funktioniert 2\n");
+	if(check("hello",cmd)) kprintf("Funktioniert\n");
 }
 
 void check_telnet_command(struct tcp_callback cb) {

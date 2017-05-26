@@ -1,9 +1,15 @@
 #include "includes.h"
 
+/*
+TODO:
+	-> Timeout-Timer
+*/
+
 void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_header tcp, uint32_t options[], int options_count, uint8_t *data, int data_length);
 bool register_tcp_listener(int port, void *callback_pointer);
 void sendData(struct tcp_callback cb);
 void closeCon(struct tcp_callback cb);
+bool tcp_open_con(int port, void *callback_pointer);
 
 uint32_t last_seq = 0;
 uint32_t last_ack = 0;
@@ -25,6 +31,18 @@ struct listeners {
 };
 
 struct listeners listeners[65536];
+
+struct server_con {
+	int remote_port;
+	bool con_est;
+	bool in_use;
+	uint32_t last_ack;
+	uint32_t last_seq;
+	uint32_t fin_seq;
+	uint32_t fin_ack;
+};
+
+struct server_con connections[65536];
 
 //bool listener_enabled[65536];
 //struct tcp_callback tcp_listeners[65536][51];
@@ -368,4 +386,16 @@ void sendTCPpacket(struct ether_header ether, struct ip_header ip, struct tcp_he
 	}
 	//pos--;
 	sendPacket(ether,buffer,pos);
+}
+
+bool tcp_open_con(int port, void *callback_pointer) {
+	int i;
+	for(i = 60000; i < 65536; i++) {
+		if(connections[i].in_use == false) {
+			break;
+		}
+	}
+	connections[i].in_use = true;
+	connections[i].remote_port = port;
+	register_tcp_listener(port,callback_pointer);
 }

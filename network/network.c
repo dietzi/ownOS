@@ -83,3 +83,7 @@ last_message = "via_send...";
 		via_send(buffer,i);
 	//}
 }
+
+void handle_new_packet(uint8_t bytes[], uint32_t byte_count) {
+	
+}
