@@ -243,9 +243,13 @@ void via_handle_intr(void) {
 			recv_size = (status & 0xFFFF0000) >> 16;
 			int b;
 			struct network_packet packet;
-			packet.data_length = recv_size;
-			uint8_t bytes[recv_size];
-			for(b=0;b < recv_size;b++) {
+			if(status & 0x800) packet.is_phys_packet = true;
+			if(status & 0x1000) packet.is_broadcast_packet = true;
+			if(status & 0x2000) packet.is_multicast_packet = true;
+			
+			packet.data_length = (status & 0xFFFF0000) >> 16;
+
+			for(b = 0; b < packet.data_length; b++) {
 				packet.bytes[b] = ((uint8_t*)rx1[i]->addr)[b];
 			}
 			kprintf("Got %d Bytes\n",packet.data_length);
