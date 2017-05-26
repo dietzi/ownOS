@@ -1,6 +1,7 @@
 #include "includes.h"
 
 void sendPacket(struct ether_header ether, uint8_t data[], int data_length);
+void handle_new_packet(struct network_packet *packet);
 
 int checksum(void *buffer, int size) {
   uint32_t sum = 0;
@@ -84,6 +85,6 @@ last_message = "via_send...";
 	//}
 }
 
-void handle_new_packet(uint8_t bytes[], uint32_t byte_count) {
-	
+void handle_new_packet(struct network_packet *packet) {
+	kprintf("Got %d Bytes\n",packet->data_length);
 }

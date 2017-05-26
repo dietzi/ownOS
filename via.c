@@ -252,7 +252,7 @@ void via_handle_intr(void) {
 			for(b = 0; b < packet->data_length; b++) {
 				packet->bytes[b] = ((uint8_t*)rx1[i]->addr)[b];
 			}
-			kprintf("Got %d Bytes\n",packet->data_length);
+			handle_new_packet(packet);
 			/*
 			struct ether_header ether = {
 				.receipt_mac.mac1 = ((uint8_t*)rx1[i]->addr)[0],
