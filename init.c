@@ -40,15 +40,15 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("Initialization Timer\n");
 	last_message="pit_init";
 	pit_init();
+	kprintf("Initialization multitasking\n");
+	last_message="init_multitasking";
+	init_multitasking(mb_info);
 	kprintf("Initialization GDT\n");
 	last_message="init_gdt";
 	init_gdt();
 	kprintf("Initialization IDT\n");
 	last_message="init_intr";
 	init_intr();
-	kprintf("Initialization multitasking\n");
-	last_message="init_multitasking";
-	init_multitasking(mb_info);
 	last_message="ready";
 	//set_vesa_mode(0x11b);
 	//kprintf("Initialization Network\n");
