@@ -418,7 +418,7 @@ void sleep(int ms) {
 struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 {
 	//if(cpu->intr != 0x20) kprintf("IRQ: %d - 0x%x\n",(cpu->intr - 0x20),cpu->intr);
-	if((cpu->intr > 0x1f) && (cpu->intr != 0x2c & cpu->intr != 0x20 & cpu->intr != 0x21 & cpu->intr != 0x2f)) kprintf("IRQ: %d - 0x%x\n",(cpu->intr - 0x20),cpu->intr);
+	if((cpu->intr > 0x1f) && (cpu->intr != 0x2c && cpu->intr != 0x2B && cpu->intr != 0x20 && cpu->intr != 0x21 && cpu->intr != 0x2f)) kprintf("IRQ: %d - 0x%x\n",(cpu->intr - 0x20),cpu->intr);
     if(cpu->intr <= 0x1f) kprintf("IRQ: %d - 0x%x\n",(cpu->intr),cpu->intr);
 	struct cpu_state* new_cpu = cpu;
 	if(!init_complete) {
@@ -460,6 +460,8 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 			mouse_handler();
         } else if (cpu->intr == 0x2f) {
 			via_handle_intr();
+        } else if (cpu->intr == 0x2B) {
+			realtek_handle_intr();
 		}
 		
 		//if(cpu->intr == 0x28) {
