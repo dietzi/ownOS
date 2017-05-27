@@ -20,6 +20,6 @@ void realtek_init(pci_bdf_t device) {
 }
 
 void realtek_handle_intr(void) {
-	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E));
 	kprintf("Status: %b\n",pci_read_register_16(addr,0,0x3E));	
+	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E));
 }
