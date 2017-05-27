@@ -4,11 +4,12 @@ pci_bdf_t addr;
 uint8_t irq = 0;
 
 struct rx_desc {
-	int own : 1; // if 1 owned by nic / else owned by host
+/*	int own : 1; // if 1 owned by nic / else owned by host
 	int eor : 1; // if set end of ring
 	uint16_t reserved : 16;
 	uint16_t buffer_size : 14;
-	uint32_t vlan;
+	uint32_t vlan;*/
+	uint64_t opts;
 	uint32_t addr_low;
 	uint32_t addr_high;
 };
@@ -51,13 +52,13 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("Registerig IRQ %d\n",irq);
 	for(int i = 0; i < 10; i++) {
 		descs[i] = pmm_alloc();
-		descs[i]->own = 1;
-		descs[i]->eor = 0;
-		descs[i]->buffer_size = 0x1000;
+		//descs[i]->own = 1;
+		//descs[i]->eor = 0;
+		//descs[i]->buffer_size = 0x1000;
 		descs[i]->addr_high = descs[i];
 	}
 	//descs[9]->addr_high = descs[0];
-	descs[9]->eor = 1;
+	//descs[9]->eor = 1;
 	/*for(int i = 0; i < 9; i++) {
 		descs[i]->addr_high = descs[i + 1];
 		kprintf("%d: High: 0x%x   Low: 0x%x\n",i,descs[i]->addr_high,descs[i]->addr_low);
