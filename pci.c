@@ -11,7 +11,7 @@ uint32_t pci_config_readd(pci_bdf_t addr,uint offset);
 uint32_t pci_config_read_32(pci_bdf_t addr,uint offset);
 uint16_t pci_config_read_16(pci_bdf_t addr,uint offset);
 uint8_t pci_config_read_8(pci_bdf_t addr,uint offset);
-bool search_pci_device(uint16_t device_id, uint16_t vendor_id);
+bool search_pci_device(uint16_t vendor_id, uint16_t device_id);
 
 uint32_t pci_config_readd(pci_bdf_t addr,uint offset) {
   int bus=addr.bus;
@@ -284,7 +284,7 @@ void get_pci_devices(void) {
 	}	
 }
 
-bool search_pci_device(uint16_t device_id, uint16_t vendor_id) {
+bool search_pci_device(uint16_t vendor_id, uint16_t device_id) {
 	pci_bdf_t pci;
 	for(int i=0;i<256;i++) {
 		for(int j=0;j<32;j++) {
