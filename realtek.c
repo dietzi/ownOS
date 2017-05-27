@@ -69,7 +69,12 @@ void realtek_handle_intr(void) {
 	if(status & 0x0020) {
 		kprintf("Link changed\n");
 		if(pci_read_register_8(addr,0,0x6C) & 0x02) {
-			kprintf("Link is up\n");
+			kprintf("Link is up with ");
+			if(pci_read_register_8(addr,0,0x6C) & 0x04) kprintf("10 Mbps and ");
+			if(pci_read_register_8(addr,0,0x6C) & 0x08) kprintf("100 Mbps and ");
+			if(pci_read_register_8(addr,0,0x6C) & 0x10) kprintf("1000 Mbps and ");
+			if(pci_read_register_8(addr,0,0x6C) & 0x01) kprintf("Full-duplex\n");
+			else kprintf("Half-duplex\n");
 		} else {
 			kprintf("Link is down\n");
 		}
