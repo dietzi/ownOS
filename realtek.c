@@ -84,7 +84,7 @@ void realtek_handle_intr(void) {
 	if(status & 0x0002) kprintf("Receive error\n");
 	if(status & 0x0004) kprintf("Transmit succesfull\n");
 	if(status & 0x0008) kprintf("Transmit error\n");
-	if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
+	//if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
 	if(status & 0x0020) {
 		if(pci_read_register_8(addr,0,0x6C) & 0x02) {
 			kprintf("Link is up with ");
