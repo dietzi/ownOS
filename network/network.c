@@ -189,6 +189,7 @@ void handle_new_packet(struct network_packet *packet) {
 }
 
 void init_network(void) {
+	pci_bdf_t device;
 	if(search_pci_device(0x1106,0x3065)) {
 		kprintf("Found VIA networkcard\n");
 		via_init();
