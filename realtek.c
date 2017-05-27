@@ -72,7 +72,7 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("%x\n",pci_read_register_8(addr,0,0x05));
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	pci_write_register_16(addr,0,0x3C,0x43FF); //Activating all Interrupts
-	pci_write_register_8(addr,0,0x37,0x0C);
+	pci_write_register_8(addr,0,0x37,0x08);
 	kprintf("0x00E4: 0x%x - 0x%x\n",pci_read_register_32(addr,0,0xE4),pci_read_register_32(addr,0,0xE8));
 	//pci_write_register_16(addr,0,0x3C,0x20); //Nur Link-Change überwachen
 }
