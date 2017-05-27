@@ -26,30 +26,22 @@ void init(struct multiboot_info *mb_info) {
 	init_status();
 	kprintf("Starting OS ...\n");
 	kprintf("Initialization physical memory\n");
-	last_message="pmm_init";
 	pmm_init(mb_info);
 	//kprintf("Initialization paging\n");
 	//last_message="vmm_init";
 	//vmm_init();
 	kprintf("Initialization keyboard\n");
-	last_message="keyboard_init";
 	keyboard_init();
-	kprintf("Initialization mouse\n");
-	last_message="mouse_install";
-	mouse_install();
+	//kprintf("Initialization mouse\n");
+	//mouse_install();
 	kprintf("Initialization Timer\n");
-	last_message="pit_init";
 	pit_init();
 	kprintf("Initialization multitasking\n");
-	last_message="init_multitasking";
 	init_multitasking(mb_info);
 	kprintf("Initialization GDT\n");
-	last_message="init_gdt";
 	init_gdt();
 	kprintf("Initialization IDT\n");
-	last_message="init_intr";
 	init_intr();
-	last_message="ready";
 	//set_vesa_mode(0x11b);
 	//kprintf("Initialization Network\n");
 	//start_nic();
@@ -59,8 +51,7 @@ void init(struct multiboot_info *mb_info) {
 	time();
 	kprintf(" #\n");
 	kprintf("#######################\n");
-	//beep();
-//init_task(testv86,V86);
+
 	init_complete=true;
 	show_prefix=true;
 	
