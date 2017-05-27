@@ -4,10 +4,39 @@ pci_bdf_t addr;
 uint8_t irq = 0;
 
 struct rx_desc {
-	int own : 1;
-	int eor : 1;
-	uint16_t reserved : 14;
-	uint16_t buffer_size;
+	int own : 1; // if 1 owned by nic / else owned by host
+	int eor : 1; // if set end of ring
+	uint16_t reserved : 16;
+	uint16_t buffer_size : 14;
+	uint32_t vlan;
+	uint32_t addr_low;
+	uint32_t addr_high;
+};
+
+struct rx_desc_status {
+	int own : 1; // if 1 owned by nic / else owned by host
+	int eor : 1; // if set end of ring
+	int fs : 1; // if set this is the first segment of packet
+	int ls : 1; // if set this is the last segment of packet
+	int mar : 1; // multicast packet received
+	int pam : 1; // physical packet received
+	int bar : 1; // broadcast packet received
+	int reserved : 2; // always 0x01
+	int rwt : 1; // packet bigger than 8192 bytes
+	int res : 1; // if set and ls=1 -> error (crc,runt,rwt,fae)
+	int runt : 1; // packet smaller than 64 bytes
+	int crc : 1; // if set -> crc-error
+	int pid : 2; // protocol-ID:
+				/*
+				00 = IP
+				01 = TCP/IP
+				10 = UDP/IP
+				11 = IP
+				*/
+	int ipf : 1; // if set -> ip checksum failure
+	int udpf : 1; // if set -> udp checksum failure
+	int tcpf : 1; // if set -> tcp checksum failure
+	uint16_t frame_length : 14; // if own = 0 and ls = 1 -> packet length incl. crc in bytes
 	uint32_t vlan;
 	uint32_t addr_low;
 	uint32_t addr_high;
@@ -37,7 +66,14 @@ void realtek_handle_intr(void) {
 	if(status & 0x0004) kprintf("Transmit succesfull\n");
 	if(status & 0x0008) kprintf("Transmit error\n");
 	if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
-	if(status & 0x0020) kprintf("Link changed\n");
+	if(status & 0x0020) {
+		kprintf("Link changed\n");
+		if(pci_read_register_8(addr,0,0x06) & 0x02) {
+			kprintf("Link is up\n");
+		} else {
+			kprintf("Link is down\n");
+		}
+	}
 	if(status & 0x0040) kprintf("Receive FIFO overflow\n");
 	if(status & 0x0080) kprintf("Transmit descriptor unavailable\n");
 	if(status & 0x0100) kprintf("Software Interrupt\n");
