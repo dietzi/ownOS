@@ -12,4 +12,5 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("%x-",pci_read_register_8(addr,0,0x04));
 	kprintf("%x\n",pci_read_register_8(addr,0,0x05));
 	kprintf("Status: %b\n",pci_read_register_16(addr,0,0x3C));
+	kprintf("Status: %b\n",pci_read_register_16(addr,0,0x3E));
 }
