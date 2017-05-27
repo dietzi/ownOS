@@ -186,3 +186,14 @@ void handle_new_packet(struct network_packet *packet) {
 	pmm_free(packet->bytes);
 	pmm_free(packet);
 }
+
+void init_network(void) {
+	if(search_pci_device(0x1106,0x3065)) {
+		kprintf("Found VIA networkcard\n");
+		via_init();
+	}
+	if(search_pci_device(0x10ec,0x8168)) {
+		kprintf("Found Realtek networkcard\n");
+		realtek_init();
+	}
+}
