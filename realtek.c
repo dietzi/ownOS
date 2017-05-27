@@ -54,15 +54,15 @@ void realtek_init(pci_bdf_t device) {
 		descs[i]->own = 1;
 		descs[i]->eor = 0;
 		descs[i]->buffer_size = 0x1000;
-		descs[i]->addr_low = descs[i];
+		descs[i]->addr_high = descs[i];
 	}
-	descs[9]->addr_high = descs[0];
+	//descs[9]->addr_high = descs[0];
 	descs[9]->eor = 1;
-	for(int i = 0; i < 9; i++) {
+	/*for(int i = 0; i < 9; i++) {
 		descs[i]->addr_high = descs[i + 1];
 		kprintf("%d: High: 0x%x   Low: 0x%x\n",i,descs[i]->addr_high,descs[i]->addr_low);
 	}
-	kprintf("9: High: 0x%x   Low: 0x%x\n",descs[9]->addr_high,descs[9]->addr_low);
+	kprintf("9: High: 0x%x   Low: 0x%x\n",descs[9]->addr_high,descs[9]->addr_low);*/
 	uint32_t* addr1 = pmm_alloc();
 	kprintf("Addr: 0x%x\n",addr1);
 	pci_write_register_32(addr,0,0xE4,addr1);
