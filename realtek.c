@@ -78,6 +78,8 @@ void realtek_init(pci_bdf_t device) {
 	//pci_write_register_16(addr,0,0x3C,0x20); //Nur Link-Change überwachen
 }
 
+bool printed = false;
+
 void realtek_handle_intr(void) {
 	uint16_t status = pci_read_register_16(addr,0,0x3E);
 	//kprintf("Status: %b\n",status);
@@ -85,7 +87,12 @@ void realtek_handle_intr(void) {
 	if(status & 0x0002) kprintf("Receive error\n");
 	if(status & 0x0004) kprintf("Transmit succesfull\n");
 	if(status & 0x0008) kprintf("Transmit error\n");
-	if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
+	if(status & 0x0010) {
+		if(printed == false) {
+			kprintf("Receive descriptor unavailable\n");
+			printed = true;
+		}
+	}
 	if(status & 0x0020) {
 		if(pci_read_register_8(addr,0,0x6C) & 0x02) {
 			kprintf("Link is up with ");
