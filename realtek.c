@@ -20,6 +20,23 @@ void realtek_init(pci_bdf_t device) {
 }
 
 void realtek_handle_intr(void) {
-	kprintf("Status: %b\n",pci_read_register_16(addr,0,0x3E));	
+	uint16_t status = pci_read_register_16(addr,0,0x3E);
+	kprintf("Status: %b\n",status);
+	if(status & 0x0001) kprintf("Receive succesfull\n");
+	if(status & 0x0002) kprintf("Receive error\n");
+	if(status & 0x0004) kprintf("Transmit succesfull\n");
+	if(status & 0x0008) kprintf("Transmit error\n");
+	if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
+	if(status & 0x0020) kprintf("Link changed\n");
+	if(status & 0x0040) kprintf("Receive FIFO overflow\n");
+	if(status & 0x0080) kprintf("Transmit descriptor unavailable\n");
+	if(status & 0x0100) kprintf("Software Interrupt\n");
+	if(status & 0x0200) kprintf("Receive FIFO empty\n");
+	if(status & 0x0400) kprintf("Unknown Status (reserved Bit 11)\n");
+	if(status & 0x0800) kprintf("Unknown Status (reserved Bit 12)\n");
+	if(status & 0x1000) kprintf("Unknown Status (reserved Bit 13)\n");
+	if(status & 0x2000) kprintf("Unknown Status (reserved Bit 14)\n");
+	if(status & 0x4000) kprintf("Timeout\n");
+	if(status & 0x8000) kprintf("Unknown Status (reserved Bit 16)\n");
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E));
 }
