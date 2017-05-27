@@ -32,10 +32,10 @@ void init(struct multiboot_info *mb_info) {
 	//vmm_init();
 	kprintf("Initialization Timer\n");
 	pit_init();
-	kprintf("Initialization mouse\n");
-	mouse_install();
 	kprintf("Initialization keyboard\n");
 	keyboard_init();
+	kprintf("Initialization mouse\n");
+	mouse_install();
 	kprintf("Initialization multitasking\n");
 	init_multitasking(mb_info);
 	kprintf("Initialization GDT\n");
