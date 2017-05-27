@@ -43,7 +43,8 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("Initialization IDT\n");
 	init_intr();
 	//set_vesa_mode(0x11b);
-	//kprintf("Initialization Network\n");
+	kprintf("Initialization Network\n");
+	init_network();
 	//start_nic();
 	kprintf("Initialization complete\n");
 	kprintf("#######################\n");

@@ -2,6 +2,7 @@
 
 void sendPacket(struct ether_header ether, uint8_t data[], int data_length);
 void handle_new_packet(struct network_packet *packet);
+void init_network(void);
 
 int checksum(void *buffer, int size) {
   uint32_t sum = 0;
