@@ -34,6 +34,10 @@ void init(struct multiboot_info *mb_info) {
 	pit_init();
 	kprintf("Initialization multitasking\n");
 	init_multitasking(mb_info);
+	kprintf("Initialization keyboard\n");
+	keyboard_init();
+	//kprintf("Initialization mouse\n");
+	//mouse_install();
 	kprintf("Initialization GDT\n");
 	init_gdt();
 	kprintf("Initialization IDT\n");
@@ -41,10 +45,6 @@ void init(struct multiboot_info *mb_info) {
 	//set_vesa_mode(0x11b);
 	//kprintf("Initialization Network\n");
 	//start_nic();
-	kprintf("Initialization keyboard\n");
-	keyboard_init();
-	//kprintf("Initialization mouse\n");
-	//mouse_install();
 	kprintf("Initialization complete\n");
 	kprintf("#######################\n");
 	kprintf("# ");
