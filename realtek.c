@@ -68,7 +68,7 @@ void realtek_handle_intr(void) {
 	if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
 	if(status & 0x0020) {
 		kprintf("Link changed\n");
-		if(pci_read_register_8(addr,0,0x06) & 0x02) {
+		if(pci_read_register_8(addr,0,0x6C) & 0x02) {
 			kprintf("Link is up\n");
 		} else {
 			kprintf("Link is down\n");
@@ -85,6 +85,4 @@ void realtek_handle_intr(void) {
 	if(status & 0x4000) kprintf("Timeout\n");
 	if(status & 0x8000) kprintf("Unknown Status (reserved Bit 16)\n");
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E));
-	sleep(2000);
-		kprintf("Register 0x06: %b\n",pci_read_register_8(addr,0,0x06));
 }
