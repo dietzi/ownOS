@@ -14,6 +14,10 @@
 
 #include "includes.h"
 
+#define IA32_APIC_BASE_MSR 0x1B
+#define IA32_APIC_BASE_MSR_BSP 0x100 // Processor is a BSP
+#define IA32_APIC_BASE_MSR_ENABLE 0x800
+
 enum cpuid_requests {
   CPUID_GETVENDORSTRING,
   CPUID_GETFEATURES,
@@ -100,5 +104,6 @@ void init(struct multiboot_info *mb_info) {
 	uint32_t eax, edx;
 	cpuid(1, &eax, &edx);
 	
+	kprintf("EDX: %b\n",edx);
 	//get_pci_devices();
 }
