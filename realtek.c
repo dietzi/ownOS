@@ -62,7 +62,7 @@ void realtek_init(pci_bdf_t device) {
 	descs[9]->addr_high = descs[0]->addr_low;
 	
 	pci_write_register_32(addr,0,0xE4,descs[0]->addr_low);
-	pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
+	//pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
 	
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
 	kprintf("%x-",pci_read_register_8(addr,0,0x01));
@@ -84,7 +84,7 @@ void realtek_handle_intr(void) {
 	if(status & 0x0002) kprintf("Receive error\n");
 	if(status & 0x0004) kprintf("Transmit succesfull\n");
 	if(status & 0x0008) kprintf("Transmit error\n");
-	//if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
+	if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
 	if(status & 0x0020) {
 		if(pci_read_register_8(addr,0,0x6C) & 0x02) {
 			kprintf("Link is up with ");
