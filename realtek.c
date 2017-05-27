@@ -51,7 +51,16 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("Registerig IRQ %d\n",irq);
 	for(int i = 0; i < 10; i++) {
 		descs[i] = pmm_alloc();
+		descs[i]->own = 1;
+		descs[i]->eor = 0;
+		descs[i]->buffer_size = 0x200;
+		descs[i]->addr_low = descs[i];
 	}
+	for(int i = 0; i < 9; i++) {
+		descs[i]->addr_high = descs[i + 1]->addr_low;
+	}
+	descs[9]->addr_high = descs[0]->addr_low;
+	
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
 	kprintf("%x-",pci_read_register_8(addr,0,0x01));
 	kprintf("%x-",pci_read_register_8(addr,0,0x02));
