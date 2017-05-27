@@ -42,11 +42,16 @@ struct rx_desc_status {
 	uint32_t addr_high;
 };
 
+struct rx_desc* descs[10];
+
 void realtek_init(pci_bdf_t device) {
 	addr = device;
 	kprintf("Realtek...\n");
 	irq = pci_config_read_8(addr,0x3C);
 	kprintf("Registerig IRQ %d\n",irq);
+	for(int i = 0; i < 10; i++) {
+		descs[i] = pmm_alloc();
+	}
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
 	kprintf("%x-",pci_read_register_8(addr,0,0x01));
 	kprintf("%x-",pci_read_register_8(addr,0,0x02));
