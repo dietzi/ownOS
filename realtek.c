@@ -68,6 +68,7 @@ void realtek_handle_intr(void) {
 	if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
 	if(status & 0x0020) {
 		kprintf("Link changed\n");
+		kprintf("Register 0x06: %b\n",pci_read_register_8(addr,0,0x06));
 		if(pci_read_register_8(addr,0,0x06) & 0x02) {
 			kprintf("Link is up\n");
 		} else {
