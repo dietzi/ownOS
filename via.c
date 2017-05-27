@@ -105,7 +105,11 @@ struct tx_desc {
 struct tx_desc* tx1[10];
 struct rx_desc* rx1[10];
 
-void via_init(void) {
+void via_init(pci_bdf_t device) {
+	addr.bus = device.bus;
+	addr.dev = device.dev;
+	addr.func = device.func;
+	
 	pci_config_write_8(addr,base,0x04,0x07);
 	for(int i=0;i<10;i++) {
 		struct rx_desc* rx=(void*)pmm_alloc();

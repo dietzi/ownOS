@@ -39,5 +39,6 @@ uint32_t pci_read_register_32(pci_bdf_t addr, uint32_t barOffset, uint32_t offse
 void pci_write_register(pci_bdf_t addr, uint32_t barOffset, uint32_t offset, uint8_t val);
 void pci_write_register_16(pci_bdf_t addr, uint32_t barOffset, uint32_t offset, uint16_t val);
 void pci_write_register_32(pci_bdf_t addr, uint32_t barOffset, uint32_t offset, uint32_t val);
+pci_bdf_t search_pci_device(uint16_t vendor_id, uint16_t device_id);
 
 #endif

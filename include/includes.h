@@ -17,5 +17,6 @@
 #include "include/cmos.h"
 #include "include/timer.h"
 #include "include/pci.h"
+#include "include/realtek.h"
 #include "include/via.h"
 #include "network/include/declerations.h"

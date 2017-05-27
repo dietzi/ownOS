@@ -11,7 +11,6 @@ uint32_t pci_config_readd(pci_bdf_t addr,uint offset);
 uint32_t pci_config_read_32(pci_bdf_t addr,uint offset);
 uint16_t pci_config_read_16(pci_bdf_t addr,uint offset);
 uint8_t pci_config_read_8(pci_bdf_t addr,uint offset);
-pci_bdf_t search_pci_device(uint16_t vendor_id, uint16_t device_id);
 
 uint32_t pci_config_readd(pci_bdf_t addr,uint offset) {
   int bus=addr.bus;

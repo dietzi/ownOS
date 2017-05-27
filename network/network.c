@@ -4,6 +4,14 @@ void sendPacket(struct ether_header ether, uint8_t data[], int data_length);
 void handle_new_packet(struct network_packet *packet);
 void init_network(void);
 
+void (*init_card)(pci_bdf_t device);
+
+struct pci_device {
+	uint16_t vendor_id;
+	uint16_t device_id;
+	void* init_pointer;
+};
+
 int checksum(void *buffer, int size) {
   uint32_t sum = 0;
   int odd = 0, i;
@@ -81,9 +89,8 @@ void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
 			i++;
 			j++;
 		}
-last_message = "via_send...";
+		last_message = "via_send...";
 		via_send(buffer,i);
-	//}
 }
 
 void handle_new_packet(struct network_packet *packet) {
@@ -189,13 +196,30 @@ void handle_new_packet(struct network_packet *packet) {
 }
 
 void init_network(void) {
+	struct pci_device devices[2];
+	devices[0].vendor_id = 0x1106;
+	devices[0].device_id = 0x3065;
+	devices[0].init_pointer = via_init;
+
+	devices[1].vendor_id = 0x10ec;
+	devices[1].device_id = 0x8168;
+	devices[1].init_pointer = realtek_init;
+	
 	pci_bdf_t device;
-	if(search_pci_device(0x1106,0x3065)) {
+	
+	for(int i = 0; i < 2; i++) {
+		device = search_pci_device(devices[i].vendor_id,devices[i].device_id);
+		if(device.bus >= 0 && device.func >= 0 && device.dev >= 0) {
+			init_card = devices[i].init_pointer;
+			init_card(device);
+		}
+	}
+	/*if(search_pci_device(0x1106,0x3065)) {
 		kprintf("Found VIA networkcard\n");
 		via_init();
 	}
 	if(search_pci_device(0x10ec,0x8168)) {
 		kprintf("Found Realtek networkcard\n");
 		realtek_init();
-	}
+	}*/
 }

@@ -47,7 +47,7 @@ enum intr_status_bits {
 #define RHINE_EVENT_SLOW        (IntrPCIErr | IntrLinkChange)
 #define RHINE_EVENT             (RHINE_EVENT_NAPI | RHINE_EVENT_SLOW)
 
-void via_init(void);
+void via_init(pci_bdf_t device);
 void via_handle_intr(void);
 void dhcp_get_ip(void);
 void via_send(uint8_t data[], int data_length);
