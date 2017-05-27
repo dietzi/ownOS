@@ -296,6 +296,7 @@ bool search_pci_device(uint16_t device_id, uint16_t vendor_id) {
 				uint16_t dev=(uint16_t)(res >> 16);
 				uint16_t ven=(uint16_t)(res & 0x0000FFFF);
 				if(dev == device_id && ven == vendor_id) {
+					kprintf("Found.... ven_%x&dev_%x\n",ven,dev);
 					return true;
 				}
 			}
