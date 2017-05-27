@@ -45,6 +45,7 @@ struct rx_desc_status {
 void realtek_init(pci_bdf_t device) {
 	addr = device;
 	kprintf("Realtek...\n");
+		kprintf("Register 0x06: %b\n",pci_read_register_8(addr,0,0x06));
 	irq = pci_config_read_8(addr,0x3C);
 	kprintf("Registerig IRQ %d\n",irq);
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
