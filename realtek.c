@@ -61,6 +61,9 @@ void realtek_init(pci_bdf_t device) {
 	}
 	descs[9]->addr_high = descs[0]->addr_low;
 	
+	pci_write_register_32(addr,0,0xE4,descs[0]->addr_low);
+	pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
+	
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
 	kprintf("%x-",pci_read_register_8(addr,0,0x01));
 	kprintf("%x-",pci_read_register_8(addr,0,0x02));
