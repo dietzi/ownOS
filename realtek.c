@@ -49,17 +49,19 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("Realtek...\n");
 	irq = pci_config_read_8(addr,0x3C);
 	kprintf("Registerig IRQ %d\n",irq);
-	/*for(int i = 0; i < 10; i++) {
+	for(int i = 0; i < 10; i++) {
 		descs[i] = pmm_alloc();
 		descs[i]->own = 1;
 		descs[i]->eor = 0;
 		descs[i]->buffer_size = 0x1000;
 		descs[i]->addr_low = descs[i];
 	}
+	descs[9]->addr_high = descs[0];
+	descs[9]->eor = 1;
 	for(int i = 0; i < 9; i++) {
-		//descs[i]->addr_high = descs[i + 1]->addr_low;
+		descs[i]->addr_high = descs[i + 1];
+		kprintf("%d: High: 0x%x   Low: 0x%x\n",i,descs[i]->addr_high,descs[i]->addr_low);
 	}
-	descs[9]->addr_high = descs[0]->addr_low;*/
 	uint32_t* addr1 = pmm_alloc();
 	kprintf("Addr: 0x%x\n",addr1);
 	pci_write_register_32(addr,0,0xE4,addr1);
@@ -73,7 +75,7 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("%x\n",pci_read_register_8(addr,0,0x05));
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	pci_write_register_16(addr,0,0x3C,0x43FF); //Activating all Interrupts
-	pci_write_register_8(addr,0,0x37,0x08);
+	pci_write_register_8(addr,0,0x37,0x08); // Enabling receive
 	kprintf("0x00E4: 0x%x - 0x%x\n",pci_read_register_32(addr,0,0xE4),pci_read_register_32(addr,0,0xE8));
 	//pci_write_register_16(addr,0,0x3C,0x20); //Nur Link-Change überwachen
 }
