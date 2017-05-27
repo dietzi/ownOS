@@ -3,6 +3,12 @@
 pci_bdf_t addr;
 uint8_t irq = 0;
 
+struct rx_desc {
+	int own : 1;
+	int eor : 1;
+	uint16_t reserved : 14;
+};
+
 void realtek_init(pci_bdf_t device) {
 	addr = device;
 	kprintf("Realtek...\n");
