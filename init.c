@@ -104,6 +104,10 @@ void init(struct multiboot_info *mb_info) {
 	uint32_t eax, edx;
 	cpuid(1, &eax, &edx);
 	
-	kprintf("EDX: %b\n",edx);
+	if(edx & (1 << 9)) {
+		kprintf("APIC vorhanden\n");
+	} else {
+		kprintf("APIC nicht vorhanden\n");
+	}
 	//get_pci_devices();
 }
