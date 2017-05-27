@@ -39,7 +39,7 @@ void init(struct multiboot_info *mb_info) {
 	mouse_install();
 	kprintf("Initialization Timer\n");
 	last_message="pit_init";
-	//pit_init();
+	pit_init();
 	kprintf("Initialization GDT\n");
 	last_message="init_gdt";
 	init_gdt();
