@@ -43,6 +43,7 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("Initialization GDT\n");
 	last_message="init_gdt";
 	init_gdt();
+	apic_init();
 	kprintf("Initialization IDT\n");
 	last_message="init_intr";
 	init_intr();
@@ -67,6 +68,5 @@ void init(struct multiboot_info *mb_info) {
 	
 	//init_telnet();
 	kprintf("\n");
-	apic_init();
 	//get_pci_devices();
 }
