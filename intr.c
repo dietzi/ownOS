@@ -163,6 +163,7 @@ void init_intr(void) {
 
     // Interruptnummern der IRQs umbiegen
     init_pic();
+	apic_init();
 
     // Excpetion-Handler
     idt_set_entry(0, intr_stub_0, 0x8, IDT_FLAG_INTERRUPT_GATE | IDT_FLAG_RING0 | IDT_FLAG_PRESENT);
