@@ -162,9 +162,11 @@ void init_intr(void) {
     };
 
     // Interruptnummern der IRQs umbiegen
+	kprintf("Init PIC\n");
     init_pic();
+	kprintf("Init APIC\n");
 	apic_init();
-
+	kprintf("Init IDT\n");
     // Excpetion-Handler
     idt_set_entry(0, intr_stub_0, 0x8, IDT_FLAG_INTERRUPT_GATE | IDT_FLAG_RING0 | IDT_FLAG_PRESENT);
     idt_set_entry(1, intr_stub_1, 0x8, IDT_FLAG_INTERRUPT_GATE | IDT_FLAG_RING0 | IDT_FLAG_PRESENT);
