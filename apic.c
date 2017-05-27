@@ -57,7 +57,7 @@ bool check_apic(void) {
 }
 
 void apic_init(void) {
-	if(check_apic) {
+	if(check_apic()) {
 		apic_base_phys = (uint64_t) (uint64_t) (cpu_read_msr(0x1B) & (~0xFFF));
 		uint32_t spiv;
 		spiv = 1 << 8;
