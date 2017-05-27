@@ -7,6 +7,10 @@ struct rx_desc {
 	int own : 1;
 	int eor : 1;
 	uint16_t reserved : 14;
+	uint16_t buffer_size;
+	uint32_t vlan;
+	uint32_t addr_low;
+	uint32_t addr_high;
 };
 
 void realtek_init(pci_bdf_t device) {
@@ -27,7 +31,7 @@ void realtek_init(pci_bdf_t device) {
 
 void realtek_handle_intr(void) {
 	uint16_t status = pci_read_register_16(addr,0,0x3E);
-	kprintf("Status: %b\n",status);
+	//kprintf("Status: %b\n",status);
 	if(status & 0x0001) kprintf("Receive succesfull\n");
 	if(status & 0x0002) kprintf("Receive error\n");
 	if(status & 0x0004) kprintf("Transmit succesfull\n");
