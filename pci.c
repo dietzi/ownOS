@@ -842,6 +842,9 @@ void class_to_text(pci_device dev) {
 	}
 }
 
+uint8_t pci_read_register_8(pci_bdf_t addr, uint32_t barOffset, uint32_t offset) {
+	pci_read_register(addr, barOffset, offset);
+}
 uint8_t pci_read_register(pci_bdf_t addr, uint32_t barOffset, uint32_t offset) {
 	uint8_t res;
 	barOffset=(0x010+(barOffset*4));

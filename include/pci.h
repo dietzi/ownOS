@@ -34,6 +34,7 @@ void class_to_text(pci_device dev);
 uint get_number_of_highest_set_bit(uint32_t value);
 uint get_number_of_lowest_set_bit(uint32_t value);
 uint8_t pci_read_register(pci_bdf_t addr, uint32_t barOffset, uint32_t offset);
+uint8_t pci_read_register_8(pci_bdf_t addr, uint32_t barOffset, uint32_t offset);
 uint16_t pci_read_register_16(pci_bdf_t addr, uint32_t barOffset, uint32_t offset);
 uint32_t pci_read_register_32(pci_bdf_t addr, uint32_t barOffset, uint32_t offset);
 void pci_write_register(pci_bdf_t addr, uint32_t barOffset, uint32_t offset, uint8_t val);
