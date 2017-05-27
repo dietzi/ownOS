@@ -45,7 +45,6 @@ struct rx_desc_status {
 void realtek_init(pci_bdf_t device) {
 	addr = device;
 	kprintf("Realtek...\n");
-		kprintf("Register 0x06: %b\n",pci_read_register_8(addr,0,0x06));
 	irq = pci_config_read_8(addr,0x3C);
 	kprintf("Registerig IRQ %d\n",irq);
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
@@ -69,7 +68,6 @@ void realtek_handle_intr(void) {
 	if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
 	if(status & 0x0020) {
 		kprintf("Link changed\n");
-		kprintf("Register 0x06: %b\n",pci_read_register_8(addr,0,0x06));
 		if(pci_read_register_8(addr,0,0x06) & 0x02) {
 			kprintf("Link is up\n");
 		} else {
@@ -87,4 +85,6 @@ void realtek_handle_intr(void) {
 	if(status & 0x4000) kprintf("Timeout\n");
 	if(status & 0x8000) kprintf("Unknown Status (reserved Bit 16)\n");
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E));
+	sleep(2000);
+		kprintf("Register 0x06: %b\n",pci_read_register_8(addr,0,0x06));
 }
