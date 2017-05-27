@@ -55,6 +55,7 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("%x\n",pci_read_register_8(addr,0,0x05));
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	pci_write_register_16(addr,0,0x3C,0x43FF); //Activating all Interrupts
+	kprintf("0x00E4: 0x%x - 0x%x\n",pci_read_register_32(addr,0,0xE4),pci_read_register_32(addr,0,0xE8));
 	//pci_write_register_16(addr,0,0x3C,0x20); //Nur Link-Change überwachen
 }
 
@@ -67,7 +68,6 @@ void realtek_handle_intr(void) {
 	if(status & 0x0008) kprintf("Transmit error\n");
 	if(status & 0x0010) kprintf("Receive descriptor unavailable\n");
 	if(status & 0x0020) {
-		kprintf("Link changed\n");
 		if(pci_read_register_8(addr,0,0x6C) & 0x02) {
 			kprintf("Link is up with ");
 			if(pci_read_register_8(addr,0,0x6C) & 0x04) kprintf("10 Mbps and ");
@@ -89,5 +89,10 @@ void realtek_handle_intr(void) {
 	if(status & 0x2000) kprintf("Unknown Status (reserved Bit 14)\n");
 	if(status & 0x4000) kprintf("Timeout\n");
 	if(status & 0x8000) kprintf("Unknown Status (reserved Bit 16)\n");
+	
+	if(status & 0x0001) {
+		
+	}
+	
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E));
 }
