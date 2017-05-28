@@ -54,18 +54,18 @@ void realtek_init(pci_bdf_t device) {
 		descs[i]->own = 1;
 		descs[i]->eor = 0;
 		descs[i]->buffer_size = 0x1000;
-		descs[i]->addr_high = descs[i];
+		descs[i]->addr_low = descs[i];
 	}
-	//descs[9]->addr_high = descs[0];
-	//descs[9]->eor = 1;
-	/*for(int i = 0; i < 9; i++) {
+	descs[9]->addr_high = descs[0];
+	descs[9]->eor = 1;
+	for(int i = 0; i < 9; i++) {
 		descs[i]->addr_high = descs[i + 1];
-		kprintf("%d: High: 0x%x   Low: 0x%x\n",i,descs[i]->addr_high,descs[i]->addr_low);
+		//kprintf("%d: High: 0x%x   Low: 0x%x\n",i,descs[i]->addr_high,descs[i]->addr_low);
 	}
-	kprintf("9: High: 0x%x   Low: 0x%x\n",descs[9]->addr_high,descs[9]->addr_low);*/
+	//kprintf("9: High: 0x%x   Low: 0x%x\n",descs[9]->addr_high,descs[9]->addr_low);
 	pci_write_register_8(addr,0,0x37,0x08); // Enabling receive
-	pci_write_register_32(addr,0,0xE4,descs[0]);
-	//pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
+	pci_write_register_32(addr,0,0xE4,descs[0]->addr_low);
+	pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
 	
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
 	kprintf("%x-",pci_read_register_8(addr,0,0x01));
