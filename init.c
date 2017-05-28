@@ -59,8 +59,11 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("\n");
 	kprintf("KBC:\n");
 	kprintf("  0x64: %b\n",inb(0x64));
-	kprintf("  0xC0: %b\n",inb(0xC0));
-	kprintf("  0xD0: %b\n",inb(0xD0));
-	kprintf("  0x20: %b\n",inb(0x20));
+	outb(0x64,0xC0);
+	kprintf("  0xC0: %b\n",inb(0x64));
+	outb(0x64,0xD0);
+	kprintf("  0xD0: %b\n",inb(0x64));
+	outb(0x64,0x20);
+	kprintf("  0x20: %b\n",inb(0x64));
 	//get_pci_devices();
 }
