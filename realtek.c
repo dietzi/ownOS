@@ -58,8 +58,8 @@ struct tx_desc {
 	uint32_t addr_high;
 };
 
-struct rx_desc* rx_descs[10];
-struct tx_desc* tx_descs[10];
+struct rx_desc* rx_descs;
+struct tx_desc* tx_descs;
 uint8_t *rx_buf;
 uint8_t *tx_buf;
 
@@ -71,26 +71,26 @@ void realtek_init(pci_bdf_t device) {
 	rx_buf = pmm_alloc();
 	tx_buf = pmm_alloc();
 	for(int i = 0; i < 10; i++) {
-		rx_descs[i] = pmm_alloc();
-		rx_descs[i]->own = 1;
-		rx_descs[i]->eor = 0;
-		rx_descs[i]->buffer_size = 0x1000;
-		rx_descs[i]->addr_low = rx_buf;
+		//rx_descs[i] = pmm_alloc();
+		rx_descs[i].own = 1;
+		rx_descs[i].eor = 0;
+		rx_descs[i].buffer_size = 0x1000;
+		rx_descs[i].addr_low = rx_buf + i * 0x1000;
+		rx_descs[i].addr_high = 0;
 		
-		tx_descs[i] = pmm_alloc();
-		tx_descs[i]->own = 0;
-		tx_descs[i]->eor = 0;
-		tx_descs[i]->fs = 1;
-		tx_descs[i]->ipcs = 1;
-		tx_descs[i]->udpcs = 1;
-		tx_descs[i]->tcpcs = 1;
-		tx_descs[i]->frame_length = 0x1000;
-		tx_descs[i]->addr_low = tx_buf;
-}
-	rx_descs[9]->addr_high = 0;
-	rx_descs[9]->eor = 1;
-	tx_descs[9]->addr_high = 0;
-	tx_descs[9]->eor = 1;
+		//tx_descs[i] = pmm_alloc();
+		tx_descs[i].own = 0;
+		tx_descs[i].eor = 0;
+		tx_descs[i].fs = 1;
+		tx_descs[i].ipcs = 1;
+		tx_descs[i].udpcs = 1;
+		tx_descs[i].tcpcs = 1;
+		tx_descs[i].frame_length = 0x1000;
+		tx_descs[i].addr_low = tx_buf + i * 0x1000;
+		tx_descs[i].addr_high = 0;
+	}
+	rx_descs[9].eor = 1;
+	tx_descs[9].eor = 1;
 	
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	
@@ -123,10 +123,10 @@ void realtek_init(pci_bdf_t device) {
 }
 
 void realtek_send_packet(void) {
-	tx_descs[0]->fs = 1;
-	tx_descs[0]->ls = 1;
-	tx_descs[0]->own = 1;
-	tx_descs[0]->frame_length = 1;
+	tx_descs[0].fs = 1;
+	tx_descs[0].ls = 1;
+	tx_descs[0].own = 1;
+	tx_descs[0].frame_length = 1;
 	pci_write_register_8(addr,0,0x38,0x40);
 }
 
