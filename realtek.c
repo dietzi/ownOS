@@ -131,6 +131,7 @@ void realtek_send_packet(void) {
 }
 
 bool printed = false;
+bool printed1 = false;
 
 void realtek_handle_intr(void) {
 	uint16_t status = pci_read_register_16(addr,0,0x3E);
@@ -157,7 +158,12 @@ void realtek_handle_intr(void) {
 			kprintf("Link is down\n");
 		}
 	}
-	if(status & 0x0040) kprintf("Receive FIFO overflow\n");
+	if(status & 0x0040) {
+		if(printed1 == false) {
+			kprintf("Receive FIFO overflow\n");
+			printed1 = true;
+		}
+	}
 	if(status & 0x0080) kprintf("Transmit descriptor unavailable\n");
 	if(status & 0x0100) kprintf("Software Interrupt\n");
 	if(status & 0x0200) kprintf("Receive FIFO empty\n");
