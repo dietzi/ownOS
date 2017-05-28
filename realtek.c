@@ -63,9 +63,11 @@ void realtek_init(pci_bdf_t device) {
 		//kprintf("%d: High: 0x%x   Low: 0x%x\n",i,descs[i]->addr_high,descs[i]->addr_low);
 	}
 	//kprintf("9: High: 0x%x   Low: 0x%x\n",descs[9]->addr_high,descs[9]->addr_low);
+	
+	pci_write_register_16(addr,0,0xE0,0x0);
+	pci_write_register_8(addr,0,0x37,0x08); // Enabling receive
 	pci_write_register_32(addr,0,0xE4,descs[0]);
 	//pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
-	pci_write_register_8(addr,0,0x37,0x08); // Enabling receive
 	
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
 	kprintf("%x-",pci_read_register_8(addr,0,0x01));
