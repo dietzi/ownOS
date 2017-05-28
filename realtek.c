@@ -94,6 +94,8 @@ void realtek_init(pci_bdf_t device) {
 	}
 	//kprintf("9: High: 0x%x   Low: 0x%x\n",descs[9]->addr_high,descs[9]->addr_low);
 	
+	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
+	
 	pci_write_register_32(addr,0,0x44,0x0000E70F);
 	pci_write_register_8(addr,0,0x37,0x04); // Enable TX
 	pci_write_register_32(addr,0,0x40,0x03000700);
@@ -114,7 +116,6 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("%x-",pci_read_register_8(addr,0,0x03));
 	kprintf("%x-",pci_read_register_8(addr,0,0x04));
 	kprintf("%x\n",pci_read_register_8(addr,0,0x05));
-	//pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	kprintf("0x00E4: 0x%x - 0x%x\n",pci_read_register_32(addr,0,0xE4),pci_read_register_32(addr,0,0xE8));
 	kprintf("0x0020: 0x%x - 0x%x\n",pci_read_register_32(addr,0,0x20),pci_read_register_32(addr,0,0x24));
 	realtek_handle_intr();
