@@ -42,7 +42,24 @@ struct rx_desc_status {
 	uint32_t addr_high;
 };
 
-struct rx_desc* descs[10];
+struct tx_desc {
+	int own : 1; // if 1 owned by nic / else owned by host
+	int eor : 1; // if set end of ring
+	int fs : 1; // if set this is the first segment of packet
+	int ls : 1; // if set this is the last segment of packet
+	int lgsen : 1; // Large-send
+	int reserved : 8; // Reserved
+	int ipcs : 1; // if set -> auto checksum
+	int udpcs : 1; // if set -> auto checksum
+	int tcpcs : 1; // if set -> auto checksum
+	uint16_t frame_length : 16; // if own = 0 and ls = 1 -> packet length incl. crc in bytes
+	uint32_t vlan;
+	uint32_t addr_low;
+	uint32_t addr_high;
+};
+
+struct rx_desc* rx_descs[10];
+struct tx_desc* tx_descs[10];
 
 void realtek_init(pci_bdf_t device) {
 	addr = device;
@@ -50,23 +67,23 @@ void realtek_init(pci_bdf_t device) {
 	irq = pci_config_read_8(addr,0x3C);
 	kprintf("Registerig IRQ %d\n",irq);
 	for(int i = 0; i < 10; i++) {
-		descs[i] = pmm_alloc();
-		descs[i]->own = 1;
-		descs[i]->eor = 0;
-		descs[i]->buffer_size = 0x1000;
-		descs[i]->addr_low = descs[i];
+		rx_descs[i] = pmm_alloc();
+		rx_descs[i]->own = 1;
+		rx_descs[i]->eor = 0;
+		rx_descs[i]->buffer_size = 0x1000;
+		rx_descs[i]->addr_low = rx_descs[i];
 	}
-	descs[9]->addr_high = descs[0];
-	descs[9]->eor = 1;
+	rx_descs[9]->addr_high = rx_descs[0];
+	rx_descs[9]->eor = 1;
 	for(int i = 0; i < 9; i++) {
-		descs[i]->addr_high = descs[i + 1];
+		rx_descs[i]->addr_high = rx_descs[i + 1];
 		//kprintf("%d: High: 0x%x   Low: 0x%x\n",i,descs[i]->addr_high,descs[i]->addr_low);
 	}
 	//kprintf("9: High: 0x%x   Low: 0x%x\n",descs[9]->addr_high,descs[9]->addr_low);
 	
 	pci_write_register_16(addr,0,0xE0,0x0);
 	pci_write_register_8(addr,0,0x37,0x08); // Enabling receive
-	pci_write_register_32(addr,0,0xE4,descs[0]);
+	pci_write_register_32(addr,0,0xE4,rx_descs[0]);
 	//pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
 	
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
