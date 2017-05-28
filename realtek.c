@@ -74,7 +74,7 @@ void realtek_init(pci_bdf_t device) {
 		rx_descs[i]->addr_low = rx_descs[i];
 		
 		tx_descs[i] = pmm_alloc();
-		tx_descs[i]->own = 1;
+		tx_descs[i]->own = 0;
 		tx_descs[i]->eor = 0;
 		tx_descs[i]->fs = 1;
 		tx_descs[i]->ipcs = 1;
@@ -94,9 +94,18 @@ void realtek_init(pci_bdf_t device) {
 	}
 	//kprintf("9: High: 0x%x   Low: 0x%x\n",descs[9]->addr_high,descs[9]->addr_low);
 	
-	pci_write_register_16(addr,0,0xE0,0x0);
-	pci_write_register_8(addr,0,0x37,0x0C); // Enabling receive
+	pci_write_register_32(addr,0,0x44,0x0000E70F);
+	pci_write_register_8(addr,0,0x37,0x04); // Enable TX
+	pci_write_register_32(addr,0,0x40,0x03000700);
+	pci_write_register_16(addr,0,0xDA,0x0FFF); // Maximal 8kb-Pakete
+	pci_write_register_8(addr,0,0xEC,0x3F); // No early transmit
+	
+	pci_write_register_32(addr,0,0x20,tx_descs[0]);
 	pci_write_register_32(addr,0,0xE4,rx_descs[0]);
+	
+	pci_write_register_16(addr,0,0x3C,0x43FF); //Activating all Interrupts
+	pci_write_register_8(addr,0,0x37,0x0C); // Enabling receive and transmit
+	//pci_write_register_16(addr,0,0xE0,0x0);
 	//pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
 	
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
@@ -105,10 +114,20 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("%x-",pci_read_register_8(addr,0,0x03));
 	kprintf("%x-",pci_read_register_8(addr,0,0x04));
 	kprintf("%x\n",pci_read_register_8(addr,0,0x05));
-	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
-	pci_write_register_16(addr,0,0x3C,0x43FF); //Activating all Interrupts
+	//pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	kprintf("0x00E4: 0x%x - 0x%x\n",pci_read_register_32(addr,0,0xE4),pci_read_register_32(addr,0,0xE8));
-	//pci_write_register_16(addr,0,0x3C,0x20); //Nur Link-Change überwachen
+	kprintf("0x0020: 0x%x - 0x%x\n",pci_read_register_32(addr,0,0x20),pci_read_register_32(addr,0,0x24));
+	realtek_handle_intr();
+	sleep(1000);
+	realtek_send_packet();
+}
+
+void realtek_send_packet(void) {
+	tx_descs[0]->fs = 1;
+	tx_descs[0]->ls = 1;
+	tx_descs[0]->own = 1;
+	tx_descs[0]->frame_length = 1;
+	pci_write_register_8(addr,0,0x38,0x40);
 }
 
 bool printed = false;

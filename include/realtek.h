@@ -3,5 +3,6 @@
 
 void realtek_init(pci_bdf_t device);
 void realtek_handle_intr(void);
+void realtek_send_packet(void);
 
 #endif
