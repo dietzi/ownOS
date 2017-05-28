@@ -95,7 +95,7 @@ void realtek_init(pci_bdf_t device) {
 	//kprintf("9: High: 0x%x   Low: 0x%x\n",descs[9]->addr_high,descs[9]->addr_low);
 	
 	pci_write_register_16(addr,0,0xE0,0x0);
-	pci_write_register_8(addr,0,0x37,0x08); // Enabling receive
+	pci_write_register_8(addr,0,0x37,0x0C); // Enabling receive
 	pci_write_register_32(addr,0,0xE4,rx_descs[0]);
 	//pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
 	
