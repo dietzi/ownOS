@@ -13,6 +13,13 @@ struct rx_desc {
 	uint32_t addr_high;
 };
 
+struct rx_desc_test {
+	uint32_t buffer_size : 14;
+	uint32_t vlan;
+	uint32_t addr_low;
+	uint32_t addr_high;
+};
+
 struct rx_desc_status {
 	int own : 1; // if 1 owned by nic / else owned by host
 	int eor : 1; // if set end of ring
@@ -65,6 +72,8 @@ uint8_t *tx_buf;
 
 void realtek_init(pci_bdf_t device) {
 	addr = device;
+	kprintf("Sizeof desc: %d\n",sizeof(struct rx_desc));
+	kprintf("Sizeof desc_test: %d\n",sizeof(struct rx_desc_test));
 	kprintf("Realtek...\n");
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
 	kprintf("%x-",pci_read_register_8(addr,0,0x01));
