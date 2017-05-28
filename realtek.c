@@ -70,6 +70,8 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("Registerig IRQ %d\n",irq);
 	rx_buf = pmm_alloc();
 	tx_buf = pmm_alloc();
+	rx_descs = pmm_alloc();
+	tx_descs = pmm_alloc();
 	for(int i = 0; i < 10; i++) {
 		//rx_descs[i] = pmm_alloc();
 		rx_descs[i].own = 1;
