@@ -11,7 +11,7 @@ struct rx_desc {
 	uint32_t vlan;
 	uint32_t addr_low;
 	uint32_t addr_high;
-};
+} __attribute__((packed));
 
 struct rx_desc_status {
 	int own : 1; // if 1 owned by nic / else owned by host
@@ -40,7 +40,7 @@ struct rx_desc_status {
 	uint32_t vlan;
 	uint32_t addr_low;
 	uint32_t addr_high;
-};
+} __attribute__((packed));
 
 struct tx_desc {
 	int own : 1; // if 1 owned by nic / else owned by host
@@ -56,7 +56,7 @@ struct tx_desc {
 	uint32_t vlan;
 	uint32_t addr_low;
 	uint32_t addr_high;
-};
+} __attribute__((packed));
 
 struct rx_desc* rx_descs;
 struct tx_desc* tx_descs;
