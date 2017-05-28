@@ -89,10 +89,10 @@ void realtek_init(pci_bdf_t device) {
 		//tx_descs[i] = pmm_alloc();
 		tx_descs[i].own = 0;
 		tx_descs[i].eor = 0;
-		tx_descs[i].fs = 1;
-		tx_descs[i].ipcs = 1;
-		tx_descs[i].udpcs = 1;
-		tx_descs[i].tcpcs = 1;
+		tx_descs[i].fs = 0;
+		tx_descs[i].ipcs = 0;
+		tx_descs[i].udpcs = 0;
+		tx_descs[i].tcpcs = 0;
 		tx_descs[i].frame_length = 0x0FFF;
 		tx_descs[i].addr_low = tx_buf + i * 0x1000;
 		tx_descs[i].addr_high = 0;
@@ -100,7 +100,6 @@ void realtek_init(pci_bdf_t device) {
 	rx_descs[9].eor = 1;
 	tx_descs[9].eor = 1;
 	
-//	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	
 	pci_write_register_32(addr,0,0x44,0x0000E70F);
 	pci_write_register_8(addr,0,0x37,0x04); // Enable TX
@@ -120,7 +119,8 @@ void realtek_init(pci_bdf_t device) {
 	//kprintf("0x0020: 0x%x - 0x%x\n",pci_read_register_32(addr,0,0x20),pci_read_register_32(addr,0,0x24));
 	//realtek_handle_intr();
 	//sleep(1000);
-	kprintf("Init complete\n");
+	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
+	kprintf("Realtek init complete\n");
 	//realtek_send_packet();
 }
 
