@@ -58,5 +58,6 @@ void init(struct multiboot_info *mb_info) {
 	
 	//init_telnet();
 	kprintf("\n");
+	kprintf("KBC: %b\n",inb(0x64));
 	//get_pci_devices();
 }
