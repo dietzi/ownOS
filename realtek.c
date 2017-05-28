@@ -72,6 +72,7 @@ void realtek_init(pci_bdf_t device) {
 	kprintf("%x-",pci_read_register_8(addr,0,0x03));
 	kprintf("%x-",pci_read_register_8(addr,0,0x04));
 	kprintf("%x\n",pci_read_register_8(addr,0,0x05));
+	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	irq = pci_config_read_8(addr,0x3C);
 	kprintf("Registerig IRQ %d\n",irq);
 	rx_buf = pmm_alloc();
@@ -119,7 +120,6 @@ void realtek_init(pci_bdf_t device) {
 	//kprintf("0x0020: 0x%x - 0x%x\n",pci_read_register_32(addr,0,0x20),pci_read_register_32(addr,0,0x24));
 	//realtek_handle_intr();
 	//sleep(1000);
-	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	kprintf("Realtek init complete\n");
 	//realtek_send_packet();
 }
