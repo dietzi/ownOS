@@ -66,6 +66,7 @@ uint8_t *tx_buf;
 void realtek_init(pci_bdf_t device) {
 	addr = device;
 	kprintf("Realtek...\n");
+	kprintf("Sizeof: %d\n",sizeof(struct rx_desc));
 	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
 	kprintf("%x-",pci_read_register_8(addr,0,0x01));
 	kprintf("%x-",pci_read_register_8(addr,0,0x02));
