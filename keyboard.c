@@ -26,7 +26,7 @@ unsigned char inb(unsigned short port) {
 	return result;
 }
 
- static void send_kbd_command(uint8_t command)
+void send_kbd_command(uint8_t command)
 {
     while ((inb(0x64) & 0x2)) {}
     outb(0x60, command);
