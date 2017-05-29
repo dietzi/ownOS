@@ -277,26 +277,26 @@ void StackTrace(unsigned int MaxFrames)
 }
 
 void print_stack(struct cpu_state* cpu) {
-    kprintf("eax    -> %d (0x%x)\n",cpu->eax,cpu->eax);
+    /*kprintf("eax    -> %d (0x%x)\n",cpu->eax,cpu->eax);
     kprintf("ebx    -> %d (0x%x)\n",cpu->ebx,cpu->ebx);
     kprintf("ecx    -> %d (0x%x)\n",cpu->ecx,cpu->ecx);
     kprintf("edx    -> %d (0x%x)\n",cpu->edx,cpu->edx);
     kprintf("esi    -> %d (0x%x)\n",cpu->esi,cpu->esi);
     kprintf("edi    -> %d (0x%x)\n",cpu->edi,cpu->edi);
-    kprintf("ebp    -> %d (0x%x)\n",cpu->ebp,cpu->ebp);
+    kprintf("ebp    -> %d (0x%x)\n",cpu->ebp,cpu->ebp);*/
 
     kprintf("intr   -> %d (0x%x)\n",cpu->intr,cpu->intr);
     kprintf("error  -> %d (0x%x)\n",cpu->error,cpu->error);
 
     // Von der CPU gesichert
     kprintf("eip    -> %d (0x%x)\n",cpu->eip,cpu->eip);
-    kprintf("cs     -> %d (0x%x)\n",cpu->cs,cpu->cs);
+    /*kprintf("cs     -> %d (0x%x)\n",cpu->cs,cpu->cs);
     kprintf("eflags -> %d (0x%x)\n",cpu->eflags,cpu->eflags);
     kprintf("esp    -> %d (0x%x)\n",cpu->esp,cpu->esp);
-    kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);
+    kprintf("ss     -> %d (0x%x)\n",cpu->ss,cpu->ss);*/
     unsigned int * ebp = cpu->ebp;
-	kprintf("EIP    -> %d (0x%x)\n",ebp[1],ebp[1]);
-	//StackTrace(4); //(uint32_t)&cpu);
+	//kprintf("EIP    -> %d (0x%x)\n",ebp[1],ebp[1]);
+	StackTrace(15); //(uint32_t)&cpu);
 	//kprintf("\n");
 	//sleep(2000);
 }
