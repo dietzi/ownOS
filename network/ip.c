@@ -1,5 +1,7 @@
 #include "includes.h"
 
+void ip_handle(struct ip_header ip, struct ether_header ether);
+
 void ip_handle(struct ip_header ip, struct ether_header ether) {
 	struct ip_header ip_orig = ip;
 	/*kprintf("Typ: IP\n");
