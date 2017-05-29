@@ -70,8 +70,6 @@ extern int dhcp_status;
 
 void realtek_init(pci_bdf_t device) {
 	addr = device;
-	kprintf("Realtek...\n");
-	kprintf("Sizeof: %d\n",sizeof(struct rx_desc));
 	my_mac.mac1 = pci_read_register_8(addr,0,0x00);
 	my_mac.mac2 = pci_read_register_8(addr,0,0x01);
 	my_mac.mac3 = pci_read_register_8(addr,0,0x02);
@@ -137,8 +135,11 @@ void realtek_send_packet(uint8_t *data, int data_length) {
 	tx_descs[realtek_next_tx].ls = 1;
 	tx_descs[realtek_next_tx].own = 1;
 	tx_descs[realtek_next_tx].frame_length = data_length;
+	last_message = "memcpy";
 	memcpy(tx_buf[realtek_next_tx],data,data_length);
+	last_message = "memcpy done";
 	pci_write_register_8(addr,0,0x38,0x40);
+	last_message = "set poll bit";
 	kprintf("Poll Packet: %d\n",tx_descs[realtek_next_tx].frame_length);
 	realtek_next_tx++;
 	if(realtek_next_tx >= 10) realtek_next_tx = 0;

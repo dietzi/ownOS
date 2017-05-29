@@ -220,12 +220,4 @@ void init_network(void) {
 			init_card(device);
 		}
 	}
-	/*if(search_pci_device(0x1106,0x3065)) {
-		kprintf("Found VIA networkcard\n");
-		via_init();
-	}
-	if(search_pci_device(0x10ec,0x8168)) {
-		kprintf("Found Realtek networkcard\n");
-		realtek_init();
-	}*/
 }
