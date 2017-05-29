@@ -162,7 +162,7 @@ void got_packet(void) {
 			//for(int j = 0; j < packet->data_length; j++) {
 			//	packet->bytes[j] = rx_buf[i][j];
 			//}
-			//handle_new_packet(packet);
+			handle_new_packet(packet);
 			rx_descs[i].buffer_size = 0x0FFF;
 			rx_descs[i].own = 1;
 		}

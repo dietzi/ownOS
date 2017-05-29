@@ -97,6 +97,7 @@ void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
 }
 
 void handle_new_packet(struct network_packet *packet) {
+	last_message = "handle_new_packet()";
 	struct ether_header ether = {
 		.receipt_mac.mac1 = ((uint8_t*)packet->bytes)[0],
 		.receipt_mac.mac2 = ((uint8_t*)packet->bytes)[1],
@@ -113,9 +114,11 @@ void handle_new_packet(struct network_packet *packet) {
 		.type = HTONS(((uint16_t*)packet->bytes)[6])
 	};
 	//ether_header_print(ether);
+	last_message = "ethernet-type";
 	if(ether.type > 0x0600) { //Ethernet II
 		switch(ether.type) {
 			case 0x0806: //ARP
+				last_message = "ARP";
 				kprintf("");
 				struct arp arp1 = {
 					.hardware_addr_type = HTONS(((uint16_t*)packet->bytes)[7]),
@@ -152,6 +155,7 @@ void handle_new_packet(struct network_packet *packet) {
 				}
 				break;
 			case 0x0800: //IP
+				last_message = "IP";
 				kprintf("");
 				struct ip_header ip = {
 					.headerlen = (((uint8_t*)packet->bytes)[14]) & 0xF,
@@ -182,9 +186,11 @@ void handle_new_packet(struct network_packet *packet) {
 				ip_handle(ip,ether);
 				break;
 			default:
+				last_message = "not handled";
 				kprintf("Nicht behandeltes Protokoll: %x\n",ether.type);
 		}
 	} else if(ether.type <= 0x05DC) { //Ethernet I
+		last_message = "etherne I";
 		kprintf("Ethernet I Pakete werden nicht behandelt: ");
 		kprintf("Sender-MAC: %x:%x:%x:%x:%x:%x\n",ether.sender_mac.mac1,
 													ether.sender_mac.mac2,
@@ -193,9 +199,10 @@ void handle_new_packet(struct network_packet *packet) {
 													ether.sender_mac.mac5,
 													ether.sender_mac.mac6);
 	}
-	
+	last_message = "freeing ram";
 	pmm_free(packet->bytes);
 	pmm_free(packet);
+	last_message = "end handle_new_packet";
 }
 
 void init_network(void) {
