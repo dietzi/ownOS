@@ -41,8 +41,9 @@ void arp(struct arp* arp_val, struct ether_header* ether) {
 	arp_temp.sender_mac.mac5 = my_mac.mac5;
 	arp_temp.sender_mac.mac6 = my_mac.mac6;
 	
-	union arp_test* tester1;
+	union arp_test* tester1 = pmm_alloc();
 	tester1->arp_val1 = (arp_temp);
 	//kprintf("Test: Offset 2: 0x%x\n",arp_val.hardware_addr_length);
 	sendPacket(ether,tester1->data, 26);
+	pmm_free(tester1);
 }
