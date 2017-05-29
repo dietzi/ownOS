@@ -1,6 +1,6 @@
 #include "includes.h"
 
-void sendPacket(struct ether_header ether, uint8_t data[], int data_length);
+void sendPacket(struct ether_header* ether, uint8_t data[], int data_length);
 void handle_new_packet(struct network_packet *packet);
 void init_network(void);
 
@@ -38,7 +38,7 @@ int checksum(void *buffer, int size) {
   return (~sum)&0xFFFF;
 }
 
-void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
+void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
 	uint8_t buffer[data_length + 14];
 	/*if((ether.receipt_mac.mac1 == my_mac.mac1 &&
 			ether.receipt_mac.mac2 == my_mac.mac2 &&
@@ -53,23 +53,23 @@ void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
 			ether.receipt_mac.mac5 == 0xff &&
 			ether.receipt_mac.mac6 == 0xff)) {*/
 
-			struct ether_header ether_temp;
+		struct ether_header* ether_temp = pmm_alloc();
 		
-		ether_temp.receipt_mac.mac1 = ether.sender_mac.mac1;
-		ether_temp.receipt_mac.mac2 = ether.sender_mac.mac2;
-		ether_temp.receipt_mac.mac3 = ether.sender_mac.mac3;
-		ether_temp.receipt_mac.mac4 = ether.sender_mac.mac4;
-		ether_temp.receipt_mac.mac5 = ether.sender_mac.mac5;
-		ether_temp.receipt_mac.mac6 = ether.sender_mac.mac6;
+		ether_temp->receipt_mac.mac1 = ether->sender_mac.mac1;
+		ether_temp->receipt_mac.mac2 = ether->sender_mac.mac2;
+		ether_temp->receipt_mac.mac3 = ether->sender_mac.mac3;
+		ether_temp->receipt_mac.mac4 = ether->sender_mac.mac4;
+		ether_temp->receipt_mac.mac5 = ether->sender_mac.mac5;
+		ether_temp->receipt_mac.mac6 = ether->sender_mac.mac6;
 		
-		ether_temp.sender_mac.mac1 = my_mac.mac1;
-		ether_temp.sender_mac.mac2 = my_mac.mac2;
-		ether_temp.sender_mac.mac3 = my_mac.mac3;
-		ether_temp.sender_mac.mac4 = my_mac.mac4;
-		ether_temp.sender_mac.mac5 = my_mac.mac5;
-		ether_temp.sender_mac.mac6 = my_mac.mac6;
+		ether_temp->sender_mac.mac1 = my_mac.mac1;
+		ether_temp->sender_mac.mac2 = my_mac.mac2;
+		ether_temp->sender_mac.mac3 = my_mac.mac3;
+		ether_temp->sender_mac.mac4 = my_mac.mac4;
+		ether_temp->sender_mac.mac5 = my_mac.mac5;
+		ether_temp->sender_mac.mac6 = my_mac.mac6;
 		
-		ether_temp.type = HTONS(ether.type);
+		ether_temp->type = HTONS(ether->type);
 		
 		union ether_test ether_union;
 		ether_union.ether_val1 = ether_temp;

@@ -184,7 +184,7 @@ union arp_test {
 };
 
 union ether_test {
-	struct ether_header ether_val1;
+	struct ether_header* ether_val1;
 	uint8_t data[sizeof(struct ether_header)];
 };
 

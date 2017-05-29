@@ -1,5 +1,7 @@
 #include "includes.h"
 
+void arp(struct arp* arp_val, struct ether_header* ether);
+
 void arp(struct arp* arp_val, struct ether_header* ether) {
 	//kprintf("ARP\n");
 	struct arp arp_temp;
