@@ -14,18 +14,10 @@ struct rx_desc {
 } __attribute__((packed));
 
 struct rx_desc_status {
-	int own : 1; // if 1 owned by nic / else owned by host
-	int eor : 1; // if set end of ring
-	int fs : 1; // if set this is the first segment of packet
-	int ls : 1; // if set this is the last segment of packet
-	int mar : 1; // multicast packet received
-	int pam : 1; // physical packet received
-	int bar : 1; // broadcast packet received
-	int reserved : 2; // always 0x01
-	int rwt : 1; // packet bigger than 8192 bytes
-	int res : 1; // if set and ls=1 -> error (crc,runt,rwt,fae)
-	int runt : 1; // packet smaller than 64 bytes
-	int crc : 1; // if set -> crc-error
+	uint16_t frame_length : 14; // if own = 0 and ls = 1 -> packet length incl. crc in bytes
+	int tcpf : 1; // if set -> tcp checksum failure
+	int udpf : 1; // if set -> udp checksum failure
+	int ipf : 1; // if set -> ip checksum failure
 	int pid : 2; // protocol-ID:
 				/*
 				00 = IP
@@ -33,26 +25,34 @@ struct rx_desc_status {
 				10 = UDP/IP
 				11 = IP
 				*/
-	int ipf : 1; // if set -> ip checksum failure
-	int udpf : 1; // if set -> udp checksum failure
-	int tcpf : 1; // if set -> tcp checksum failure
-	uint16_t frame_length : 14; // if own = 0 and ls = 1 -> packet length incl. crc in bytes
+	int crc : 1; // if set -> crc-error
+	int runt : 1; // packet smaller than 64 bytes
+	int res : 1; // if set and ls=1 -> error (crc,runt,rwt,fae)
+	int rwt : 1; // packet bigger than 8192 bytes
+	int reserved : 2; // always 0x01
+	int bar : 1; // broadcast packet received
+	int pam : 1; // physical packet received
+	int mar : 1; // multicast packet received
+	int ls : 1; // if set this is the last segment of packet
+	int fs : 1; // if set this is the first segment of packet
+	int eor : 1; // if set end of ring
+	int own : 1; // if 1 owned by nic / else owned by host
 	uint32_t vlan;
 	uint32_t addr_low;
 	uint32_t addr_high;
 } __attribute__((packed));
 
 struct tx_desc {
-	int own : 1; // if 1 owned by nic / else owned by host
-	int eor : 1; // if set end of ring
-	int fs : 1; // if set this is the first segment of packet
-	int ls : 1; // if set this is the last segment of packet
-	int lgsen : 1; // Large-send
-	int reserved : 8; // Reserved
-	int ipcs : 1; // if set -> auto checksum
-	int udpcs : 1; // if set -> auto checksum
-	int tcpcs : 1; // if set -> auto checksum
 	uint16_t frame_length : 16; // if own = 0 and ls = 1 -> packet length incl. crc in bytes
+	int tcpcs : 1; // if set -> auto checksum
+	int udpcs : 1; // if set -> auto checksum
+	int ipcs : 1; // if set -> auto checksum
+	int reserved : 8; // Reserved
+	int lgsen : 1; // Large-send
+	int ls : 1; // if set this is the last segment of packet
+	int fs : 1; // if set this is the first segment of packet
+	int eor : 1; // if set end of ring
+	int own : 1; // if 1 owned by nic / else owned by host
 	uint32_t vlan;
 	uint32_t addr_low;
 	uint32_t addr_high;
@@ -139,7 +139,13 @@ bool printed1 = false;
 void realtek_handle_intr(void) {
 	uint16_t status = pci_read_register_16(addr,0,0x3E);
 	//kprintf("Status: %b\n",status);
-	if(status & 0x0001) kprintf("Receive succesfull\n");
+	if(status & 0x0001) {
+		kprintf("Receive succesfull\n");
+		for(int i = 0; i < 9; i++) {
+			struct rx_desc_status* packet = &rx_descs[i];
+			
+		}
+	}
 	if(status & 0x0002) kprintf("Receive error\n");
 	if(status & 0x0004) kprintf("Transmit succesfull\n");
 	if(status & 0x0008) kprintf("Transmit error\n");
