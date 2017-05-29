@@ -98,7 +98,7 @@ void sendPacket(struct ether_header ether, uint8_t *data, int data_length) {
 
 void handle_new_packet(struct network_packet *packet) {
 	last_message = "handle_new_packet()";
-	struct ether_header ether = {
+	/*struct ether_header ether = {
 		.receipt_mac.mac1 = ((uint8_t*)packet->bytes)[0],
 		.receipt_mac.mac2 = ((uint8_t*)packet->bytes)[1],
 		.receipt_mac.mac3 = ((uint8_t*)packet->bytes)[2],
@@ -112,11 +112,25 @@ void handle_new_packet(struct network_packet *packet) {
 		.sender_mac.mac5 = ((uint8_t*)packet->bytes)[10],
 		.sender_mac.mac6 = ((uint8_t*)packet->bytes)[11],
 		.type = HTONS(((uint16_t*)packet->bytes)[6])
-	};
+	};*/
+	struct ether_header* ether = pmm_alloc();
+	ether->receipt_mac.mac1 = ((uint8_t*)packet->bytes)[0];
+	ether->receipt_mac.mac2 = ((uint8_t*)packet->bytes)[1];
+	ether->receipt_mac.mac3 = ((uint8_t*)packet->bytes)[2];
+	ether->receipt_mac.mac4 = ((uint8_t*)packet->bytes)[3];
+	ether->receipt_mac.mac5 = ((uint8_t*)packet->bytes)[4];
+	ether->receipt_mac.mac6 = ((uint8_t*)packet->bytes)[5];
+	ether->sender_mac.mac1 = ((uint8_t*)packet->bytes)[6];
+	ether->sender_mac.mac2 = ((uint8_t*)packet->bytes)[7];
+	ether->sender_mac.mac3 = ((uint8_t*)packet->bytes)[8];
+	ether->sender_mac.mac4 = ((uint8_t*)packet->bytes)[9];
+	ether->sender_mac.mac5 = ((uint8_t*)packet->bytes)[10];
+	ether->sender_mac.mac6 = ((uint8_t*)packet->bytes)[11];
+	ether->type = HTONS(((uint16_t*)packet->bytes)[6]);
 	//ether_header_print(ether);
 	last_message = "ethernet-type";
-	if(ether.type > 0x0600) { //Ethernet II
-		switch(ether.type) {
+	if(ether->type > 0x0600) { //Ethernet II
+		switch(ether->type) {
 			case 0x0806: //ARP
 				last_message = "ARP";
 				kprintf("");
@@ -187,17 +201,17 @@ void handle_new_packet(struct network_packet *packet) {
 				break;
 			default:
 				last_message = "not handled";
-				kprintf("Nicht behandeltes Protokoll: %x\n",ether.type);
+				kprintf("Nicht behandeltes Protokoll: %x\n",ether->type);
 		}
-	} else if(ether.type <= 0x05DC) { //Ethernet I
+	} else if(ether->type <= 0x05DC) { //Ethernet I
 		last_message = "etherne I";
 		kprintf("Ethernet I Pakete werden nicht behandelt: ");
-		kprintf("Sender-MAC: %x:%x:%x:%x:%x:%x\n",ether.sender_mac.mac1,
-													ether.sender_mac.mac2,
-													ether.sender_mac.mac3,
-													ether.sender_mac.mac4,
-													ether.sender_mac.mac5,
-													ether.sender_mac.mac6);
+		kprintf("Sender-MAC: %x:%x:%x:%x:%x:%x\n",ether->sender_mac.mac1,
+													ether->sender_mac.mac2,
+													ether->sender_mac.mac3,
+													ether->sender_mac.mac4,
+													ether->sender_mac.mac5,
+													ether->sender_mac.mac6);
 	}
 	last_message = "freeing ram";
 	pmm_free(packet->bytes);
