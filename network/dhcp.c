@@ -384,13 +384,13 @@ void dhcp_get_ip(void) {
 		case 0:
 			kprintf("DHCP: ");
 			kprintf("Discover\n");
-			dhcp_discover();
+			//dhcp_discover();
 			break;
 			
 		case 2:
 			kprintf("DHCP: ");
 			kprintf("Request\n");
-			dhcp_request(server_ip, own_ip);
+			//dhcp_request(server_ip, own_ip);
 			break;
 	}
 //	sleep(1000);

@@ -33,7 +33,7 @@ void ip_handle(struct ip_header* ip, struct ether_header* ether) {
 		
 		switch(ip->protocol) {
 			case 0x1: //ICMP
-				icmp_handle(ip, ether);
+				//icmp_handle(ip, ether);
 				break;
 			case 0x6: //TCP
 				//tcp_handle(ip, ether);
