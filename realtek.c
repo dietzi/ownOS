@@ -65,6 +65,9 @@ uint8_t *tx_buf[10];
 
 int realtek_next_tx = 0;
 
+extern int dhcp_timer;
+extern int dhcp_status;
+
 void realtek_init(pci_bdf_t device) {
 	addr = device;
 	kprintf("Realtek...\n");
@@ -148,7 +151,7 @@ void got_packet(void) {
 		if(rx_descs[i].own == 0) {
 			kprintf("Data-Length: %d\n",rx_descs[i].buffer_size);
 			for(int j = 0; j < rx_descs[i].buffer_size; j++) {
-				kprintf("0x%x ",rx_buf[i][j]);
+				//kprintf("0x%x ",rx_buf[i][j]);
 			}
 			kprintf("\n");
 			rx_descs[i].own = 1;
@@ -180,6 +183,9 @@ void realtek_handle_intr(void) {
 			if(pci_read_register_8(addr,0,0x6C) & 0x10) kprintf("1000 Mbps and ");
 			if(pci_read_register_8(addr,0,0x6C) & 0x01) kprintf("Full-duplex\n");
 			else kprintf("Half-duplex\n");
+			dhcp_status = 0;
+			dhcp_timer = 0;
+			dhcp_get_ip();
 		} else {
 			kprintf("Link is down\n");
 		}
