@@ -377,15 +377,18 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 }
 
 void dhcp_get_ip(void) {
+	kprintf("DHCP: ");
 	if(dhcp_timer <= 0 && dhcp_status == 5) {
 		dhcp_status = 0;
 	}
 	switch(dhcp_status) {
 		case 0:
+			kprintf("Discover\n");
 			dhcp_discover();
 			break;
 			
 		case 2:
+			kprintf("Request\n");
 			dhcp_request(server_ip, own_ip);
 			break;
 	}
