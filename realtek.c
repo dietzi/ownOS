@@ -163,10 +163,12 @@ void got_packet(void) {
 			//	packet->bytes[j] = rx_buf[i][j];
 			//}
 			handle_new_packet(packet);
+			last_message = "resetting rx_descriptor";
 			rx_descs[i].buffer_size = 0x0FFF;
 			rx_descs[i].own = 1;
 		}
 	}
+	last_message = "end got_packet";
 }
 
 void realtek_handle_intr(void) {
