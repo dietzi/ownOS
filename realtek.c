@@ -72,12 +72,12 @@ void realtek_init(pci_bdf_t device) {
 	addr = device;
 	kprintf("Realtek...\n");
 	kprintf("Sizeof: %d\n",sizeof(struct rx_desc));
-	kprintf("MAC: %x-",pci_read_register_8(addr,0,0x00));
-	kprintf("%x-",pci_read_register_8(addr,0,0x01));
-	kprintf("%x-",pci_read_register_8(addr,0,0x02));
-	kprintf("%x-",pci_read_register_8(addr,0,0x03));
-	kprintf("%x-",pci_read_register_8(addr,0,0x04));
-	kprintf("%x\n",pci_read_register_8(addr,0,0x05));
+	my_mac.mac1 = pci_read_register_8(addr,0,0x00);
+	my_mac.mac2 = pci_read_register_8(addr,0,0x01);
+	my_mac.mac3 = pci_read_register_8(addr,0,0x02);
+	my_mac.mac4 = pci_read_register_8(addr,0,0x03);
+	my_mac.mac5 = pci_read_register_8(addr,0,0x04);
+	my_mac.mac6 = pci_read_register_8(addr,0,0x05);
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
 	irq = pci_config_read_8(addr,0x3C);
 	kprintf("Registerig IRQ %d\n",irq);
