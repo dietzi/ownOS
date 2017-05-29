@@ -137,20 +137,24 @@ void realtek_send_packet(void) {
 bool printed = false;
 bool printed1 = false;
 
+void got_packet(void) {
+	for(int i = 0; i < 10; i++) {
+		if(rx_descs[i].own == 0) {
+			for(int j = 0; j < rx_descs[i].buffer_size; j++) {
+				kprintf("0x%x ",rx_buf[i]);
+			}
+			kprintf("Data-Length: %d\n",rx_descs[i].buffer_size);
+			rx_descs[i].own = 1;
+		}
+	}
+}
+
 void realtek_handle_intr(void) {
 	uint16_t status = pci_read_register_16(addr,0,0x3E);
 	//kprintf("Status: %b\n",status);
 	if(status & 0x0001) {
 		kprintf("Receive succesfull\n");
-		for(int i = 0; i < 10; i++) {
-			if(rx_descs[i].own == 0) {
-				for(int j = 0; j < rx_descs[i].buffer_size; j++) {
-					//kprintf("0x%x ",rx_buf[i]);
-				}
-				kprintf("Data-Length: %d\n",rx_descs[i].buffer_size);
-				rx_descs[i].own = 1;
-			}
-		}
+		got_packet();
 	}
 	if(status & 0x0002) kprintf("Receive error\n");
 	if(status & 0x0004) kprintf("Transmit succesfull\n");
