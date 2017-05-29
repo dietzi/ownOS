@@ -93,6 +93,8 @@ void* pmm_alloc(void)
     }
 
     /* Scheint wohl nichts frei zu sein... */
+	kprintf("No Memory available....\n");
+	asm("cli;hlt");
     return NULL;
 }
 
