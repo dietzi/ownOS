@@ -145,7 +145,14 @@ void via_init(pci_bdf_t device) {
 		.func=0
 	};	
 	pci_config_write_8(addr1,0x51,0x3d); //0x3d
-
+	
+	my_mac.mac1 = pci_read_register_8(addr,0,0x00);
+	my_mac.mac2 = pci_read_register_8(addr,0,0x01);
+	my_mac.mac3 = pci_read_register_8(addr,0,0x02);
+	my_mac.mac4 = pci_read_register_8(addr,0,0x03);
+	my_mac.mac5 = pci_read_register_8(addr,0,0x04);
+	my_mac.mac6 = pci_read_register_8(addr,0,0x05);
+	
 	via_power_init();
 	via_chip_reset();
 	via_reload_eeprom();
