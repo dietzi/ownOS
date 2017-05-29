@@ -167,6 +167,7 @@ void handle_new_packet(struct network_packet *packet) {
 						arp1->receipt_ip.ip4 == my_ip.ip4) {
 					arp(arp1, ether);
 				}
+				pmm_free(arp1);
 				break;
 			case 0x0800: //IP
 				last_message = "IP";
@@ -198,6 +199,7 @@ void handle_new_packet(struct network_packet *packet) {
 					ip->data[z] = ((uint8_t*)packet->bytes)[offset];
 				}
 				ip_handle(ip,ether);
+				pmm_free(ip);
 				break;
 			default:
 				last_message = "not handled";
