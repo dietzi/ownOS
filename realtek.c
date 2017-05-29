@@ -142,7 +142,7 @@ void realtek_handle_intr(void) {
 	//kprintf("Status: %b\n",status);
 	if(status & 0x0001) {
 		kprintf("Receive succesfull\n");
-		for(int i = 0; i < 9; i++) {
+		for(int i = 0; i < 10; i++) {
 			if(rx_descs[i].own == 0) {
 				for(int j = 0; j < rx_descs[i].buffer_size; j++) {
 					//kprintf("0x%x ",rx_buf[i]);
