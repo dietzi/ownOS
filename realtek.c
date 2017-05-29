@@ -158,9 +158,10 @@ void got_packet(void) {
 			if(rx_descs[i].reserved & 0b000010000000000000) packet->is_multicast_packet = true;
 			if(rx_descs[i].reserved & 0b000001000000000000) packet->is_phys_packet = true;
 			if(rx_descs[i].reserved & 0b000000100000000000) packet->is_broadcast_packet = true;
-			for(int j = 0; j < packet->data_length; j++) {
-				packet->bytes[j] = rx_buf[i][j];
-			}
+			memcpy(packet->bytes,rx_buf[i],packet->data_length);
+			//for(int j = 0; j < packet->data_length; j++) {
+			//	packet->bytes[j] = rx_buf[i][j];
+			//}
 			handle_new_packet(packet);
 			//kprintf("\n");
 			rx_descs[i].buffer_size = 0x0FFF;
