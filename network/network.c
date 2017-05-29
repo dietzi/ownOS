@@ -171,31 +171,31 @@ void handle_new_packet(struct network_packet *packet) {
 			case 0x0800: //IP
 				last_message = "IP";
 				kprintf("");
-				struct ip_header ip = {
-					.headerlen = (((uint8_t*)packet->bytes)[14]) & 0xF,
-					.version = ((uint8_t*)packet->bytes)[14] >> 4,
-					.priority = ((uint8_t*)packet->bytes)[15],
-					.packetsize = HTONS(((uint16_t*)packet->bytes)[8]),
-					.id = HTONS(((uint16_t*)packet->bytes)[9]),
-					.fragment = HTONS(((uint16_t*)packet->bytes)[10]),
-					.ttl = ((uint8_t*)packet->bytes)[22],
-					.protocol = ((uint8_t*)packet->bytes)[23],
-					.checksum = HTONS(((uint16_t*)packet->bytes)[12]),
-					.sourceIP.ip1 = ((uint8_t*)packet->bytes)[26],
-					.sourceIP.ip2 = ((uint8_t*)packet->bytes)[27],
-					.sourceIP.ip3 = ((uint8_t*)packet->bytes)[28],
-					.sourceIP.ip4 = ((uint8_t*)packet->bytes)[29],
-					.destinationIP.ip1 = ((uint8_t*)packet->bytes)[30],
-					.destinationIP.ip2 = ((uint8_t*)packet->bytes)[31],
-					.destinationIP.ip3 = ((uint8_t*)packet->bytes)[32],
-					.destinationIP.ip4 = ((uint8_t*)packet->bytes)[33]
-				};
-				ip.data_length = (ip.packetsize - (ip.headerlen * 4));
+				struct ip_header* ip = pmm_alloc();
+				ip->headerlen = (((uint8_t*)packet->bytes)[14]) & 0xF;
+				ip->version = ((uint8_t*)packet->bytes)[14] >> 4;
+				ip->priority = ((uint8_t*)packet->bytes)[15];
+				ip->packetsize = HTONS(((uint16_t*)packet->bytes)[8]);
+				ip->id = HTONS(((uint16_t*)packet->bytes)[9]);
+				ip->fragment = HTONS(((uint16_t*)packet->bytes)[10]);
+				ip->ttl = ((uint8_t*)packet->bytes)[22];
+				ip->protocol = ((uint8_t*)packet->bytes)[23];
+				ip->checksum = HTONS(((uint16_t*)packet->bytes)[12]);
+				ip->sourceIP.ip1 = ((uint8_t*)packet->bytes)[26];
+				ip->sourceIP.ip2 = ((uint8_t*)packet->bytes)[27];
+				ip->sourceIP.ip3 = ((uint8_t*)packet->bytes)[28];
+				ip->sourceIP.ip4 = ((uint8_t*)packet->bytes)[29];
+				ip->destinationIP.ip1 = ((uint8_t*)packet->bytes)[30];
+				ip->destinationIP.ip2 = ((uint8_t*)packet->bytes)[31];
+				ip->destinationIP.ip3 = ((uint8_t*)packet->bytes)[32];
+				ip->destinationIP.ip4 = ((uint8_t*)packet->bytes)[33];
+
+				ip->data_length = (ip->packetsize - (ip->headerlen * 4));
 				
 				uint8_t *daten;
-				for(int z = 0; z < (ip.packetsize - (ip.headerlen * 4)); z++) {
-					int offset = (ip.headerlen * 4) + sizeof(struct ether_header) + z;
-					ip.data[z] = ((uint8_t*)packet->bytes)[offset];
+				for(int z = 0; z < (ip->packetsize - (ip->headerlen * 4)); z++) {
+					int offset = (ip->headerlen * 4) + sizeof(struct ether_header) + z;
+					ip->data[z] = ((uint8_t*)packet->bytes)[offset];
 				}
 				ip_handle(ip,ether);
 				break;
