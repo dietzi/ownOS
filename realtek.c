@@ -145,9 +145,9 @@ void realtek_handle_intr(void) {
 		for(int i = 0; i < 9; i++) {
 			if(rx_descs[i].own == 0) {
 				for(int j = 0; j < rx_descs[i].buffer_size; j++) {
-					kprintf("0x%x ",rx_buf[i]);
+					//kprintf("0x%x ",rx_buf[i]);
 				}
-				kprintf("\n");
+				kprintf("Data-Length: %d\n",rx_descs[i].buffer_size);
 				rx_descs[i].own = 1;
 			}
 		}
