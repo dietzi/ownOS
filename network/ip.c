@@ -1,9 +1,8 @@
 #include "includes.h"
 
-void ip_handle(struct ip_header ip, struct ether_header ether);
+void ip_handle(struct ip_header* ip, struct ether_header* ether);
 
-void ip_handle(struct ip_header ip, struct ether_header ether) {
-	struct ip_header ip_orig = ip;
+void ip_handle(struct ip_header* ip, struct ether_header* ether) {
 	/*kprintf("Typ: IP\n");
 	kprintf("Version: 0x%x\n",ip.version); //40
 	kprintf("Headerlaenge: %d\n",ip.headerlen * 4); //0x14 = 20 (5 * 4Bytes)
@@ -23,16 +22,16 @@ void ip_handle(struct ip_header ip, struct ether_header ether) {
 										,ip.destinationIP.ip3
 										,ip.destinationIP.ip4);*/
 	
-	if((ip.destinationIP.ip1 == my_ip.ip1 &&
-			ip.destinationIP.ip2 == my_ip.ip2 &&
-			ip.destinationIP.ip3 == my_ip.ip3 &&
-			ip.destinationIP.ip4 == my_ip.ip4) || (
-			ip.destinationIP.ip4 == broadcast_ip.ip4)) {
-		if((ip.headerlen * 4) - 20 > 0) { //Optionen vorhanden
+	if((ip->destinationIP.ip1 == my_ip.ip1 &&
+			ip->destinationIP.ip2 == my_ip.ip2 &&
+			ip->destinationIP.ip3 == my_ip.ip3 &&
+			ip->destinationIP.ip4 == my_ip.ip4) || (
+			ip->destinationIP.ip4 == broadcast_ip.ip4)) {
+		if((ip->headerlen * 4) - 20 > 0) { //Optionen vorhanden
 			
 		}
 		
-		switch(ip.protocol) {
+		switch(ip->protocol) {
 			case 0x1: //ICMP
 				icmp_handle(ip, ether);
 				break;
@@ -43,7 +42,7 @@ void ip_handle(struct ip_header ip, struct ether_header ether) {
 				udp_handle(ip, ether);
 				break;
 			default:
-				kprintf("Protokoll nicht implementiert: 0%x\n",ip.protocol);
+				kprintf("Protokoll nicht implementiert: 0%x\n",ip->protocol);
 				break;
 		}
 	}
