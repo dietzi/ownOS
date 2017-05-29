@@ -36,7 +36,7 @@ void icmp_handle(struct ip_header* ip, struct ether_header* ether) {
 		ip->data[3] = 0x0;
 
 		uint8_t data1[ip->data_length];
-		for(int m=0;m<ip->data_length;m++) {
+		for(int m=0;m < ip->data_length;m++) {
 			data1[m] = ip->data[m];
 		}
 		
@@ -45,14 +45,15 @@ void icmp_handle(struct ip_header* ip, struct ether_header* ether) {
 		ip->data[2] = ((uint8_t)(checksum1 >> 8));
 		ip->data[3] = ((uint8_t)checksum1);
 
-		uint8_t buffer1[HTONS(ip1.ip->packetsize)];
-		
+		//uint8_t buffer1[HTONS(ip1.ip->packetsize)];
+		uint8_t *buffer1 = pmm_alloc();
 		memcpy(buffer1,&ip,20);
 		
-		for(int m=0;m<ip->data_length;m++) {
+		for(int m=0;m < ip->data_length;m++) {
 			buffer1[20 + m] = ip->data[m];
 		}
 		
 		sendPacket(ether, buffer1, HTONS(ip1.ip->packetsize));
+		pmm_free(buffer1);
 	}
 }
