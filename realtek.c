@@ -142,12 +142,12 @@ void realtek_handle_intr(void) {
 	if(status & 0x0001) {
 		kprintf("Receive succesfull\n");
 		for(int i = 0; i < 9; i++) {
-			struct rx_desc_status* packet = &rx_descs[i];
-			if(packet->own == 0) {
-				for(int j = 0; j < packet->frame_length; j++) {
-					kprintf("0x%x ",((uint8_t*)packet->addr_low)[j]);
+			if(rx_descs[i].own == 0) {
+				for(int j = 0; j < rx_descs[i].buffer_size; j++) {
+					kprintf("0x%x ",((uint8_t*)rx_descs[i].addr_low)[j]);
 				}
 				kprintf("\n");
+				rx_descs[i].own = 1;
 			}
 		}
 	}
