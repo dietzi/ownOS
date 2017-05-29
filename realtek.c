@@ -4,10 +4,10 @@ pci_bdf_t addr;
 uint8_t irq = 0;
 
 struct rx_desc {
-	int own : 1; // if 1 owned by nic / else owned by host
-	int eor : 1; // if set end of ring
-	uint16_t reserved : 16;
 	uint16_t buffer_size : 14;
+	uint16_t reserved : 16;
+	int eor : 1; // if set end of ring
+	int own : 1; // if 1 owned by nic / else owned by host
 	uint32_t vlan;
 	uint32_t addr_low;
 	uint32_t addr_high;
