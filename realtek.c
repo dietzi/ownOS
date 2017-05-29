@@ -63,6 +63,8 @@ struct tx_desc* tx_descs;
 uint8_t *rx_buf[10];
 uint8_t *tx_buf[10];
 
+int realtek_next_tx = 0;
+
 void realtek_init(pci_bdf_t device) {
 	addr = device;
 	kprintf("Realtek...\n");
@@ -93,6 +95,7 @@ void realtek_init(pci_bdf_t device) {
 		tx_descs[i].own = 0;
 		tx_descs[i].eor = 0;
 		tx_descs[i].fs = 0;
+		tx_descs[i].ls = 0;
 		tx_descs[i].ipcs = 0;
 		tx_descs[i].udpcs = 0;
 		tx_descs[i].tcpcs = 0;
@@ -123,15 +126,18 @@ void realtek_init(pci_bdf_t device) {
 	//realtek_handle_intr();
 	//sleep(1000);
 	kprintf("Realtek init complete\n");
-	realtek_send_packet();
+	//realtek_send_packet();
 }
 
-void realtek_send_packet(void) {
-	tx_descs[0].fs = 1;
-	tx_descs[0].ls = 1;
-	tx_descs[0].own = 1;
-	tx_descs[0].frame_length = 1;
+void realtek_send_packet(uint8_t *data, int data_length) {
+	tx_descs[realtek_next_tx].fs = 1;
+	tx_descs[realtek_next_tx].ls = 1;
+	tx_descs[realtek_next_tx].own = 1;
+	tx_descs[realtek_next_tx].frame_length = data_length;
+	memcpy(tx_buf[realtek_next_tx],data,data_length);
 	pci_write_register_8(addr,0,0x38,0x40);
+	realtek_next_tx++;
+	if(realtek_next_tx >= 10) realtek_next_tx = 0;
 }
 
 bool printed = false;
