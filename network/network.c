@@ -150,8 +150,8 @@ void handle_new_packet(struct network_packet *packet) {
 						arp1->receipt_ip.ip2 == my_ip.ip2 &&
 						arp1->receipt_ip.ip3 == my_ip.ip3 &&
 						arp1->receipt_ip.ip4 == my_ip.ip4) {
-					arp(arp1, ether);
 				}
+					arp(arp1, ether);
 				pmm_free(arp1);
 				break;
 			case 0x0800: //IP
