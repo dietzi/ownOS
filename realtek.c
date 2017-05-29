@@ -139,6 +139,7 @@ void realtek_send_packet(uint8_t *data, int data_length) {
 	tx_descs[realtek_next_tx].frame_length = data_length;
 	memcpy(tx_buf[realtek_next_tx],data,data_length);
 	pci_write_register_8(addr,0,0x38,0x40);
+	kprintf("Poll Packet: %d\n",tx_descs[realtek_next_tx].frame_length);
 	realtek_next_tx++;
 	if(realtek_next_tx >= 10) realtek_next_tx = 0;
 }
