@@ -98,21 +98,6 @@ void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
 
 void handle_new_packet(struct network_packet *packet) {
 	last_message = "handle_new_packet()";
-	/*struct ether_header ether = {
-		.receipt_mac.mac1 = ((uint8_t*)packet->bytes)[0],
-		.receipt_mac.mac2 = ((uint8_t*)packet->bytes)[1],
-		.receipt_mac.mac3 = ((uint8_t*)packet->bytes)[2],
-		.receipt_mac.mac4 = ((uint8_t*)packet->bytes)[3],
-		.receipt_mac.mac5 = ((uint8_t*)packet->bytes)[4],
-		.receipt_mac.mac6 = ((uint8_t*)packet->bytes)[5],
-		.sender_mac.mac1 = ((uint8_t*)packet->bytes)[6],
-		.sender_mac.mac2 = ((uint8_t*)packet->bytes)[7],
-		.sender_mac.mac3 = ((uint8_t*)packet->bytes)[8],
-		.sender_mac.mac4 = ((uint8_t*)packet->bytes)[9],
-		.sender_mac.mac5 = ((uint8_t*)packet->bytes)[10],
-		.sender_mac.mac6 = ((uint8_t*)packet->bytes)[11],
-		.type = HTONS(((uint16_t*)packet->bytes)[6])
-	};*/
 	struct ether_header* ether = pmm_alloc();
 	ether->receipt_mac.mac1 = ((uint8_t*)packet->bytes)[0];
 	ether->receipt_mac.mac2 = ((uint8_t*)packet->bytes)[1];
