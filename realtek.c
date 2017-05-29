@@ -221,6 +221,7 @@ void realtek_handle_intr(void) {
 	if(status & 0x0001) {
 		
 	}
-	
+	last_message = "resetting interrupt-mask";
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E));
+	last_message = "end realtek_handle_intr";
 }
