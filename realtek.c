@@ -123,7 +123,7 @@ void realtek_init(pci_bdf_t device) {
 	//realtek_handle_intr();
 	//sleep(1000);
 	kprintf("Realtek init complete\n");
-	//realtek_send_packet();
+	realtek_send_packet();
 }
 
 void realtek_send_packet(void) {
