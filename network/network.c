@@ -134,37 +134,37 @@ void handle_new_packet(struct network_packet *packet) {
 			case 0x0806: //ARP
 				last_message = "ARP";
 				kprintf("");
-				struct arp arp1 = {
-					.hardware_addr_type = HTONS(((uint16_t*)packet->bytes)[7]),
-					.network_addr_type = HTONS(((uint16_t*)packet->bytes)[8]),
-					.hardware_addr_length = (((uint8_t*)packet->bytes)[18]),
-					.network_addr_length = (((uint8_t*)packet->bytes)[19]),
-					.operation = HTONS(((uint16_t*)packet->bytes)[10]),
-					.sender_mac.mac1 = (((uint8_t*)packet->bytes)[22]),
-					.sender_mac.mac2 = (((uint8_t*)packet->bytes)[23]),
-					.sender_mac.mac3 = (((uint8_t*)packet->bytes)[24]),
-					.sender_mac.mac4 = (((uint8_t*)packet->bytes)[25]),
-					.sender_mac.mac5 = (((uint8_t*)packet->bytes)[26]),
-					.sender_mac.mac6 = (((uint8_t*)packet->bytes)[27]),
-					.sender_ip.ip1 = (((uint8_t*)packet->bytes)[28]),
-					.sender_ip.ip2 = (((uint8_t*)packet->bytes)[29]),
-					.sender_ip.ip3 = (((uint8_t*)packet->bytes)[30]),
-					.sender_ip.ip4 = (((uint8_t*)packet->bytes)[31]),
-					.receipt_mac.mac1 = (((uint8_t*)packet->bytes)[32]),
-					.receipt_mac.mac2 = (((uint8_t*)packet->bytes)[33]),
-					.receipt_mac.mac3 = (((uint8_t*)packet->bytes)[34]),
-					.receipt_mac.mac4 = (((uint8_t*)packet->bytes)[35]),
-					.receipt_mac.mac5 = (((uint8_t*)packet->bytes)[36]),
-					.receipt_mac.mac6 = (((uint8_t*)packet->bytes)[37]),
-					.receipt_ip.ip1 = (((uint8_t*)packet->bytes)[38]),
-					.receipt_ip.ip2 = (((uint8_t*)packet->bytes)[39]),
-					.receipt_ip.ip3 = (((uint8_t*)packet->bytes)[40]),
-					.receipt_ip.ip4 = (((uint8_t*)packet->bytes)[41])
-				};
-				if(arp1.receipt_ip.ip1 == my_ip.ip1 &&
-						arp1.receipt_ip.ip2 == my_ip.ip2 &&
-						arp1.receipt_ip.ip3 == my_ip.ip3 &&
-						arp1.receipt_ip.ip4 == my_ip.ip4) {
+				struct arp* arp1 = pmm_alloc();
+				arp1->hardware_addr_type = HTONS(((uint16_t*)packet->bytes)[7]);
+				arp1->network_addr_type = HTONS(((uint16_t*)packet->bytes)[8]);
+				arp1->hardware_addr_length = (((uint8_t*)packet->bytes)[18]);
+				arp1->network_addr_length = (((uint8_t*)packet->bytes)[19]);
+				arp1->operation = HTONS(((uint16_t*)packet->bytes)[10]);
+				arp1->sender_mac.mac1 = (((uint8_t*)packet->bytes)[22]);
+				arp1->sender_mac.mac2 = (((uint8_t*)packet->bytes)[23]);
+				arp1->sender_mac.mac3 = (((uint8_t*)packet->bytes)[24]);
+				arp1->sender_mac.mac4 = (((uint8_t*)packet->bytes)[25]);
+				arp1->sender_mac.mac5 = (((uint8_t*)packet->bytes)[26]);
+				arp1->sender_mac.mac6 = (((uint8_t*)packet->bytes)[27]);
+				arp1->sender_ip.ip1 = (((uint8_t*)packet->bytes)[28]);
+				arp1->sender_ip.ip2 = (((uint8_t*)packet->bytes)[29]);
+				arp1->sender_ip.ip3 = (((uint8_t*)packet->bytes)[30]);
+				arp1->sender_ip.ip4 = (((uint8_t*)packet->bytes)[31]);
+				arp1->receipt_mac.mac1 = (((uint8_t*)packet->bytes)[32]);
+				arp1->receipt_mac.mac2 = (((uint8_t*)packet->bytes)[33]);
+				arp1->receipt_mac.mac3 = (((uint8_t*)packet->bytes)[34]);
+				arp1->receipt_mac.mac4 = (((uint8_t*)packet->bytes)[35]);
+				arp1->receipt_mac.mac5 = (((uint8_t*)packet->bytes)[36]);
+				arp1->receipt_mac.mac6 = (((uint8_t*)packet->bytes)[37]);
+				arp1->receipt_ip.ip1 = (((uint8_t*)packet->bytes)[38]);
+				arp1->receipt_ip.ip2 = (((uint8_t*)packet->bytes)[39]);
+				arp1->receipt_ip.ip3 = (((uint8_t*)packet->bytes)[40]);
+				arp1->receipt_ip.ip4 = (((uint8_t*)packet->bytes)[41]);
+
+				if(arp1->receipt_ip.ip1 == my_ip.ip1 &&
+						arp1->receipt_ip.ip2 == my_ip.ip2 &&
+						arp1->receipt_ip.ip3 == my_ip.ip3 &&
+						arp1->receipt_ip.ip4 == my_ip.ip4) {
 					arp(arp1, ether);
 				}
 				break;
@@ -214,6 +214,7 @@ void handle_new_packet(struct network_packet *packet) {
 													ether->sender_mac.mac6);
 	}
 	last_message = "freeing ram";
+	pmm_free(ether);
 	pmm_free(packet->bytes);
 	pmm_free(packet);
 	last_message = "end handle_new_packet";
