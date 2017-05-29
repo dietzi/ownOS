@@ -51,14 +51,7 @@ static struct ip_addr broadcast_ip = {
 	.ip4 = 255
 };
 
-static struct mac my_mac = {
-	.mac1 = 0x00,
-	.mac2 = 0xE0,
-	.mac3 = 0xC5,
-	.mac4 = 0x52,
-	.mac5 = 0xD2,
-	.mac6 = 0x54
-};
+struct mac my_mac;
 
 static struct mac broadcast_mac = {
 	.mac1 = 0xFF,
