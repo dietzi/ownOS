@@ -137,7 +137,6 @@ void realtek_send_packet(uint8_t *data, int data_length) {
 	tx_descs[realtek_next_tx].fs = 1;
 	tx_descs[realtek_next_tx].ls = 1;
 	tx_descs[realtek_next_tx].own = 1;
-	tx_descs[realtek_next_tx].eor = 1;
 	tx_descs[realtek_next_tx].frame_length = data_length & 0x0FFF;
 	tx_descs[realtek_next_tx].addr_low = tx_buf[realtek_next_tx];
 	last_message = "memcpy";
@@ -145,6 +144,9 @@ void realtek_send_packet(uint8_t *data, int data_length) {
 	last_message = "memcpy done";
 	kprintf("Poll Packet %d: %d\n",realtek_next_tx,tx_descs[realtek_next_tx].frame_length);
 	pci_write_register_8(addr,0,0x38,0x40);
+	kprintf("Waiting for transmit...\n");
+	while(pci_read_register_8(addr,0,0x38) != 0);
+	kprintf("Transmit done\n");
 	last_message = "set poll bit";
 	realtek_next_tx++;
 	if(realtek_next_tx >= 10) realtek_next_tx = 0;
