@@ -138,7 +138,6 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		tcp_data[i - (tcp->headerlen * 4)] = ip->data[i];
 	}
 	
-	kprintf("Rquesting Port %d\n",HTONS(tcp->destination_port));
 	uint16_t temp_port = tcp->destination_port;
 	tcp->destination_port = tcp->source_port;
 	tcp->source_port = temp_port;
@@ -158,7 +157,6 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						checksum(tcp->destination_port,2);
 	//kprintf("Socket-ID: 0x%x\n",socketID);
 	if(listeners[HTONS(temp_port)].tcp_listener.enabled) {
-		kprintf("start...\n");
 		listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
 		listeners[HTONS(temp_port)].tcp_listener.data_length = ip->packetsize - (ip->headerlen * 4) - (tcp->headerlen * 4);
 		listeners[HTONS(temp_port)].tcp_listener.tcp = tcp;
@@ -174,13 +172,13 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 				tcp->ack_number = HTONL(HTONL(tcp->sequence_number) + 1);
 				tcp->sequence_number = HTONL(tcp->sequence_number);
 				client = add_client(socketID,HTONS(temp_port));
-				kprintf("New connection: 0x%x\n",client->client_id);
+				//kprintf("New connection: 0x%x\n",client->client_id);
 				client->last_seq = HTONL(tcp->sequence_number);
 				client->last_ack = HTONL(tcp->ack_number);
 				sendTCPpacket(ether, ip, tcp, tcp->options, 0, tcp->data, 0);
 			}
 		} else {
-			kprintf("Client found: 0x%x\n",client->client_id);
+			//kprintf("Client found: 0x%x\n",client->client_id);
 			if(client->con_est) {
 				if(tcp->flags.fin && tcp->flags.ack &&
 							tcp->ack_number != HTONL(client->fin_seq + 1) &&
@@ -203,9 +201,9 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 					tcp->sequence_number = ack_temp;
 					client->con_est = false;
 					if(del_client(client->client_id,HTONS(temp_port))) {
-						kprintf("closed\n");
+						//kprintf("closed\n");
 					} else {
-						kprintf("error\n");
+						//kprintf("error\n");
 					}
 					sendTCPpacket(ether, ip, tcp, tcp->options, 0, tcp->data, 0);
 				} else if(tcp->flags.ack && tcp->flags.psh) { //got packet
@@ -236,8 +234,6 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 				}
 			}
 		}
-	} else {
-		kprintf("Not listening\n");
 	}
 	pmm_free(tcp_data);
 	pmm_free(tcp);
@@ -356,17 +352,17 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	temp = &tcp;
+	temp = tcp;
 	for(int i = 0; i < 20; i++) { //tcp_header
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	temp = &options;
+	temp = options;
 	for(int i = 0; i < options_count; i++) { //tcp_options
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	//temp = &data;
+	//temp = data;
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		tcpChecksum[pos1] = data[i];
 		pos1++;
@@ -377,22 +373,22 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	
 	//uint8_t buffer[packetsize];
 	uint8_t *buffer = pmm_alloc();
-	temp = &ip;
+	temp = ip;
 	for(int i = 0; i < 20; i++) { //ip_header
 		buffer[pos] = temp[i];
 		pos++;
 	}
-	temp = &tcp;
+	temp = tcp;
 	for(int i = 0; i < 20; i++) { //tcp_header
 		buffer[pos] = temp[i];
 		pos++;
 	}
-	temp = &options;
+	temp = options;
 	for(int i = 0; i < options_count; i++) { //tcp_options
 		buffer[pos] = temp[i];
 		pos++;
 	}
-	//temp = &data;
+	//temp = data;
 	for(int i = 0; i < data_length; i++) { //tcp_data
 		buffer[pos] = data[i];
 		pos++;
