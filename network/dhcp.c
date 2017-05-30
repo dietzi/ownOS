@@ -8,7 +8,7 @@ void dhcp_offer(struct dhcp_packet dhcp);
 void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip);
 void dhcp_ack(struct dhcp_packet dhcp);
 void dhcp_get_ip(void);
-void handle_dhcp(struct ether_header ether, struct udp_header udp1);
+void handle_dhcp(struct ether_header* ether, struct udp_header* udp1);
 
 int dhcp_status = 0;
 int dhcp_timer = 0;
@@ -398,8 +398,8 @@ void dhcp_get_ip(void) {
 //	dhcp_discover();
 }
 
-void handle_dhcp(struct ether_header ether, struct udp_header udp1) {
-	struct udp_header udp = udp1;
+void handle_dhcp(struct ether_header* ether, struct udp_header* udp) {
+	//struct udp_header udp = udp1;
 	int udp_length = 8;
 	int dhcp_length = 48 + 64 + 128;
 	
@@ -409,18 +409,18 @@ void handle_dhcp(struct ether_header ether, struct udp_header udp1) {
 		dhcp.options[i].index = 0;
 	}
 	
-	for(int i=dhcp_length;i<udp.packetsize - udp_length;i++) {
-		if(udp.data[i] == 255) break;
+	for(int i=dhcp_length; i < udp->packetsize - udp_length; i++) {
+		if(udp->data[i] == 255) break;
 		
-		uint8_t optionIndex = udp.data[i];
+		uint8_t optionIndex = udp->data[i];
 				
 		dhcp.options[optionIndex].index = optionIndex;
-		dhcp.options[optionIndex].length = udp.data[i + 1];
+		dhcp.options[optionIndex].length = udp->data[i + 1];
 
 		int j;
 		
-		for(j=0;j<dhcp.options[optionIndex].length;j++) {
-			dhcp.options[optionIndex].data[j] = udp.data[i + 2 + j];
+		for(j=0; j < dhcp.options[optionIndex].length; j++) {
+			dhcp.options[optionIndex].data[j] = udp->data[i + 2 + j];
 		}
 		
 		i += 1 + j;
@@ -434,7 +434,7 @@ void handle_dhcp(struct ether_header ether, struct udp_header udp1) {
 	temp_dhcp.dhcp = dhcp;
 	
 	for(int i=0;i<dhcp_length;i++) {
-		temp_dhcp.data[i] = udp.data[i];
+		temp_dhcp.data[i] = udp->data[i];
 	}
 	dhcp = temp_dhcp.dhcp;
 	
