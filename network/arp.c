@@ -5,7 +5,26 @@ void arp(struct arp* arp_val, struct ether_header* ether);
 void arp(struct arp* arp_val, struct ether_header* ether) {
 	//kprintf("ARP\n");
 	struct arp* arp_temp = pmm_alloc();
-	
+	kprintf("Receipt-Mac: %x-%x-%x-%x-%x-%x\n",arp_val->receipt_mac.mac1,
+												arp_val->receipt_mac.mac2,
+												arp_val->receipt_mac.mac3,
+												arp_val->receipt_mac.mac4,
+												arp_val->receipt_mac.mac5,
+												arp_val->receipt_mac.mac6);
+	kprintf("Receipt-IP: %x-%x-%x-%x-%x-%x\n",arp_val->receipt_ip.ip1,
+												arp_val->receipt_ip.ip2,
+												arp_val->receipt_ip.ip3,
+												arp_val->receipt_ip.ip4);
+	kprintf("Sender-Mac: %x-%x-%x-%x-%x-%x\n",arp_val->sender_mac.mac1,
+												arp_val->sender_mac.mac2,
+												arp_val->sender_mac.mac3,
+												arp_val->sender_mac.mac4,
+												arp_val->sender_mac.mac5,
+												arp_val->sender_mac.mac6);
+	kprintf("Sender-IP: %x-%x-%x-%x-%x-%x\n",arp_val->sender_ip.ip1,
+												arp_val->sender_ip.ip2,
+												arp_val->sender_ip.ip3,
+												arp_val->sender_ip.ip4);
 	ether->receipt_mac.mac1 = my_mac.mac1;
 	ether->receipt_mac.mac2 = my_mac.mac2;
 	ether->receipt_mac.mac3 = my_mac.mac3;
