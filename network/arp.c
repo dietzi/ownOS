@@ -11,7 +11,7 @@ void arp(struct arp* arp_val, struct ether_header* ether) {
 												arp_val->receipt_mac.mac4,
 												arp_val->receipt_mac.mac5,
 												arp_val->receipt_mac.mac6);
-	kprintf("Receipt-IP: %x-%x-%x-%x-%x-%x\n",arp_val->receipt_ip.ip1,
+	kprintf("Receipt-IP: %d.%d.%d.%d\n",arp_val->receipt_ip.ip1,
 												arp_val->receipt_ip.ip2,
 												arp_val->receipt_ip.ip3,
 												arp_val->receipt_ip.ip4);
@@ -21,7 +21,7 @@ void arp(struct arp* arp_val, struct ether_header* ether) {
 												arp_val->sender_mac.mac4,
 												arp_val->sender_mac.mac5,
 												arp_val->sender_mac.mac6);
-	kprintf("Sender-IP: %x-%x-%x-%x-%x-%x\n",arp_val->sender_ip.ip1,
+	kprintf("Sender-IP: %d.%d.%d.%d\n",arp_val->sender_ip.ip1,
 												arp_val->sender_ip.ip2,
 												arp_val->sender_ip.ip3,
 												arp_val->sender_ip.ip4);
