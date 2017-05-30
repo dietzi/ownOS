@@ -383,14 +383,10 @@ void dhcp_get_ip(void) {
 	}
 	switch(dhcp_status) {
 		case 0:
-			kprintf("DHCP: ");
-			kprintf("Discover\n");
 			dhcp_discover();
 			break;
 			
 		case 2:
-			kprintf("DHCP: ");
-			kprintf("Request\n");
 			dhcp_request(server_ip, own_ip);
 			break;
 	}
@@ -440,7 +436,6 @@ void handle_dhcp(struct ether_header* ether, struct udp_header* udp) {
 	dhcp = temp_dhcp.dhcp;
 	
 	if(dhcp.operation == 2) { // DHCP reply
-		kprintf("DHCP-Type: %d\n",dhcp.options[53].data[0]);
 		if(dhcp.options[53].data[0] == 2) {
 			dhcp_offer(dhcp);			
 		}
