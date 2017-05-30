@@ -192,6 +192,10 @@ void realtek_handle_intr(void) {
 	if(status & 0x0001) {
 		//kprintf("Receive succesfull\n");
 		got_packet();
+		if(dhcp_timer <= 0 && dhcp_status == 5) {
+			dhcp_status = 0;
+		}
+		dhcp_get_ip();
 	}
 	if(status & 0x0002) kprintf("Receive error\n");
 	if(status & 0x0004) kprintf("Transmit succesfull\n");

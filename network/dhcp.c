@@ -265,7 +265,7 @@ struct ip_addr server_ip;
 struct ip_addr own_ip;
 
 void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
-	kprintf("DHCP-REQUEST...\n");
+	//kprintf("DHCP-REQUEST...\n");
 	
 	struct ip_addr ip11;
 	struct ip_addr ip22;
@@ -340,7 +340,7 @@ void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip) {
 }
 
 void dhcp_offer(struct dhcp_packet dhcp1) {
-	kprintf("DHCP-OFFER...\n");
+	//kprintf("DHCP-OFFER...\n");
 	
 	if(dhcp1.connection_id == HTONL(connection_id)) {
 		dhcp_status = 2;
@@ -352,12 +352,12 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 		own_ip.ip2 = dhcp1.own_ip.ip2;
 		own_ip.ip3 = dhcp1.own_ip.ip3;
 		own_ip.ip4 = dhcp1.own_ip.ip4;
-		dhcp_request(server_ip, own_ip);
+		//dhcp_request(server_ip, own_ip);
 	}
 }
 
 void dhcp_ack(struct dhcp_packet dhcp) {
-	kprintf("DHCP-ACK...\n");
+	//kprintf("DHCP-ACK...\n");
 	if(dhcp.connection_id == HTONL(connection_id)) {
 		if(dhcp.own_ip.ip1 == own_ip.ip1 &&
 				dhcp.own_ip.ip2 == own_ip.ip2 &&
