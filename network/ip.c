@@ -3,7 +3,7 @@
 void ip_handle(struct ip_header* ip, struct ether_header* ether);
 
 void ip_handle(struct ip_header* ip, struct ether_header* ether) {
-	kprintf("Typ: IP\n");
+	/*kprintf("Typ: IP\n");
 	kprintf("Version: 0x%x\n",ip->version); //40
 	kprintf("Headerlaenge: %d\n",ip->headerlen * 4); //0x14 = 20 (5 * 4Bytes)
 	kprintf("Prioritaet: 0x%x\n",ip->priority);
@@ -21,7 +21,7 @@ void ip_handle(struct ip_header* ip, struct ether_header* ether) {
 										,ip->destinationIP.ip2
 										,ip->destinationIP.ip3
 										,ip->destinationIP.ip4);
-	sleep(2000);
+	sleep(2000);*/
 	if((ip->destinationIP.ip1 == my_ip.ip1 &&
 			ip->destinationIP.ip2 == my_ip.ip2 &&
 			ip->destinationIP.ip3 == my_ip.ip3 &&
@@ -33,7 +33,7 @@ void ip_handle(struct ip_header* ip, struct ether_header* ether) {
 		
 		switch(ip->protocol) {
 			case 0x1: //ICMP
-				//icmp_handle(ip, ether);
+				icmp_handle(ip, ether);
 				break;
 			case 0x6: //TCP
 				//tcp_handle(ip, ether);

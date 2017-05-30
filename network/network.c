@@ -185,7 +185,7 @@ void handle_new_packet(struct network_packet* packet) {
 					ip->data[z] = ((uint8_t*)packet->bytes)[offset];
 				}
 				kprintf("Handling IP...\n");
-				sleep(2000);
+				//sleep(2000);
 				ip_handle(ip,ether);
 				pmm_free(ip->data);
 				pmm_free(ip);
