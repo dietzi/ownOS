@@ -152,10 +152,10 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						(ip->sourceIP.ip3) +
 						(ip->sourceIP.ip4) +
 						(HTONS(tcp->destination_port)) +
-						checksum(ip->sourceIP,4) +
-						checksum(tcp->destination_port,2);
+						checksum(&ip->sourceIP,4) +
+						checksum(&tcp->destination_port,2);
 	//kprintf("Socket-ID: 0x%x\n",socketID);
-	
+	kprintf("Rquesting Port %d\n",HTONS(temp_port));
 	if(listeners[HTONS(temp_port)].tcp_listener.enabled) {
 		kprintf("start...\n");
 		listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
