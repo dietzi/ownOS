@@ -21,7 +21,8 @@ int checksum(void *buffer, int size) {
  
   if (!buffer || (size < 2)) {
 	  kprintf("Checksum: Buffer Fehler\n");
-    return 0;
+	  kprintf("%s\n",last_message);
+	  return 0;
   }
   if ((size>>1)*2 != size)
   {

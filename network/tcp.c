@@ -146,6 +146,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 	ip->fragment = HTONS(ip->fragment);
 	ip->id = HTONS(ip->id);
 	
+	last_message = "socketID tcp_handle";
 	uint32_t socketID = (ip->sourceIP.ip1) +
 						(ip->sourceIP.ip2) +
 						(ip->sourceIP.ip3) +
@@ -259,6 +260,7 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 }
 
 void closeCon(struct tcp_callback cb) {
+	last_message = "socketID closeCon";
 	uint32_t socketID = (cb.ip->sourceIP.ip1) +
 						(cb.ip->sourceIP.ip2) +
 						(cb.ip->sourceIP.ip3) +
@@ -292,6 +294,7 @@ void closeCon(struct tcp_callback cb) {
 }
 
 void sendData(struct tcp_callback cb) {
+	last_message = "socketID sendData";
 	uint32_t socketID = (cb.ip->sourceIP.ip1) +
 						(cb.ip->sourceIP.ip2) +
 						(cb.ip->sourceIP.ip3) +
@@ -332,6 +335,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	tcp->checksum = 0;
 	tcp->headerlen = (packetsize - data_length - 20) / 4;
 	
+	last_message = "sendTCPpacket ip";
 	ip->checksum = HTONS(checksum(ip,20));
 	
 	struct tcp_pseudo_header head = {
@@ -363,6 +367,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		pos1++;
 	}
 	//pos1--;
+	last_message = "sendTCPpacket tcp";
 	tcp->checksum = HTONS(checksum(&tcpChecksum, pos1));
 	
 	//uint8_t buffer[packetsize];
