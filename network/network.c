@@ -39,7 +39,8 @@ int checksum(void *buffer, int size) {
 }
 
 void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
-	uint8_t buffer[data_length + 14];
+	//uint8_t buffer[data_length + 14];
+	uint8_t *buffer;
 	/*if((ether.receipt_mac.mac1 == my_mac.mac1 &&
 			ether.receipt_mac.mac2 == my_mac.mac2 &&
 			ether.receipt_mac.mac3 == my_mac.mac3 &&
@@ -77,8 +78,9 @@ void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
 		int i=0;
 		int j=0;
 
+		buffer = (uint8_t*)ether_temp;
 		while(i < 14) {
-			buffer[i] = ether_union.data[i];
+			//buffer[i] = ether_union.data[i];
 			i++;
 		}
 		while(data_length - j > 0) {
