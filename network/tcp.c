@@ -357,7 +357,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
 	}
-	temp = options;
+	temp = &options;
 	for(int i = 0; i < options_count; i++) { //tcp_options
 		tcpChecksum[pos1] = temp[i];
 		pos1++;
@@ -383,7 +383,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		buffer[pos] = temp[i];
 		pos++;
 	}
-	temp = options;
+	temp = &options;
 	for(int i = 0; i < options_count; i++) { //tcp_options
 		buffer[pos] = temp[i];
 		pos++;
