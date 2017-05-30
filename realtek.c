@@ -68,19 +68,7 @@ int realtek_next_tx = 0;
 extern int dhcp_timer;
 extern int dhcp_status;
 
-void realtek_init(pci_bdf_t device) {
-	addr = device;
-	my_mac.mac1 = pci_read_register_8(addr,0,0x00);
-	my_mac.mac2 = pci_read_register_8(addr,0,0x01);
-	my_mac.mac3 = pci_read_register_8(addr,0,0x02);
-	my_mac.mac4 = pci_read_register_8(addr,0,0x03);
-	my_mac.mac5 = pci_read_register_8(addr,0,0x04);
-	my_mac.mac6 = pci_read_register_8(addr,0,0x05);
-	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
-	irq = pci_config_read_8(addr,0x3C);
-	kprintf("Registerig IRQ %d\n",irq);
-	//rx_buf = pmm_alloc();
-	//tx_buf = pmm_alloc();
+void init_buffers(void) {
 	rx_descs = pmm_alloc();
 	tx_descs = pmm_alloc();
 	for(int i = 0; i < 10; i++) {
@@ -97,6 +85,7 @@ void realtek_init(pci_bdf_t device) {
 		tx_descs[i].eor = 0;
 		tx_descs[i].fs = 0;
 		tx_descs[i].ls = 0;
+		tx_descs[i].lgsen = 0;
 		tx_descs[i].ipcs = 0;
 		tx_descs[i].udpcs = 0;
 		tx_descs[i].tcpcs = 0;
@@ -106,7 +95,21 @@ void realtek_init(pci_bdf_t device) {
 	}
 	rx_descs[9].eor = 1;
 	tx_descs[9].eor = 1;
+}
+
+void realtek_init(pci_bdf_t device) {
+	addr = device;
+	my_mac.mac1 = pci_read_register_8(addr,0,0x00);
+	my_mac.mac2 = pci_read_register_8(addr,0,0x01);
+	my_mac.mac3 = pci_read_register_8(addr,0,0x02);
+	my_mac.mac4 = pci_read_register_8(addr,0,0x03);
+	my_mac.mac5 = pci_read_register_8(addr,0,0x04);
+	my_mac.mac6 = pci_read_register_8(addr,0,0x05);
+	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E)); //Status zurücksetzen
+	irq = pci_config_read_8(addr,0x3C);
+	kprintf("Registerig IRQ %d\n",irq);
 	
+	init_buffers();
 	
 	pci_write_register_32(addr,0,0x44,0x0000E70F);
 	pci_write_register_8(addr,0,0x37,0x04); // Enable TX
@@ -134,12 +137,13 @@ void realtek_send_packet(uint8_t *data, int data_length) {
 	tx_descs[realtek_next_tx].fs = 1;
 	tx_descs[realtek_next_tx].ls = 1;
 	tx_descs[realtek_next_tx].own = 1;
-	tx_descs[realtek_next_tx].frame_length = data_length;
+	tx_descs[realtek_next_tx].eor = 1;
+	tx_descs[realtek_next_tx].frame_length = data_length & 0x0FFF;
 	tx_descs[realtek_next_tx].addr_low = tx_buf[realtek_next_tx];
 	last_message = "memcpy";
 	memcpy(tx_buf[realtek_next_tx],data,data_length);
 	last_message = "memcpy done";
-	kprintf("Poll Packet %d: %d\n",realtek_next_tx++,tx_descs[realtek_next_tx].frame_length);
+	kprintf("Poll Packet %d: %d\n",realtek_next_tx,tx_descs[realtek_next_tx].frame_length);
 	pci_write_register_8(addr,0,0x38,0x40);
 	last_message = "set poll bit";
 	realtek_next_tx++;
