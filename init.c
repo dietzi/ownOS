@@ -43,10 +43,6 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("Initialization IDT\n");
 	init_intr();
 	//set_vesa_mode(0x11b);
-	my_ip.ip1 = 10;
-	my_ip.ip2 = 0;
-	my_ip.ip3 = 0;
-	my_ip.ip4 = 147;
 	kprintf("Initialization Network\n");
 	init_network();
 	kprintf("Initialization complete\n");

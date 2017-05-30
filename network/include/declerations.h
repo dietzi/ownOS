@@ -203,9 +203,9 @@ struct tcp_callback {
 	uint32_t fin_ack;
 	uint32_t client_id;
 	bool enabled;
-	struct tcp_header tcp;
-	struct ether_header ether;
-	struct ip_header ip;
+	struct tcp_header* tcp;
+	struct ether_header* ether;
+	struct ip_header* ip;
 	int data_length;
 	uint8_t *data;
 } __attribute__((packed));
