@@ -25,6 +25,11 @@ void arp(struct arp* arp_val, struct ether_header* ether) {
 												arp_val->sender_ip.ip2,
 												arp_val->sender_ip.ip3,
 												arp_val->sender_ip.ip4);
+	kprintf("Operation: 0x%x\n",HTONS(arp_val->operation));
+	kprintf("Hardware-Addr-Type: 0x%x\n",HTONS(arp_val->hardware_addr_type));
+	kprintf("Network-Addr-Type: 0x%x\n",HTONS(arp_val->network_addr_type));
+	kprintf("Hardware-Addr-Length: %d\n",arp_val->hardware_addr_length);
+	kprintf("Network-Addr-Length: %d\n",arp_val->network_addr_length);
 	ether->receipt_mac.mac1 = my_mac.mac1;
 	ether->receipt_mac.mac2 = my_mac.mac2;
 	ether->receipt_mac.mac3 = my_mac.mac3;
