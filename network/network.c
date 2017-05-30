@@ -69,7 +69,7 @@ void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
 		ether_temp->sender_mac.mac5 = my_mac.mac5;
 		ether_temp->sender_mac.mac6 = my_mac.mac6;
 		
-		ether_temp->type = HTONS(ether->type);
+		ether_temp->type = (ether->type);
 		
 		union ether_test ether_union;
 		ether_union.ether_val1 = ether_temp;
