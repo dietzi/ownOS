@@ -120,7 +120,7 @@ void realtek_init(pci_bdf_t device) {
 	pci_write_register_32(addr,0,0x20,tx_descs);
 	pci_write_register_32(addr,0,0xE4,rx_descs);
 	
-	pci_write_register_16(addr,0,0x3C,0x43FF); //Activating all Interrupts
+	pci_write_register_16(addr,0,0x3C,0x03FF); //Activating all Interrupts
 	pci_write_register_8(addr,0,0x37,0x0C); // Enabling receive and transmit
 	//pci_write_register_16(addr,0,0xE0,0x0);
 	//pci_write_register_32(addr,0,0xE8,descs[0]->addr_high);
