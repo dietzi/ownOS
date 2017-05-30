@@ -393,6 +393,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		pos++;
 	}
 	//pos--;
+	kprintf("sendData %d\n",pos);
 	sendPacket(ether,buffer,pos);
 	pmm_free(buffer);
 }
