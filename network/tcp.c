@@ -120,15 +120,16 @@ bool del_client(uint32_t client_id, uint16_t port) {
 
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 	struct tcp_header* tcp = pmm_alloc();
-	union tcpU {
+	/*union tcpU {
 		struct tcp_header* tcp;
 		uint8_t data[20];
 	};
-	union tcpU tcpU;
+	union tcpU tcpU;*/
 	for(int i=0;i<20/*ip->data_length*/;i++) {
-		tcpU.data[i] = ip->data[i];
+		//tcpU.data[i] = ip->data[i];
+		((uint8_t*)tcp)[i] = ip->data[i];
 	}
-	tcp = tcpU.tcp;
+	//tcp = tcpU.tcp;
 	for(int i=20;i<(tcp->headerlen * 4);i++) {
 		tcp->options[i - 20] = ip->data[i];
 	}
@@ -137,6 +138,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		tcp_data[i - (tcp->headerlen * 4)] = ip->data[i];
 	}
 	
+	kprintf("Rquesting Port %d\n",HTONS(tcp->destination_port));
 	uint16_t temp_port = tcp->destination_port;
 	tcp->destination_port = tcp->source_port;
 	tcp->source_port = temp_port;
@@ -152,10 +154,9 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						(ip->sourceIP.ip3) +
 						(ip->sourceIP.ip4) +
 						(HTONS(tcp->destination_port)) +
-						checksum(&ip->sourceIP,4) +
-						checksum(&tcp->destination_port,2);
+						checksum(ip->sourceIP,4) +
+						checksum(tcp->destination_port,2);
 	//kprintf("Socket-ID: 0x%x\n",socketID);
-	kprintf("Rquesting Port %d\n",HTONS(temp_port));
 	if(listeners[HTONS(temp_port)].tcp_listener.enabled) {
 		kprintf("start...\n");
 		listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
