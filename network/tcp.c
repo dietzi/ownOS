@@ -165,20 +165,20 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		
 		struct clients *client = find_client(socketID,HTONS(temp_port));
 		if(client == NULL) { //no socketID
-			//kprintf("No client found\n");
+			kprintf("No client found\n");
 			if(tcp->flags.syn && !tcp->flags.ack) { //asking for connection
 				tcp->flags.syn = 1;
 				tcp->flags.ack = 1;
 				tcp->ack_number = HTONL(HTONL(tcp->sequence_number) + 1);
 				tcp->sequence_number = HTONL(tcp->sequence_number);
 				client = add_client(socketID,HTONS(temp_port));
-				//kprintf("New connection: 0x%x\n",client->client_id);
+				kprintf("New connection: 0x%x\n",client->client_id);
 				client->last_seq = HTONL(tcp->sequence_number);
 				client->last_ack = HTONL(tcp->ack_number);
 				sendTCPpacket(ether, ip, tcp, tcp->options, 0, tcp->data, 0);
 			}
 		} else {
-			//kprintf("Client found: 0x%x\n",client->client_id);
+			kprintf("Client found: 0x%x\n",client->client_id);
 			if(client->con_est) {
 				if(tcp->flags.fin && tcp->flags.ack &&
 							tcp->ack_number != HTONL(client->fin_seq + 1) &&
@@ -201,9 +201,9 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 					tcp->sequence_number = ack_temp;
 					client->con_est = false;
 					if(del_client(client->client_id,HTONS(temp_port))) {
-						//kprintf("closed\n");
+						kprintf("closed\n");
 					} else {
-						//kprintf("error\n");
+						kprintf("error\n");
 					}
 					sendTCPpacket(ether, ip, tcp, tcp->options, 0, tcp->data, 0);
 				} else if(tcp->flags.ack && tcp->flags.psh) { //got packet
@@ -323,6 +323,7 @@ void sendData(struct tcp_callback cb) {
 }
 
 void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_header* tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
+	kprintf("sendTCPpacket()\n");
 	int packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
 	int pos1 = 0;
