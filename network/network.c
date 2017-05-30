@@ -178,6 +178,8 @@ void handle_new_packet(struct network_packet* packet) {
 
 				ip->data_length = (ip->packetsize - (ip->headerlen * 4));
 				
+				ip->data = pmm_alloc();
+				
 				for(int z = 0; z < (ip->packetsize - (ip->headerlen * 4)); z++) {
 					int offset = (ip->headerlen * 4) + sizeof(struct ether_header) + z;
 					ip->data[z] = ((uint8_t*)packet->bytes)[offset];
@@ -185,6 +187,7 @@ void handle_new_packet(struct network_packet* packet) {
 				kprintf("Handling IP...\n");
 				sleep(2000);
 				ip_handle(ip,ether);
+				pmm_free(ip->data);
 				pmm_free(ip);
 				break;
 			default:
