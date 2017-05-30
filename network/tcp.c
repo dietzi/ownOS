@@ -157,6 +157,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 	//kprintf("Socket-ID: 0x%x\n",socketID);
 	
 	if(listeners[HTONS(temp_port)].tcp_listener.enabled) {
+		kprintf("start...\n");
 		listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
 		listeners[HTONS(temp_port)].tcp_listener.data_length = ip->packetsize - (ip->headerlen * 4) - (tcp->headerlen * 4);
 		listeners[HTONS(temp_port)].tcp_listener.tcp = tcp;
@@ -234,6 +235,8 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 				}
 			}
 		}
+	} else {
+		kprintf("Not listening\n");
 	}
 	pmm_free(tcp_data);
 	pmm_free(tcp);
