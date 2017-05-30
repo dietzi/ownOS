@@ -3,24 +3,24 @@
 void ip_handle(struct ip_header* ip, struct ether_header* ether);
 
 void ip_handle(struct ip_header* ip, struct ether_header* ether) {
-	/*kprintf("Typ: IP\n");
-	kprintf("Version: 0x%x\n",ip.version); //40
-	kprintf("Headerlaenge: %d\n",ip.headerlen * 4); //0x14 = 20 (5 * 4Bytes)
-	kprintf("Prioritaet: 0x%x\n",ip.priority);
-	kprintf("Paketlaenge: 0x%x - %d\n",ip.packetsize,ip.packetsize);
-	kprintf("Paket-ID: 0x%x - %d\n",ip.id,ip.id);
-	kprintf("Fragment Offset/Flags: 0x%x - %d\n",ip.fragment,ip.fragment);
-	kprintf("TTL: 0x%x - %d\n",ip.ttl,ip.ttl);
-	kprintf("Protokolltyp: 0x%x\n",ip.protocol);
-	kprintf("Pruefsumme: 0x%x - %d\n",ip.checksum,ip.checksum);
-	kprintf("Absender-IP: %d.%d.%d.%d\n",ip.sourceIP.ip1
-										,ip.sourceIP.ip2
-										,ip.sourceIP.ip3
-										,ip.sourceIP.ip4);
-	kprintf("Ziel-IP: %d.%d.%d.%d\n",ip.destinationIP.ip1
-										,ip.destinationIP.ip2
-										,ip.destinationIP.ip3
-										,ip.destinationIP.ip4);*/
+	kprintf("Typ: IP\n");
+	kprintf("Version: 0x%x\n",ip->version); //40
+	kprintf("Headerlaenge: %d\n",ip->headerlen * 4); //0x14 = 20 (5 * 4Bytes)
+	kprintf("Prioritaet: 0x%x\n",ip->priority);
+	kprintf("Paketlaenge: 0x%x - %d\n",ip->packetsize,ip->packetsize);
+	kprintf("Paket-ID: 0x%x - %d\n",ip->id,ip->id);
+	kprintf("Fragment Offset/Flags: 0x%x - %d\n",ip->fragment,ip->fragment);
+	kprintf("TTL: 0x%x - %d\n",ip->ttl,ip->ttl);
+	kprintf("Protokolltyp: 0x%x\n",ip->protocol);
+	kprintf("Pruefsumme: 0x%x - %d\n",ip->checksum,ip->checksum);
+	kprintf("Absender-IP: %d.%d.%d.%d\n",ip->sourceIP.ip1
+										,ip->sourceIP.ip2
+										,ip->sourceIP.ip3
+										,ip->sourceIP.ip4);
+	kprintf("Ziel-IP: %d.%d.%d.%d\n",ip->destinationIP.ip1
+										,ip->destinationIP.ip2
+										,ip->destinationIP.ip3
+										,ip->destinationIP.ip4);
 	
 	if((ip->destinationIP.ip1 == my_ip.ip1 &&
 			ip->destinationIP.ip2 == my_ip.ip2 &&

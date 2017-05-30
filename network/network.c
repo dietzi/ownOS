@@ -96,7 +96,7 @@ void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
 		send_packet(buffer,i);
 }
 
-void handle_new_packet(struct network_packet *packet) {
+void handle_new_packet(struct network_packet* packet) {
 	last_message = "handle_new_packet()";
 	struct ether_header* ether = pmm_alloc();
 	ether->receipt_mac.mac1 = ((uint8_t*)packet->bytes)[0];

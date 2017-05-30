@@ -9,13 +9,6 @@ int init_i = 0;
 extern int dhcp_timer;
 extern int dhcp_status;
 
-/*struct ip_addr my_ip = {
-	my_ip.ip1 = 10,
-	my_ip.ip2 = 0,
-	my_ip.ip3 = 0,
-	my_ip.ip4 = 114
-};*/
-
 pci_bdf_t addr = {
 	.bus=0,
 	.dev=18,
