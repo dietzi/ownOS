@@ -120,16 +120,9 @@ bool del_client(uint32_t client_id, uint16_t port) {
 
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 	struct tcp_header* tcp = pmm_alloc();
-	/*union tcpU {
-		struct tcp_header* tcp;
-		uint8_t data[20];
-	};
-	union tcpU tcpU;*/
 	for(int i=0;i<20/*ip->data_length*/;i++) {
-		//tcpU.data[i] = ip->data[i];
 		((uint8_t*)tcp)[i] = ip->data[i];
 	}
-	//tcp = tcpU.tcp;
 	for(int i=20;i<(tcp->headerlen * 4);i++) {
 		tcp->options[i - 20] = ip->data[i];
 	}
@@ -323,7 +316,6 @@ void sendData(struct tcp_callback cb) {
 }
 
 void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_header* tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
-	kprintf("sendTCPpacket()\n");
 	int packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
 	int pos1 = 0;
@@ -394,7 +386,6 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		pos++;
 	}
 	//pos--;
-	kprintf("sendData %d\n",pos);
 	sendPacket(ether,buffer,pos);
 	pmm_free(buffer);
 }
