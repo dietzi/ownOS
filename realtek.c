@@ -166,6 +166,8 @@ void got_packet(void) {
 			}
 			kprintf("\n");*/
 			handle_new_packet(packet);
+			pmm_free(packet->bytes);
+			pmm_free(packet);
 			last_message = "resetting rx_descriptor";
 			rx_descs[i].buffer_size = 0x0FFF;
 			rx_descs[i].own = 1;

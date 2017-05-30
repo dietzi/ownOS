@@ -21,7 +21,7 @@ void ip_handle(struct ip_header* ip, struct ether_header* ether) {
 										,ip->destinationIP.ip2
 										,ip->destinationIP.ip3
 										,ip->destinationIP.ip4);
-	
+	sleep(2000);
 	if((ip->destinationIP.ip1 == my_ip.ip1 &&
 			ip->destinationIP.ip2 == my_ip.ip2 &&
 			ip->destinationIP.ip3 == my_ip.ip3 &&

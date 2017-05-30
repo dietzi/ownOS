@@ -202,8 +202,6 @@ void handle_new_packet(struct network_packet* packet) {
 	}
 	last_message = "freeing ram";
 	pmm_free(ether);
-	pmm_free(packet->bytes);
-	pmm_free(packet);
 	last_message = "end handle_new_packet";
 }
 

@@ -5,7 +5,7 @@ void arp(struct arp* arp_val, struct ether_header* ether);
 void arp(struct arp* arp_val, struct ether_header* ether) {
 	//kprintf("ARP\n");
 	struct arp* arp_temp = pmm_alloc();
-	kprintf("Receipt-Mac: %x-%x-%x-%x-%x-%x\n",arp_val->receipt_mac.mac1,
+	/*kprintf("Receipt-Mac: %x-%x-%x-%x-%x-%x\n",arp_val->receipt_mac.mac1,
 												arp_val->receipt_mac.mac2,
 												arp_val->receipt_mac.mac3,
 												arp_val->receipt_mac.mac4,
@@ -29,7 +29,7 @@ void arp(struct arp* arp_val, struct ether_header* ether) {
 	kprintf("Hardware-Addr-Type: 0x%x\n",HTONS(arp_val->hardware_addr_type));
 	kprintf("Network-Addr-Type: 0x%x\n",HTONS(arp_val->network_addr_type));
 	kprintf("Hardware-Addr-Length: %d\n",arp_val->hardware_addr_length);
-	kprintf("Network-Addr-Length: %d\n",arp_val->network_addr_length);
+	kprintf("Network-Addr-Length: %d\n",arp_val->network_addr_length);*/
 	ether->receipt_mac.mac1 = my_mac.mac1;
 	ether->receipt_mac.mac2 = my_mac.mac2;
 	ether->receipt_mac.mac3 = my_mac.mac3;
