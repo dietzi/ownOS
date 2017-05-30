@@ -190,6 +190,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	last_message = "Returning......";
 	sendPacket(ether, buffer1, 20 + packet_length);
 	pmm_free(buffer1);
+	pmm_free(ether);
 	//return returner;
 }
 
@@ -439,7 +440,8 @@ void handle_dhcp(struct ether_header* ether, struct udp_header* udp) {
 	}
 	dhcp = temp_dhcp.dhcp;
 	
-	if(dhcp.operation == 2) { // DHCP reply		
+	if(dhcp.operation == 2) { // DHCP reply
+		kprintf("DHCP-Type: %d\n",dhcp.options[53].data[0]);
 		if(dhcp.options[53].data[0] == 2) {
 			dhcp_offer(dhcp);			
 		}
