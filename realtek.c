@@ -234,7 +234,7 @@ void realtek_handle_intr(void) {
 	if(status & 0x0800) kprintf("Unknown Status (reserved Bit 12)\n");
 	if(status & 0x1000) kprintf("Unknown Status (reserved Bit 13)\n");
 	if(status & 0x2000) kprintf("Unknown Status (reserved Bit 14)\n");
-	if(status & 0x4000) kprintf("Timeout\n");
+	//if(status & 0x4000) kprintf("Timeout\n");
 	if(status & 0x8000) kprintf("Unknown Status (reserved Bit 16)\n");
 
 	last_message = "resetting interrupt-mask";
