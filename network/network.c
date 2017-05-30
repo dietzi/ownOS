@@ -40,7 +40,7 @@ int checksum(void *buffer, int size) {
 
 void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
 	//uint8_t buffer[data_length + 14];
-	uint8_t *buffer;
+	uint8_t *buffer = pmm_alloc();
 	/*if((ether.receipt_mac.mac1 == my_mac.mac1 &&
 			ether.receipt_mac.mac2 == my_mac.mac2 &&
 			ether.receipt_mac.mac3 == my_mac.mac3 &&
