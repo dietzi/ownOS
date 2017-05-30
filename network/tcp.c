@@ -365,7 +365,8 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	//pos1--;
 	tcp->checksum = HTONS(checksum(&tcpChecksum, pos1));
 	
-	uint8_t buffer[packetsize];
+	//uint8_t buffer[packetsize];
+	uint8_t *buffer = pmm_alloc();
 	temp = &ip;
 	for(int i = 0; i < 20; i++) { //ip_header
 		buffer[pos] = temp[i];
@@ -388,6 +389,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	}
 	//pos--;
 	sendPacket(ether,buffer,pos);
+	pmm_free(buffer);
 }
 
 /*bool tcp_open_con(int port, void *callback_pointer) {
