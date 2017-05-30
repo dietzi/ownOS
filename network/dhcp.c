@@ -15,7 +15,7 @@ int dhcp_timer = 0;
 
 struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	//kprintf("Creating DHCP-Packet\n");
-	struct ether_header ether;
+	struct ether_header* ether;
 	struct ip_header ip;
 	struct udp_header udp;
 	
@@ -43,19 +43,19 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 		dhcp.file_name[i] = 0;
 	}
 	
-	ether.sender_mac.mac1 = 0xff;
-	ether.sender_mac.mac2 = 0xff;
-	ether.sender_mac.mac3 = 0xff;
-	ether.sender_mac.mac4 = 0xff;
-	ether.sender_mac.mac5 = 0xff;
-	ether.sender_mac.mac6 = 0xff;
-	ether.receipt_mac.mac1 = 0xff;
-	ether.receipt_mac.mac2 = 0xff;
-	ether.receipt_mac.mac3 = 0xff;
-	ether.receipt_mac.mac4 = 0xff;
-	ether.receipt_mac.mac5 = 0xff;
-	ether.receipt_mac.mac6 = 0xff;
-	ether.type = (0x0800);
+	ether->sender_mac.mac1 = 0xff;
+	ether->sender_mac.mac2 = 0xff;
+	ether->sender_mac.mac3 = 0xff;
+	ether->sender_mac.mac4 = 0xff;
+	ether->sender_mac.mac5 = 0xff;
+	ether->sender_mac.mac6 = 0xff;
+	ether->receipt_mac.mac1 = 0xff;
+	ether->receipt_mac.mac2 = 0xff;
+	ether->receipt_mac.mac3 = 0xff;
+	ether->receipt_mac.mac4 = 0xff;
+	ether->receipt_mac.mac5 = 0xff;
+	ether->receipt_mac.mac6 = 0xff;
+	ether->type = (0x0800);
 	
 	int udp_length = 8;
 	int dhcp_length = 48 + 64 + 128;
@@ -189,6 +189,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 	
 	last_message = "Returning......";
 	sendPacket(ether, buffer1, 20 + packet_length);
+	pmm_free(buffer1);
 	//return returner;
 }
 
@@ -384,13 +385,13 @@ void dhcp_get_ip(void) {
 		case 0:
 			kprintf("DHCP: ");
 			kprintf("Discover\n");
-			//dhcp_discover();
+			dhcp_discover();
 			break;
 			
 		case 2:
 			kprintf("DHCP: ");
 			kprintf("Request\n");
-			//dhcp_request(server_ip, own_ip);
+			dhcp_request(server_ip, own_ip);
 			break;
 	}
 //	sleep(1000);
