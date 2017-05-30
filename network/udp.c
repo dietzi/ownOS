@@ -1,5 +1,7 @@
 #include "includes.h"
 
+void udp_handle(struct ip_header ip, struct ether_header ether);
+
 void udp_handle(struct ip_header ip, struct ether_header ether) {
 	struct udp_header udp;
 	udp.source_port = (uint16_t)((ip.data[0] << 8) + (ip.data[1]));

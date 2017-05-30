@@ -39,7 +39,7 @@ void ip_handle(struct ip_header* ip, struct ether_header* ether) {
 				//tcp_handle(ip, ether);
 				break;
 			case 0x11: //UDP
-				//udp_handle(ip, ether);
+				udp_handle(ip, ether);
 				break;
 			default:
 				kprintf("Protokoll nicht implementiert: 0%x\n",ip->protocol);

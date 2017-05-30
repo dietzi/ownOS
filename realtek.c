@@ -145,11 +145,11 @@ void realtek_send_packet(uint8_t *data, int data_length) {
 		tx_buf[realtek_next_tx][i] = data[i];
 	}
 	last_message = "memcpy done";
-	kprintf("Poll Packet %d: %d\n",realtek_next_tx,tx_descs[realtek_next_tx].frame_length);
+	//kprintf("Poll Packet %d: %d\n",realtek_next_tx,tx_descs[realtek_next_tx].frame_length);
 	pci_write_register_8(addr,0,0x38,0x40);
-	kprintf("Waiting for transmit...\n");
+	//kprintf("Waiting for transmit...\n");
 	while(pci_read_register_8(addr,0,0x38) != 0);
-	kprintf("Transmit done\n");
+	//kprintf("Transmit done\n");
 	last_message = "set poll bit";
 	realtek_next_tx++;
 	if(realtek_next_tx >= 10) realtek_next_tx = 0;
@@ -161,7 +161,7 @@ bool printed1 = false;
 void got_packet(void) {
 	for(int i = 0; i < 10; i++) {
 		if(rx_descs[i].own == 0) {
-			kprintf("Data-Length: %d\n",rx_descs[i].buffer_size);
+			//kprintf("Data-Length: %d\n",rx_descs[i].buffer_size);
 			struct network_packet *packet = pmm_alloc();
 			packet->data_length = rx_descs[i].buffer_size;
 			packet->bytes = pmm_alloc();

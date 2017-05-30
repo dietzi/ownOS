@@ -192,8 +192,6 @@ void handle_new_packet(struct network_packet* packet) {
 					int offset = (ip->headerlen * 4) + sizeof(struct ether_header) + z;
 					ip->data[z] = ((uint8_t*)packet->bytes)[offset];
 				}
-				kprintf("Handling IP...\n");
-				//sleep(2000);
 				ip_handle(ip,ether);
 				pmm_free(ip->data);
 				pmm_free(ip);
