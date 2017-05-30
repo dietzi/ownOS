@@ -77,10 +77,13 @@ void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
 		
 		int i=0;
 		int j=0;
-
-		buffer = (uint8_t*)ether_temp;
+		
+		uint8_t* data_ether = ether_temp;
+		
+		//buffer = (uint8_t*)ether_temp;
 		while(i < 14) {
 			//buffer[i] = ether_union.data[i];
+			buffer[i] = data_ether[i];
 			i++;
 		}
 		while(data_length - j > 0) {
