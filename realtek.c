@@ -135,10 +135,11 @@ void realtek_send_packet(uint8_t *data, int data_length) {
 	tx_descs[realtek_next_tx].ls = 1;
 	tx_descs[realtek_next_tx].own = 1;
 	tx_descs[realtek_next_tx].frame_length = data_length;
+	tx_descs[realtek_next_tx].addr_low = tx_buf[realtek_next_tx];
 	last_message = "memcpy";
 	memcpy(tx_buf[realtek_next_tx],data,data_length);
 	last_message = "memcpy done";
-	kprintf("Poll Packet: %d\n",tx_descs[realtek_next_tx].frame_length);
+	kprintf("Poll Packet %d: %d\n",realtek_next_tx++,tx_descs[realtek_next_tx].frame_length);
 	pci_write_register_8(addr,0,0x38,0x40);
 	last_message = "set poll bit";
 	realtek_next_tx++;
@@ -222,10 +223,7 @@ void realtek_handle_intr(void) {
 	if(status & 0x2000) kprintf("Unknown Status (reserved Bit 14)\n");
 	if(status & 0x4000) kprintf("Timeout\n");
 	if(status & 0x8000) kprintf("Unknown Status (reserved Bit 16)\n");
-	
-	if(status & 0x0001) {
-		
-	}
+
 	last_message = "resetting interrupt-mask";
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E));
 	last_message = "end realtek_handle_intr";
