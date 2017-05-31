@@ -395,6 +395,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 			kprintf("%x ",buffer[i]);
 		}
 		kprintf("\n");
+		sleep(10000);
 		show_close = false;
 	}
 	sendPacket(ether,buffer,pos);
