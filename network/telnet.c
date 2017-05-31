@@ -64,8 +64,8 @@ void handle_telnet(struct tcp_callback cb) {
 			buffer[buf_length] = cb.data[i];
 			buf_length++;
 		}
-		sendData(cb);
 		check_telnet_command(cb);
+		sendData(cb);
 	}
 }
 
