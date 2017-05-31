@@ -99,6 +99,25 @@ void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
 		}
 		last_message = "network_send...";
 		//via_send(buffer,i);
+		kprintf("Sending Data:\n");
+		kprintf("MAC1: %x-%x-%x-%x-%x-%x\nMAC2: %x-%x-%x-%x-%x-%x\nType: 0x%x\n",
+					ether->receipt_mac.mac1,
+					ether->receipt_mac.mac2,
+					ether->receipt_mac.mac3,
+					ether->receipt_mac.mac4,
+					ether->receipt_mac.mac5,
+					ether->receipt_mac.mac6,
+					ether->sender_mac.mac1,
+					ether->sender_mac.mac2,
+					ether->sender_mac.mac3,
+					ether->sender_mac.mac4,
+					ether->sender_mac.mac5,
+					ether->sender_mac.mac6,
+					ether->type);
+		for(int j = 0; j < i; j++) {
+			kprintf("%x ",buffer[j]);
+		}
+		kprintf("\n");
 		send_packet(buffer,i);
 		//pmm_free(ether);
 		pmm_free(ether_temp);
