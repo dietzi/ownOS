@@ -281,7 +281,7 @@ void closeCon(struct tcp_callback cb) {
 			cb.fin_seq = HTONL(seq_temp);
 			client->fin_ack = cb.fin_ack;
 			client->fin_seq = cb.fin_seq;
-			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, cb.data, 0);
+			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, &cb.data, 0);
 		}
 	}
 }
