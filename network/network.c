@@ -100,7 +100,7 @@ void sendPacket(struct ether_header* ether, uint8_t *data, int data_length) {
 		last_message = "network_send...";
 		//via_send(buffer,i);
 		send_packet(buffer,i);
-		pmm_free(ether);
+		//pmm_free(ether);
 		pmm_free(ether_temp);
 		pmm_free(data);
 }
