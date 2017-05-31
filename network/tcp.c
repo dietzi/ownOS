@@ -261,6 +261,7 @@ void closeCon(struct tcp_callback cb) {
 						(HTONS(cb.tcp->destination_port)) +
 						checksum(cb.ip->sourceIP,4) +
 						checksum(cb.tcp->destination_port,2);
+	kprintf("closeCon(): socketID = 0x%x\n",socketID);
 	if(find_client(socketID,cb.port) != NULL) {
 		kprintf("closeCon(): found Client 0x%x\n",socketID);
 		struct clients *client = find_client(socketID,cb.port);
