@@ -63,10 +63,8 @@ void handle_telnet(struct tcp_callback cb) {
 	} else {
 		for(int i=0;i<cb.data_length;i++) {
 			buffer[buf_length] = cb.data[i];
-			kprintf("%c",cb.data[i]);
 			buf_length++;
 		}
-		kprintf("\n");
 		sendData(cb);
 		check_telnet_command(cb);
 	}

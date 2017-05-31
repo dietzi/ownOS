@@ -310,7 +310,7 @@ void sendData(struct tcp_callback cb) {
 			cb.tcp->flags.urg = 0;
 			cb.tcp->flags.ece = 0;
 			cb.tcp->flags.cwr = 0;
-			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, cb.data, cb.data_length);
+			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, &cb.data, cb.data_length);
 		}
 	}
 }
