@@ -119,6 +119,19 @@ bool del_client(uint32_t client_id, uint16_t port) {
 }
 
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
+	kprintf("tcp_handle: %x-%x-%x-%x-%x-%x   %x-%x-%x-%x-%x-%x\n",
+							ether->receipt_mac.mac1,
+							ether->receipt_mac.mac2,
+							ether->receipt_mac.mac3,
+							ether->receipt_mac.mac4,
+							ether->receipt_mac.mac5,
+							ether->receipt_mac.mac6,
+							ether->sender_mac.mac1,
+							ether->sender_mac.mac2,
+							ether->sender_mac.mac3,
+							ether->sender_mac.mac4,
+							ether->sender_mac.mac5,
+							ether->sender_mac.mac6);
 	struct tcp_header* tcp = pmm_alloc();
 	for(int i=0;i<20/*ip->data_length*/;i++) {
 		((uint8_t*)tcp)[i] = ip->data[i];
@@ -255,6 +268,19 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 bool show_close = false;
 
 void closeCon(struct tcp_callback cb) {
+	kprintf("closeCon: %x-%x-%x-%x-%x-%x   %x-%x-%x-%x-%x-%x\n",
+							cb.ether->receipt_mac.mac1,
+							cb.ether->receipt_mac.mac2,
+							cb.ether->receipt_mac.mac3,
+							cb.ether->receipt_mac.mac4,
+							cb.ether->receipt_mac.mac5,
+							cb.ether->receipt_mac.mac6,
+							cb.ether->sender_mac.mac1,
+							cb.ether->sender_mac.mac2,
+							cb.ether->sender_mac.mac3,
+							cb.ether->sender_mac.mac4,
+							cb.ether->sender_mac.mac5,
+							cb.ether->sender_mac.mac6);
 	last_message = "socketID closeCon";
 	uint32_t socketID = (cb.ip->sourceIP.ip1) +
 						(cb.ip->sourceIP.ip2) +
@@ -290,6 +316,19 @@ void closeCon(struct tcp_callback cb) {
 }
 
 void sendData(struct tcp_callback cb) {
+	kprintf("sendData: %x-%x-%x-%x-%x-%x   %x-%x-%x-%x-%x-%x\n",
+							cb.ether->receipt_mac.mac1,
+							cb.ether->receipt_mac.mac2,
+							cb.ether->receipt_mac.mac3,
+							cb.ether->receipt_mac.mac4,
+							cb.ether->receipt_mac.mac5,
+							cb.ether->receipt_mac.mac6,
+							cb.ether->sender_mac.mac1,
+							cb.ether->sender_mac.mac2,
+							cb.ether->sender_mac.mac3,
+							cb.ether->sender_mac.mac4,
+							cb.ether->sender_mac.mac5,
+							cb.ether->sender_mac.mac6);
 	last_message = "socketID sendData";
 	uint32_t socketID = (cb.ip->sourceIP.ip1) +
 						(cb.ip->sourceIP.ip2) +
@@ -319,6 +358,19 @@ void sendData(struct tcp_callback cb) {
 }
 
 void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_header* tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
+	kprintf("closeCon: %x-%x-%x-%x-%x-%x   %x-%x-%x-%x-%x-%x\n",
+							ether->receipt_mac.mac1,
+							ether->receipt_mac.mac2,
+							ether->receipt_mac.mac3,
+							ether->receipt_mac.mac4,
+							ether->receipt_mac.mac5,
+							ether->receipt_mac.mac6,
+							ether->sender_mac.mac1,
+							ether->sender_mac.mac2,
+							ether->sender_mac.mac3,
+							ether->sender_mac.mac4,
+							ether->sender_mac.mac5,
+							ether->sender_mac.mac6);
 	int packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
 	int pos1 = 0;
