@@ -14,7 +14,7 @@ bool check(char *cmd, char *input) {
 }
 
 void checker(uint8_t *cmd,struct tcp_callback cb) {
-	//kprintf("%s\n",cmd);
+	kprintf("%s\n",cmd);
 	if(check("exit",cmd)) closeCon(cb);
 	if(check("hello",cmd)) kprintf("Funktioniert\n");
 }
