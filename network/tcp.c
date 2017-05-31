@@ -391,6 +391,9 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	//pos--;
 	if(show_close) {
 		kprintf("Sending Data:\n");
+		for(int i = 0; i < 14; i++) {
+			kprintf("%x ",((uint8_t*)ether)[i]);
+		}
 		for(int i = 0; i < pos; i++) {
 			kprintf("%x ",buffer[i]);
 		}
