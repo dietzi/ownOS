@@ -262,8 +262,10 @@ void closeCon(struct tcp_callback cb) {
 						checksum(cb.ip->sourceIP,4) +
 						checksum(cb.tcp->destination_port,2);
 	if(find_client(socketID,cb.port) != NULL) {
+		kprintf("closeCon(): found Client 0x%x\n",socketID);
 		struct clients *client = find_client(socketID,cb.port);
 		if(listeners[cb.port].tcp_listener.enabled && client->con_est) {
+			kprintf("closeCon(): Found Connection\n");
 			sleep(1000);
 			uint32_t ack_temp = cb.tcp->sequence_number;
 			uint32_t seq_temp = HTONL(HTONL(cb.tcp->ack_number) + cb.data_length);
@@ -281,6 +283,7 @@ void closeCon(struct tcp_callback cb) {
 			cb.fin_seq = HTONL(seq_temp);
 			client->fin_ack = cb.fin_ack;
 			client->fin_seq = cb.fin_seq;
+			kprintf("closeCon(): sendTCPpacket\n");
 			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, &cb.data, 0);
 		}
 	}
