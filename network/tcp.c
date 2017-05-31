@@ -252,6 +252,8 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 	}
 }
 
+bool show_close = false;
+
 void closeCon(struct tcp_callback cb) {
 	last_message = "socketID closeCon";
 	uint32_t socketID = (cb.ip->sourceIP.ip1) +
@@ -261,12 +263,9 @@ void closeCon(struct tcp_callback cb) {
 						(HTONS(cb.tcp->destination_port)) +
 						checksum(cb.ip->sourceIP,4) +
 						checksum(cb.tcp->destination_port,2);
-	kprintf("closeCon(): socketID = 0x%x\n",socketID);
 	if(find_client(socketID,cb.port) != NULL) {
-		kprintf("closeCon(): found Client 0x%x\n",socketID);
 		struct clients *client = find_client(socketID,cb.port);
 		if(listeners[cb.port].tcp_listener.enabled && client->con_est) {
-			kprintf("closeCon(): Found Connection\n");
 			sleep(1000);
 			uint32_t ack_temp = cb.tcp->sequence_number;
 			uint32_t seq_temp = HTONL(HTONL(cb.tcp->ack_number) + cb.data_length);
@@ -284,7 +283,7 @@ void closeCon(struct tcp_callback cb) {
 			cb.fin_seq = HTONL(seq_temp);
 			client->fin_ack = cb.fin_ack;
 			client->fin_seq = cb.fin_seq;
-			kprintf("closeCon(): sendTCPpacket\n");
+			show_close = true;
 			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, &cb.data, 0);
 		}
 	}
@@ -390,6 +389,14 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		pos++;
 	}
 	//pos--;
+	if(show_close) {
+		kprintf("Sending Data:\n");
+		for(int i = 0; i < pos; i++) {
+			kprintf("%x ",buffer[i]);
+		}
+		kprintf("\n");
+		show_close = false;
+	}
 	sendPacket(ether,buffer,pos);
 	pmm_free(buffer);
 }
