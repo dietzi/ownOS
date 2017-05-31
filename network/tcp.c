@@ -391,9 +391,20 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	//pos--;
 	if(show_close) {
 		kprintf("Sending Data:\n");
-		for(int i = 0; i < 14; i++) {
-			kprintf("%x ",((uint8_t*)ether)[i]);
-		}
+		kprintf("MAC1: %x-%x-%x-%x-%x-%x\nMAC2: %x-%x-%x-%x-%x-%x\nType: 0x%x\n",
+					ether->receipt_mac.mac1,
+					ether->receipt_mac.mac2,
+					ether->receipt_mac.mac3,
+					ether->receipt_mac.mac4,
+					ether->receipt_mac.mac5,
+					ether->receipt_mac.mac6,
+					ether->sender_mac.mac1,
+					ether->sender_mac.mac2,
+					ether->sender_mac.mac3,
+					ether->sender_mac.mac4,
+					ether->sender_mac.mac5,
+					ether->sender_mac.mac6,
+					ether->type);
 		for(int i = 0; i < pos; i++) {
 			kprintf("%x ",buffer[i]);
 		}
