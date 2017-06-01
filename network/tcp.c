@@ -241,6 +241,7 @@ bool register_tcp_listener(int port, void *callback_pointer) {
 			.port = port,
 			.con_est = false,
 			.enabled = true,
+			.data = pmm_alloc()
 		};
 		if(cb.callback_pointer == NULL) {
 			kprintf("Callback not set\n");
