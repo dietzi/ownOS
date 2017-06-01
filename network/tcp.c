@@ -109,13 +109,17 @@ bool del_client(uint32_t client_id, uint16_t port) {
 			struct clients *client_temp = client->next;
 			//kprintf("22\n");
 			client->next = client->next->next;
-			//kprintf("Deleted2: 0x%x\n",client_temp->client_id);
+			kprintf("Deleted: 0x%x\n",client_temp->client_id);
 			pmm_free(client_temp);
 			//show_clients(port);
 			return true;			
 		}
 	}
 	return false;
+}
+
+void handle_packets(struct clients* client) {
+	
 }
 
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
@@ -175,7 +179,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 			if(client->con_est) {
 				if(tcp->flags.fin && tcp->flags.ack &&
 							tcp->ack_number != HTONL(client->fin_seq + 1) &&
-							tcp->sequence_number != HTONL(client->fin_ack)) {
+							tcp->sequence_number != HTONL(client->fin_ack)) { //got FIN-Packet
 					tcp->flags.fin = 1;
 					tcp->flags.ack = 1;
 					uint32_t ack_temp = tcp->ack_number;
@@ -186,7 +190,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 					sendTCPpacket(ether, ip, tcp, tcp->options, 0, tcp->data, 0);
 				} else if((!tcp->flags.fin && tcp->flags.ack &&
 							tcp->ack_number == HTONL(client->fin_seq + 1) &&
-							tcp->sequence_number == HTONL(client->fin_ack)) || tcp->flags.rst) {
+							tcp->sequence_number == HTONL(client->fin_ack)) || tcp->flags.rst) { // got FIN-ACK
 					client->fin_seq = 0;
 					client->fin_ack = 0;
 					uint32_t ack_temp = tcp->ack_number;
@@ -307,7 +311,7 @@ void sendData(struct tcp_callback cb) {
 		struct clients *client = find_client(socketID,cb.port);
 		if(listeners[cb.port].tcp_listener.enabled && client->con_est) {
 			uint32_t ack_temp = cb.tcp->sequence_number;
-			uint32_t seq_temp = HTONL(HTONL(cb.tcp->ack_number));
+			uint32_t seq_temp = HTONL(HTONL(cb.tcp->ack_number) + 1);
 			cb.tcp->sequence_number = seq_temp;
 			cb.tcp->ack_number = ack_temp;
 			cb.tcp->flags.ack = 1;
