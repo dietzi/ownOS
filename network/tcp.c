@@ -119,7 +119,7 @@ bool del_client(uint32_t client_id, uint16_t port) {
 }
 
 bool check_tcp_flags(struct tcp_flags flags, unsigned fin, unsigned syn, unsigned rst, unsigned psh, unsigned ack, unsigned urg, unsigned ece, unsigned cwr) {
-	
+	uint8_t* flagsP = &flags;
 }
 
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
