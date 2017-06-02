@@ -157,7 +157,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		listeners[HTONS(temp_port)].tcp_listener.ether = ether;
 		
 		struct clients *client = find_client(socketID,HTONS(temp_port));
-		kprintf("Flags: %b\n",tcp->flags);
+		kprintf("Receive-Flags: %b\n",tcp->flags);
 		if(client == NULL) { //no socketID
 			kprintf("No client found\n");
 			if(tcp->flags.syn && !tcp->flags.ack) { //asking for connection
@@ -325,6 +325,7 @@ void sendData(struct tcp_callback cb) {
 }
 
 void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_header* tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
+	kprintf("Send-Flags: %b\n",tcp->flags);
 	uint16_t packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
 	int pos1 = 0;
