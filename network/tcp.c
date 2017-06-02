@@ -158,7 +158,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		
 		struct clients *client = find_client(socketID,HTONS(temp_port));
 		if(client == NULL) { //no socketID
-			kprintf("No client found\n");
+			kprintf("No client found\nFlags: %b\n",tcp->flags);
 			if(tcp->flags.syn && !tcp->flags.ack) { //asking for connection
 				tcp->flags.syn = 1;
 				tcp->flags.ack = 1;
