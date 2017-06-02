@@ -87,6 +87,12 @@ struct ip_header {
 enum enum_tcp_flags {
 	fin,
 	syn,
+	rst,
+	psh,
+	ack,
+	urg,
+	ece,
+	cwr,
 };
 
 struct tcp_flags {
