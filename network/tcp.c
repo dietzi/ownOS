@@ -122,7 +122,7 @@ bool check_tcp_flags(struct tcp_flags flags, unsigned fin) {//, unsigned syn, un
 	uint8_t flags1;
 	memcpy(&flags1,&flags,8);
 	kprintf("check_tcp_flags: %b\n",flags1);
-	if(flags1 & fin) {
+	if(flags1 == fin) {
 		kprintf("Flags correct\n");
 	}
 }
