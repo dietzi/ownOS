@@ -121,8 +121,9 @@ bool del_client(uint32_t client_id, uint16_t port) {
 bool check_tcp_flags(struct tcp_flags flags, unsigned fin) {//, unsigned syn, unsigned rst, unsigned psh, unsigned ack, unsigned urg, unsigned ece, unsigned cwr) {
 	uint8_t flags1;
 	memcpy(&flags1,&flags,8);
+	kprintf("check_tcp_flags: %b\n",flags1);
 	if(flags1 & fin) {
-		
+		kprintf("Flags correct\n");
 	}
 }
 
@@ -157,7 +158,8 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						checksum(ip->sourceIP,4) +
 						checksum(tcp->destination_port,2);
 	//kprintf("Socket-ID: 0x%x\n",socketID);
-	check_tcp_flags(tcp->flags, 0b00001000);
+	check_tcp_flags(tcp->flags, 0b00010000);
+	kprintf("Receive-Flags: %b\n",tcp->flags);
 	if(listeners[HTONS(temp_port)].tcp_listener.enabled) {
 		listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
 		listeners[HTONS(temp_port)].tcp_listener.data_length = ip->packetsize - (ip->headerlen * 4) - (tcp->headerlen * 4);
@@ -166,7 +168,6 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		listeners[HTONS(temp_port)].tcp_listener.ether = ether;
 		
 		struct clients *client = find_client(socketID,HTONS(temp_port));
-		kprintf("Receive-Flags: %b\n",tcp->flags);
 		if(client == NULL) { //no socketID
 			kprintf("No client found\n");
 			if(tcp->flags.syn && !tcp->flags.ack) { //asking for connection
