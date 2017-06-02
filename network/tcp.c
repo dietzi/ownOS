@@ -118,10 +118,6 @@ bool del_client(uint32_t client_id, uint16_t port) {
 	return false;
 }
 
-void handle_packets(struct clients* client) {
-	
-}
-
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 	struct tcp_header* tcp = pmm_alloc();
 	for(int i=0;i<20/*ip->data_length*/;i++) {
@@ -162,7 +158,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		
 		struct clients *client = find_client(socketID,HTONS(temp_port));
 		if(client == NULL) { //no socketID
-			//kprintf("No client found\n");
+			kprintf("No client found\n");
 			if(tcp->flags.syn && !tcp->flags.ack) { //asking for connection
 				tcp->flags.syn = 1;
 				tcp->flags.ack = 1;
@@ -292,7 +288,7 @@ void closeCon(struct tcp_callback cb) {
 			client->fin_ack = cb.fin_ack;
 			client->fin_seq = cb.fin_seq;
 			show_close = true;
-			kprintf("sending FIN-Packet");
+			kprintf("sending FIN-Packet\n");
 			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, &cb.data, 0);
 		}
 	}
