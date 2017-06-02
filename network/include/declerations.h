@@ -85,7 +85,7 @@ struct ip_header {
 } __attribute__((packed));
 
 enum enum_tcp_flags {
-	fin,
+	fin = 0b00000001,
 	syn,
 	rst,
 	psh,
