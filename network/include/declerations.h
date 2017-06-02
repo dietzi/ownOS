@@ -86,13 +86,13 @@ struct ip_header {
 
 enum enum_tcp_flags {
 	fin = 0b00000001,
-	syn,
-	rst,
-	psh,
-	ack,
-	urg,
-	ece,
-	cwr,
+	syn = 0b00000010,
+	rst = 0b00000100,
+	psh = 0b00001000,
+	ack = 0b00010000,
+	urg = 0b00100000,
+	ece = 0b01000000,
+	cwr = 0b10000000,
 };
 
 struct tcp_flags {
