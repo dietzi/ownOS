@@ -217,9 +217,9 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 					callback_func(listeners[HTONS(temp_port)].tcp_listener);
 				}
 			} else {
-				if(!tcp->flags.syn && tcp->flags.ack) { //ack connection
+				if(!tcp->flags.syn && tcp->flags.ack && !client->con_est) { //ack connection
 					if(client->last_ack == HTONL(tcp->sequence_number) && HTONL(tcp->ack_number) == client->last_seq + 1) {
-						find_client(socketID,HTONS(temp_port))->con_est = true;
+						client->con_est = true;
 						tcp_data[0] = 0xff;
 						tcp_data[1] = 0xff;
 						tcp_data[2] = 0xff;
@@ -328,13 +328,13 @@ void sendData(struct tcp_callback cb) {
 }
 
 void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_header* tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
-	int packetsize = 20 + 20 + options_count + data_length;
+	uint16_t packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
 	int pos1 = 0;
 	uint8_t *temp;
 	
 	ip->checksum = 0;
-	ip->packetsize = HTONS((uint16_t)packetsize);
+	ip->packetsize = HTONS(packetsize);
 	ip->headerlen = 5;
 	ip->version = 4;
 	tcp->checksum = 0;
