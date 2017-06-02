@@ -118,6 +118,10 @@ bool del_client(uint32_t client_id, uint16_t port) {
 	return false;
 }
 
+bool check_tcp_flags(unsigned fin) {
+	
+}
+
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 	struct tcp_header* tcp = pmm_alloc();
 	for(int i=0;i<20/*ip->data_length*/;i++) {
@@ -325,7 +329,6 @@ void sendData(struct tcp_callback cb) {
 }
 
 void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_header* tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
-	kprintf("Send-Flags: %b\n",tcp->flags);
 	uint16_t packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
 	int pos1 = 0;
