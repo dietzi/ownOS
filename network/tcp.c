@@ -118,9 +118,12 @@ bool del_client(uint32_t client_id, uint16_t port) {
 	return false;
 }
 
-bool check_tcp_flags(struct tcp_flags flags) {//, unsigned fin, unsigned syn, unsigned rst, unsigned psh, unsigned ack, unsigned urg, unsigned ece, unsigned cwr) {
-	uint8_t* flagsP = &flags;
-	kprintf("check_tcp_flags: %b\n",flagsP);
+bool check_tcp_flags(struct tcp_flags flags, unsigned fin) {//, unsigned syn, unsigned rst, unsigned psh, unsigned ack, unsigned urg, unsigned ece, unsigned cwr) {
+	uint8_t flags1;
+	memcpy(&flags1,&flags,8);
+	if(flags1 & fin) {
+		
+	}
 }
 
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
@@ -154,7 +157,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						checksum(ip->sourceIP,4) +
 						checksum(tcp->destination_port,2);
 	//kprintf("Socket-ID: 0x%x\n",socketID);
-	check_tcp_flags(tcp->flags);
+	check_tcp_flags(tcp->flags, 0b00001000);
 	if(listeners[HTONS(temp_port)].tcp_listener.enabled) {
 		listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
 		listeners[HTONS(temp_port)].tcp_listener.data_length = ip->packetsize - (ip->headerlen * 4) - (tcp->headerlen * 4);
