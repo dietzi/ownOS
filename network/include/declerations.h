@@ -84,6 +84,11 @@ struct ip_header {
   uint32_t data_length;
 } __attribute__((packed));
 
+enum enum_tcp_flags {
+	fin,
+	syn,
+};
+
 struct tcp_flags {
 	unsigned fin : 1;
 	unsigned syn : 1;
