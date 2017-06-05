@@ -164,6 +164,12 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						checksum(ip->sourceIP,4) +
 						checksum(tcp->destination_port,2);
 	//kprintf("Socket-ID: 0x%x\n",socketID);
+			if(check_tcp_flags(tcp->flags, syn)) { //asking for connection
+				kprintf("abc");
+			} else {
+				kprintf("def");
+			}
+			sleep(5000);
 	if(listeners[HTONS(temp_port)].tcp_listener.enabled) {
 		listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
 		listeners[HTONS(temp_port)].tcp_listener.data_length = ip->packetsize - (ip->headerlen * 4) - (tcp->headerlen * 4);
