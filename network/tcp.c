@@ -122,14 +122,14 @@ bool del_client(uint32_t client_id, uint16_t port) {
 bool check_tcp_flags(struct tcp_flags flags, unsigned f) {
 	//uint8_t flags1;
 	//memcpy(&flags1,&flags,8);
-	if((flags.fin & fin) &&
-			(flags.syn & syn) &&
-			(flags.urg & urg) &&
-			(flags.psh & psh) &&
-			(flags.ack & ack) &&
-			(flags.rst & rst) &&
-			(flags.cwr & cwr) &&
-			(flags.ece & ece)) {
+	if((flags.fin & f) &&
+			(flags.syn & f) &&
+			(flags.urg & f) &&
+			(flags.psh & f) &&
+			(flags.ack & f) &&
+			(flags.rst & f) &&
+			(flags.cwr & f) &&
+			(flags.ece & f)) {
 		return true;
 	} else {
 		return false;
