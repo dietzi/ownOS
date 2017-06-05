@@ -132,8 +132,10 @@ bool check_tcp_flags(struct tcp_flags flags, unsigned f) {
 	//memcpy(&flags1,&flags,8);
 	kprintf("1: %b\n",flags);
 	kprintf("2: %b\n",flags1);
-	kprintf("3: %b\n",flags1 & f);
+	kprintf("3: %b\n",f);
+	kprintf("4: %b\n",flags1 & f);
 	kprintf("---\n");
+	sleep(1000);
 	if(flags1 & f) {
 		return true;
 	} else {
