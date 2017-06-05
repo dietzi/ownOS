@@ -131,7 +131,7 @@ bool check_tcp_flags(struct tcp_flags flags, uint8_t f) {
 	flags1 |= flags.cwr << 7;
 		kprintf("2: %b\n",flags1);
 		kprintf("3: %b\n",f);
-		kprintf("4: %b\n",flags1 & f);
+		kprintf("4: %b\n",(flags1 & f));
 		kprintf("---\n");
 	if((flags1 & f) == flags1) {
 		return true;
