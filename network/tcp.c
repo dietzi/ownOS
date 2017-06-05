@@ -10,7 +10,7 @@ bool register_tcp_listener(int port, void *callback_pointer);
 void sendData(struct tcp_callback cb);
 void closeCon(struct tcp_callback cb);
 bool tcp_open_con(int port, void *callback_pointer);
-bool check_tcp_flags(struct tcp_flags flags, unsigned f);
+bool check_tcp_flags(struct tcp_flags flags, uint8_t f);
 
 uint32_t last_seq = 0;
 uint32_t last_ack = 0;
@@ -119,7 +119,7 @@ bool del_client(uint32_t client_id, uint16_t port) {
 	return false;
 }
 
-bool check_tcp_flags(struct tcp_flags flags, unsigned f) {
+bool check_tcp_flags(struct tcp_flags flags, uint8_t f) {
 	uint8_t flags1;
 	flags1 |= flags.fin << 0;
 	flags1 |= flags.syn << 1;
