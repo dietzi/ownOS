@@ -120,8 +120,8 @@ bool del_client(uint32_t client_id, uint16_t port) {
 }
 
 bool check_tcp_flags(struct tcp_flags flags, unsigned f) {
-	uint8_t flags1;
-	memcpy(&flags1,&flags,8);
+	//uint8_t flags1;
+	//memcpy(&flags1,&flags,8);
 	if((uint8_t*)&flags == f) {
 		return true;
 	} else {
