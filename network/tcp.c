@@ -119,8 +119,8 @@ bool del_client(uint32_t client_id, uint16_t port) {
 }
 
 bool check_tcp_flags(struct tcp_flags flags, unsigned fin) {//, unsigned syn, unsigned rst, unsigned psh, unsigned ack, unsigned urg, unsigned ece, unsigned cwr) {
-	uint8_t flags1;
-	memcpy(&flags1,&flags,8);
+	uint8_t *flags1;
+	memcpy(flags1,&flags,8);
 	if(flags1 == fin) {
 		return true;
 	}
