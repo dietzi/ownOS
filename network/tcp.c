@@ -133,7 +133,7 @@ bool check_tcp_flags(struct tcp_flags flags, uint8_t f) {
 		kprintf("3: %b\n",f);
 		kprintf("4: %b\n",flags1 & f);
 		kprintf("---\n");
-	if(flags1 & f == flags1) {
+	if((flags1 & f) == flags1) {
 		return true;
 	} else {
 		return false;
