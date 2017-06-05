@@ -135,8 +135,7 @@ bool check_tcp_flags(struct tcp_flags flags, unsigned f) {
 	kprintf("3: %b\n",f);
 	kprintf("4: %b\n",flags1 & f);
 	kprintf("---\n");
-	sleep(1000);
-	if(flags1 & f) {
+	if(flags1 & f == flags1) {
 		return true;
 	} else {
 		return false;
