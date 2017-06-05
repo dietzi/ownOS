@@ -121,8 +121,15 @@ bool del_client(uint32_t client_id, uint16_t port) {
 
 bool check_tcp_flags(struct tcp_flags flags, unsigned f) {
 	uint8_t flags1;
-	memcpy(&flags1,&flags,8);
-	sleep(1);
+	flags1 |= flags.fin << 0;
+	flags1 |= flags.syn << 1;
+	flags1 |= flags.rst << 2;
+	flags1 |= flags.psh << 3;
+	flags1 |= flags.ack << 4;
+	flags1 |= flags.urg << 5;
+	flags1 |= flags.ece << 6;
+	flags1 |= flags.cwr << 7;
+	//memcpy(&flags1,&flags,8);
 	if(flags1 & f) {
 		return true;
 	} else {
