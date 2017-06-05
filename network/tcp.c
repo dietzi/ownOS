@@ -10,6 +10,7 @@ bool register_tcp_listener(int port, void *callback_pointer);
 void sendData(struct tcp_callback cb);
 void closeCon(struct tcp_callback cb);
 bool tcp_open_con(int port, void *callback_pointer);
+bool check_tcp_flags(struct tcp_flags flags, unsigned f);
 
 uint32_t last_seq = 0;
 uint32_t last_ack = 0;
