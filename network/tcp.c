@@ -130,6 +130,9 @@ bool check_tcp_flags(struct tcp_flags flags, unsigned f) {
 	flags1 |= flags.ece << 6;
 	flags1 |= flags.cwr << 7;
 	//memcpy(&flags1,&flags,8);
+	kprintf("1: %b\n",flags);
+	kprintf("2: %b\n",flags1);
+	kprintf("---\n");
 	if(flags1 & f) {
 		return true;
 	} else {
