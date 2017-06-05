@@ -118,10 +118,10 @@ bool del_client(uint32_t client_id, uint16_t port) {
 	return false;
 }
 
-bool check_tcp_flags(struct tcp_flags flags, unsigned fin) {//, unsigned syn, unsigned rst, unsigned psh, unsigned ack, unsigned urg, unsigned ece, unsigned cwr) {
-	uint8_t *flags1;
-	memcpy(flags1,&flags,8);
-	if(flags1 == fin) {
+bool check_tcp_flags(struct tcp_flags flags, unsigned f) {//, unsigned syn, unsigned rst, unsigned psh, unsigned ack, unsigned urg, unsigned ece, unsigned cwr) {
+	uint8_t flags1 __attribute__((packed));
+	memcpy(&flags1,&flags,8);
+	if(flags1 == f) {
 		return true;
 	}
 	return false;
