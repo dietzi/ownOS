@@ -95,24 +95,18 @@ struct clients *add_client(uint32_t client_id, uint16_t port) {
 bool del_client(uint32_t client_id, uint16_t port) {
 	struct clients *client = listeners[port].clients;
 	if(client->client_id == client_id) {
-		//kprintf("11\n");
 		struct clients *client_temp = client;
-		//kprintf("12\n");
 		listeners[port].clients = client->next;
-		kprintf("Deleted1: 0x%x\n",client_temp->client_id);
 		pmm_free(client_temp);
-		//show_clients(port);
+		kprintf("Deleted: 0x%x\n",client_temp->client_id);
 		return true;		
 	}
 	while(client->next != NULL) {
 		if(client->next->client_id == client_id) {
-			//kprintf("21\n");
 			struct clients *client_temp = client->next;
-			//kprintf("22\n");
 			client->next = client->next->next;
-			kprintf("Deleted: 0x%x\n",client_temp->client_id);
 			pmm_free(client_temp);
-			//show_clients(port);
+			kprintf("Deleted 1: 0x%x\n",client_temp->client_id);
 			return true;			
 		}
 	}
@@ -188,6 +182,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		listeners[HTONS(temp_port)].tcp_listener.tcp = tcp;
 		listeners[HTONS(temp_port)].tcp_listener.ip = ip;
 		listeners[HTONS(temp_port)].tcp_listener.ether = ether;
+		listeners[HTONS(temp_port)].tcp_listener.new_con = false;
 		
 		struct clients *client = find_client(socketID,HTONS(temp_port));
 		con_id++;
@@ -300,6 +295,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						tcp_data[1] = 0xff;
 						tcp_data[2] = 0xff;
 						listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
+						listeners[HTONS(temp_port)].tcp_listener.new_con = true;
 						
 						listeners[HTONS(temp_port)].tcp_listener.data_length = 0;
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;

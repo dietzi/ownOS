@@ -208,6 +208,7 @@ struct tcp_callback {
 	uint32_t *callback_pointer;
 	int port;
 	bool con_est;
+	bool new_con;
 	uint32_t last_ack;
 	uint32_t last_seq;
 	uint32_t fin_seq;
