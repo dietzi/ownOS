@@ -134,14 +134,9 @@ bool check_tcp_flags(struct tcp_flags flags, uint8_t f) {
 	} else {
 		return false;
 	}
-	/*kprintf("%b\n",(uint8_t)&flags);
-	sleep(2000);
-	if((uint8_t)&flags == f) {
-		return true;
-	} else {
-		return false;
-	}*/
 }
+
+int con_id = 0;
 
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 	struct tcp_header* tcp = pmm_alloc();
@@ -182,6 +177,8 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		listeners[HTONS(temp_port)].tcp_listener.ether = ether;
 		
 		struct clients *client = find_client(socketID,HTONS(temp_port));
+		kprintf("ID %d: %b\n",con_id,tcp->flags);
+		con_id++;
 		if(client == NULL) { //no socketID
 			//kprintf("No client found\n");
 			if(check_tcp_flags(tcp->flags, syn)) { //asking for connection
