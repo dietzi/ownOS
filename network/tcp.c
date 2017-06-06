@@ -136,6 +136,19 @@ bool check_tcp_flags(struct tcp_flags flags, uint8_t f) {
 	}
 }
 
+uint8_t convert_flags(struct tcp_flags flags) {
+	uint8_t flags1;
+	flags1 |= flags.fin << 0;
+	flags1 |= flags.syn << 1;
+	flags1 |= flags.rst << 2;
+	flags1 |= flags.psh << 3;
+	flags1 |= flags.ack << 4;
+	flags1 |= flags.urg << 5;
+	flags1 |= flags.ece << 6;
+	flags1 |= flags.cwr << 7;
+	return flags1;
+}
+
 int con_id = 0;
 
 void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
@@ -193,6 +206,14 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 				sendTCPpacket(ether, ip, tcp, tcp->options, 0, tcp->data, 0);
 			}
 		} else {
+			switch(convert_flags(tcp->flags)) {
+				case ack | psh:
+					kprintf("");
+					break;
+				default:
+					kprintf("");
+					break;
+			}
 			//kprintf("Client found: 0x%x\n",client->client_id);
 			if(client->con_est) {
 				if(check_tcp_flags(tcp->flags, fin | ack) &&
@@ -207,8 +228,9 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 					client->fin_ack = HTONL(tcp->ack_number);
 					sendTCPpacket(ether, ip, tcp, tcp->options, 0, tcp->data, 0);
 				} else if((check_tcp_flags(tcp->flags, ack) &&
-							tcp->ack_number == HTONL(client->fin_seq + 1) &&
-							tcp->sequence_number == HTONL(client->fin_ack)) || check_tcp_flags(tcp->flags, rst)) { // got FIN-ACK
+								tcp->ack_number == HTONL(client->fin_seq + 1) &&
+								tcp->sequence_number == HTONL(client->fin_ack)) ||
+							check_tcp_flags(tcp->flags, rst)) { // got FIN-ACK
 					client->fin_seq = 0;
 					client->fin_ack = 0;
 					uint32_t ack_temp = tcp->ack_number;
