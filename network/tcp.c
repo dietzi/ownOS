@@ -195,7 +195,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		} else {
 			//kprintf("Client found: 0x%x\n",client->client_id);
 			if(client->con_est) {
-				if(check_tcp_flags(tcp->flags, fin | psh) &&
+				if(check_tcp_flags(tcp->flags, fin | ack) &&
 							tcp->ack_number != HTONL(client->fin_seq + 1) &&
 							tcp->sequence_number != HTONL(client->fin_ack)) { //got FIN-Packet
 					tcp->flags.fin = 1;
