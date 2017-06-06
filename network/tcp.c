@@ -357,7 +357,7 @@ void closeCon(struct tcp_callback cb) {
 			kprintf("connection alive\n");
 			//sleep(1000);
 			uint32_t ack_temp = cb.tcp->sequence_number;
-			uint32_t seq_temp = HTONL(HTONL(cb.tcp->ack_number) + cb.data_length);
+			uint32_t seq_temp = HTONL(HTONL(cb.tcp->ack_number));
 			cb.tcp->sequence_number = seq_temp;
 			cb.tcp->ack_number = ack_temp;
 			cb.tcp->flags.ack = 1;
@@ -374,7 +374,7 @@ void closeCon(struct tcp_callback cb) {
 			client->fin_seq = cb.fin_seq;
 			show_close = true;
 			kprintf("sending FIN-Packet\n");
-			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, &cb.data, 0);
+			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, cb.data, 0);
 		}
 	}
 }
