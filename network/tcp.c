@@ -247,7 +247,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						tcp->sequence_number = ack_temp;
 						client->last_seq = HTONL(tcp->sequence_number);
 						client->last_ack = HTONL(tcp->ack_number);
-						sendTCPpacket(ether, ip, tcp, tcp->options, 0, listeners[HTONS(temp_port)].tcp_listener.data, 0);
+						//sendTCPpacket(ether, ip, tcp, tcp->options, 0, listeners[HTONS(temp_port)].tcp_listener.data, 0);
 						
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
 						callback_func(listeners[HTONS(temp_port)].tcp_listener);
