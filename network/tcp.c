@@ -99,7 +99,7 @@ bool del_client(uint32_t client_id, uint16_t port) {
 		struct clients *client_temp = client;
 		//kprintf("12\n");
 		listeners[port].clients = client->next;
-		//kprintf("Deleted1: 0x%x\n",client_temp->client_id);
+		kprintf("Deleted1: 0x%x\n",client_temp->client_id);
 		pmm_free(client_temp);
 		//show_clients(port);
 		return true;		
@@ -190,7 +190,6 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 		listeners[HTONS(temp_port)].tcp_listener.ether = ether;
 		
 		struct clients *client = find_client(socketID,HTONS(temp_port));
-		kprintf("ID %d: %b\n",con_id,tcp->flags);
 		con_id++;
 		if(client == NULL) { //no socketID
 			//kprintf("No client found\n");
@@ -210,7 +209,6 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 			if(client->con_est) {
 				switch(convert_flags(tcp->flags)) {
 					case fin | ack:
-						kprintf("FIN | ACK\n");
 						if(tcp->ack_number != HTONL(client->fin_seq + 1) && tcp->sequence_number != HTONL(client->fin_ack)) {
 							tcp->flags.fin = 1;
 							tcp->flags.ack = 1;
@@ -223,7 +221,6 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						}
 						break;
 					case ack:
-						kprintf("ACK\n");
 						if(tcp->ack_number == HTONL(client->fin_seq + 1) && tcp->sequence_number == HTONL(client->fin_ack)) {
 							client->fin_seq = 0;
 							client->fin_ack = 0;
@@ -240,7 +237,6 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						}
 						break;
 					case ack | psh:
-						kprintf("ACK | PSH\n");
 						tcp->flags.psh = 0;
 						uint32_t ack_temp = tcp->ack_number;
 						tcp->ack_number = HTONL(HTONL(tcp->sequence_number) + listeners[HTONS(temp_port)].tcp_listener.data_length);
@@ -305,7 +301,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						tcp_data[2] = 0xff;
 						listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
 						
-						listeners[HTONS(temp_port)].tcp_listener.data_length = 3;
+						listeners[HTONS(temp_port)].tcp_listener.data_length = 0;
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
 						callback_func(listeners[HTONS(temp_port)].tcp_listener);
 					}
@@ -349,12 +345,9 @@ void closeCon(struct tcp_callback cb) {
 						(HTONS(cb.tcp->destination_port)) +
 						checksum(cb.ip->sourceIP,4) +
 						checksum(cb.tcp->destination_port,2);
-	kprintf("trying to close 0x%x\n",socketID);
 	if(find_client(socketID,cb.port) != NULL) {
-		kprintf("socketID found\n");
 		struct clients *client = find_client(socketID,cb.port);
 		if(listeners[cb.port].tcp_listener.enabled && client->con_est) {
-			kprintf("connection alive\n");
 			//sleep(1000);
 			uint32_t ack_temp = cb.tcp->ack_number;
 			uint32_t seq_temp = cb.tcp->sequence_number;
@@ -373,7 +366,6 @@ void closeCon(struct tcp_callback cb) {
 			client->fin_ack = cb.fin_ack;
 			client->fin_seq = cb.fin_seq;
 			show_close = true;
-			kprintf("sending FIN-Packet\n");
 			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, cb.data, 0);
 		}
 	}
