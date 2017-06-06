@@ -304,6 +304,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						tcp_data[1] = 0xff;
 						tcp_data[2] = 0xff;
 						listeners[HTONS(temp_port)].tcp_listener.data = tcp_data;
+						
 						listeners[HTONS(temp_port)].tcp_listener.data_length = 3;
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
 						callback_func(listeners[HTONS(temp_port)].tcp_listener);
@@ -402,7 +403,7 @@ void sendData(struct tcp_callback cb) {
 			cb.tcp->flags.urg = 0;
 			cb.tcp->flags.ece = 0;
 			cb.tcp->flags.cwr = 0;
-			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, &cb.data, cb.data_length);
+			sendTCPpacket(cb.ether, cb.ip, cb.tcp, cb.tcp->options, 0, cb.data, cb.data_length);
 		}
 	}
 }
