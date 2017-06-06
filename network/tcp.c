@@ -210,7 +210,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 			if(client->con_est) {
 				switch(convert_flags(tcp->flags)) {
 					case fin | ack:
-						kprintf("");
+						kprintf("FIN | ACK\n");
 						if(tcp->ack_number != HTONL(client->fin_seq + 1) && tcp->sequence_number != HTONL(client->fin_ack)) {
 							tcp->flags.fin = 1;
 							tcp->flags.ack = 1;
@@ -223,7 +223,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						}
 						break;
 					case ack:
-						kprintf("");
+						kprintf("ACK\n");
 						if(tcp->ack_number == HTONL(client->fin_seq + 1) && tcp->sequence_number == HTONL(client->fin_ack)) {
 							client->fin_seq = 0;
 							client->fin_ack = 0;
@@ -240,7 +240,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						}
 						break;
 					case ack | psh:
-						kprintf("");
+						kprintf("ACK | PSH\n");
 						tcp->flags.psh = 0;
 						uint32_t ack_temp = tcp->ack_number;
 						tcp->ack_number = HTONL(HTONL(tcp->sequence_number) + listeners[HTONS(temp_port)].tcp_listener.data_length);
@@ -354,7 +354,7 @@ void closeCon(struct tcp_callback cb) {
 		struct clients *client = find_client(socketID,cb.port);
 		if(listeners[cb.port].tcp_listener.enabled && client->con_est) {
 			kprintf("connection alive\n");
-			sleep(1000);
+			//sleep(1000);
 			uint32_t ack_temp = cb.tcp->sequence_number;
 			uint32_t seq_temp = HTONL(HTONL(cb.tcp->ack_number) + cb.data_length);
 			cb.tcp->sequence_number = seq_temp;
