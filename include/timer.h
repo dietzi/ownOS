@@ -3,11 +3,13 @@
 
 void pit_init(void);
 void register_timer(void* callback, uint32_t arguments[]);
+void handle_timer(void);
 int timer_ticks;
 
 struct timer {
 	void* callback;
 	uint32_t ticks;
+	bool enabled;
 	uint32_t arguments[];
 };
 

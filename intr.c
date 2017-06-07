@@ -449,6 +449,7 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 
         if (cpu->intr == 0x20) {
 			if(dhcp_timer > 0) dhcp_timer--;
+			handle_timer();
 			timer_ticks++;
 			if(timer_ticks>=60000) timer_ticks=0;
             new_cpu = schedule(cpu);
