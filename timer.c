@@ -45,6 +45,7 @@ void handle_timer(void) {
 			if(timer_temp->ticks >= timer_temp->timeout) {
 				timer_cb = timer_temp->callback;
 				timer_cb(timer_temp->arguments);
+				// kick timer from list
 			}
 			timer_temp = timer_temp->next;
 		}
