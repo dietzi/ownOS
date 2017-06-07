@@ -1,6 +1,6 @@
 #include "includes.h"
 
-struct timer* timer;
+struct timer* timers = NULL;
 
 void pit_init(void) {
 	int freq=1000;
