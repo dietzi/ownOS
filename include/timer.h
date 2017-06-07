@@ -2,6 +2,13 @@
 #define TIMER_H
 
 void pit_init(void);
+void register_timer(void* callback, uint32_t arguments[]);
 int timer_ticks;
+
+struct timer {
+	void* callback;
+	uint32_t ticks;
+	uint32_t arguments[];
+};
 
 #endif
