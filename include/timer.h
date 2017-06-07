@@ -10,6 +10,7 @@ struct timer {
 	void* callback;
 	uint32_t ticks;
 	bool enabled;
+	struct timer* next;
 	uint32_t arguments[];
 };
 
