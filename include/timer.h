@@ -2,7 +2,7 @@
 #define TIMER_H
 
 void pit_init(void);
-bool register_timer(void* callback, uint32_t timeout, uint32_t *arguments);
+bool register_timer(void* callback, uint32_t timeout, void *arguments);
 void handle_timer(void);
 int timer_ticks;
 

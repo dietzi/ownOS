@@ -2,6 +2,8 @@
 
 struct timer* timers = NULL;
 
+void (*timer_cb)(void *arguments);
+
 void pit_init(void) {
 	int freq=1000;
 	int counter = 1193182 / freq;
@@ -10,10 +12,14 @@ void pit_init(void) {
 	outb(0x40,counter >> 8);
 }
 
-bool register_timer(void* callback, uint32_t timeout, uint32_t *arguments) {
+bool register_timer(void* callback, uint32_t timeout, void *arguments) {
 	struct timer* timer_temp;
 	if(timers == NULL) {
 		timers = pmm_alloc();
+		timer_temp->callback = callback;
+		timer_temp->ticks = 0;
+		timer_temp->timeout = timeout;
+		timer_temp->arguments = arguments;
 		
 		return true;
 	}
@@ -27,8 +33,20 @@ bool register_timer(void* callback, uint32_t timeout, uint32_t *arguments) {
 	timer_temp->ticks = 0;
 	timer_temp->timeout = timeout;
 	timer_temp->arguments = arguments;
+	
+	return true;
 }
 
 void handle_timer(void) {
-	
+	struct timer* timer_temp = timers;
+	if(timer_temp != NULL) {
+		while(timer_temp != NULL) {
+			timer_temp->ticks++;
+			if(timer_temp->ticks >= timer_temp->timeout) {
+				timer_cb = timer_temp->callback;
+				timer_cb(timer_temp->arguments);
+			}
+			timer_temp = timer_temp->next;
+		}
+	}
 }
