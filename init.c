@@ -16,7 +16,7 @@
 
 void test_timer(void *test_arg) {
 	last_message = "test_timer";
-	kprintf("Test...\n");
+	kprintf("Test... %d\n",test_arg);
 }
 
 void init(struct multiboot_info *mb_info) {
@@ -63,8 +63,9 @@ void init(struct multiboot_info *mb_info) {
 	init_telnet();
 	kprintf("\n");
 	uint32_t *args = pmm_alloc();
+	args = 12345;
 	last_message = "register timer";
-	register_timer(test_timer,1000,false,NULL);
+	register_timer(test_timer,1000,false,args);
 	last_message = "timer registered";
 	//get_pci_devices();
 }
