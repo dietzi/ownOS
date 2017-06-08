@@ -64,7 +64,7 @@ void init(struct multiboot_info *mb_info) {
 	kprintf("\n");
 	uint32_t *args = pmm_alloc();
 	last_message = "register timer";
-	register_timer(test_timer,1000,NULL);
+	register_timer(test_timer,1000,false,NULL);
 	last_message = "timer registered";
 	//get_pci_devices();
 }
