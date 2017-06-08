@@ -64,9 +64,12 @@ void handle_timer(void) {
 				timer_cb = timer_temp->callback;
 				last_message = "timer callback";
 				timer_cb(timer_temp->arguments);
+				last_message = "timer callback done";
 				if(timer_temp->remove_after_event) {
+					last_message = "unregister timer";
 					unregister_timer(timer_temp);
 				} else {
+					last_message = "reset timer";
 					timer_temp->ticks = 0;
 				}
 			}
