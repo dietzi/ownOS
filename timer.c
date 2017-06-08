@@ -62,6 +62,7 @@ void handle_timer(void) {
 			timer_temp->ticks++;
 			if(timer_temp->ticks >= timer_temp->timeout) {
 				timer_cb = timer_temp->callback;
+				last_message = "timer callback";
 				timer_cb(timer_temp->arguments);
 				if(timer_temp->remove_after_event) {
 					unregister_timer(timer_temp);

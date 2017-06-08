@@ -62,6 +62,8 @@ void init(struct multiboot_info *mb_info) {
 	init_telnet();
 	kprintf("\n");
 	uint32_t *args = pmm_alloc();
+	last_message = "register timer";
 	register_timer(test_timer,1000,args);
+	last_message = "timer registered";
 	//get_pci_devices();
 }
