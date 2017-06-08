@@ -14,6 +14,10 @@
 
 #include "includes.h"
 
+void test_timer(uint32_t test_arg) {
+	kprintf("Test...\n");
+}
+
 void init(struct multiboot_info *mb_info) {
 	init_complete=false;
 	screen.x = 80;
@@ -57,5 +61,7 @@ void init(struct multiboot_info *mb_info) {
 	
 	init_telnet();
 	kprintf("\n");
+	uint32_t *args = pmm_alloc();
+	register_timer(test_timer,1000,args);
 	//get_pci_devices();
 }

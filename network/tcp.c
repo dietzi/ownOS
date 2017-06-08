@@ -16,6 +16,10 @@ uint32_t last_seq = 0;
 uint32_t last_ack = 0;
 bool con_est = false;
 
+struct tcp_timer_args {
+	uint32_t socketID;
+};
+
 struct clients {
 	uint32_t client_id;
 	bool con_est;

@@ -10,6 +10,7 @@ struct timer {
 	void* callback;
 	uint32_t ticks;
 	uint32_t timeout;
+	bool remove_after_event;
 	struct timer* next;
 	uint32_t *arguments;
 };
