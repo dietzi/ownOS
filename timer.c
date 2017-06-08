@@ -71,14 +71,16 @@ void handle_timer(void) {
 			if(timer_temp->ticks >= timer_temp->timeout) {
 				timer_cb = timer_temp->callback;
 				last_message = "timer callback";
-				kprintf("Raising Timer Callback: 0x%x\n",timer_cb);
+				//kprintf("Raising Timer Callback: 0x%x\n",timer_cb);
 				timer_cb(timer_temp->arguments);
 				last_message = "timer callback done";
 				if(timer_temp->remove_after_event) {
 					last_message = "unregister timer";
+					kprintf("Unregistering Timer\n");
 					unregister_timer(timer_temp);
 				} else {
 					last_message = "reset timer";
+					kprintf("Resetting Timer\n");
 					timer_temp->ticks = 0;
 				}
 			}
