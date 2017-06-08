@@ -61,10 +61,11 @@ void handle_timer(void) {
 		while(timer_temp != NULL) {
 			timer_temp->ticks++;
 			if(timer_temp->ticks >= timer_temp->timeout) {
-				timer_cb = &timer_temp->callback;
+				timer_cb = timer_temp->callback;
 				last_message = "timer callback";
-				//kprintf("Raising Timer Callback: 0x%x\n",timer_cb);
-				//sleep(2000);
+				kprintf("Raising Timer Callback: 0x%x\n",timer_cb);
+				kprintf("Raising Timer Callback: 0x%x\n",*timer_cb);
+				sleep(2000);
 				timer_cb(timer_temp->arguments);
 				last_message = "timer callback done";
 				if(timer_temp->remove_after_event) {
