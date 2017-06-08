@@ -20,7 +20,12 @@ bool register_timer(void* callback, uint32_t timeout, void *arguments) {
 		timer_temp->ticks = 0;
 		timer_temp->timeout = timeout;
 		timer_temp->arguments = arguments;
-		
+		if(timer_temp->callback == NULL) {
+			kprintf("Error setting callback\n");
+			return false;
+		} else {
+			kprintf("Callback set: 0x%x\n",timer_temp->callback);
+		}
 		return true;
 	}
 	timer_temp = timers;
@@ -33,7 +38,12 @@ bool register_timer(void* callback, uint32_t timeout, void *arguments) {
 	timer_temp->ticks = 0;
 	timer_temp->timeout = timeout;
 	timer_temp->arguments = arguments;
-	
+	if(timer_temp->callback == NULL) {
+		kprintf("Error setting callback\n");
+		return false;
+	} else {
+		kprintf("Callback set: 0x%x\n",timer_temp->callback);
+	}
 	return true;
 }
 
