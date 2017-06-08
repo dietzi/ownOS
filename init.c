@@ -14,7 +14,7 @@
 
 #include "includes.h"
 
-void test_timer(uint32_t test_arg) {
+void test_timer(void *test_arg) {
 	last_message = "test_timer";
 	kprintf("Test...\n");
 }
