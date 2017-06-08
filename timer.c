@@ -39,6 +39,12 @@ bool register_timer(void* callback, uint32_t timeout, void *arguments) {
 
 void unregister_timer(struct timer* timer) {
 	struct timer* timer_temp = timers;
+	if(timer_temp == timer) {
+		pmm_free(timers->arguments);
+		pmm_free(timers);
+		timers = timers->next;
+		return;
+	}
 	while(timer_temp != NULL) {
 		if(timer_temp->next == timer) {
 			timer_temp->next = timer_temp->next->next;
