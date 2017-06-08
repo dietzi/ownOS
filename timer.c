@@ -37,6 +37,16 @@ bool register_timer(void* callback, uint32_t timeout, void *arguments) {
 	return true;
 }
 
+void unregister_timer(struct timer* timer) {
+	struct timer* timer_temp = timers;
+	while(timer_temp != NULL) {
+		if(timer_temp->next == timer) {
+			timer_temp->next = timer_temp->next->next;
+			return;
+		}
+	}
+}
+
 void handle_timer(void) {
 	struct timer* timer_temp = timers;
 	if(timer_temp != NULL) {
@@ -45,7 +55,7 @@ void handle_timer(void) {
 			if(timer_temp->ticks >= timer_temp->timeout) {
 				timer_cb = timer_temp->callback;
 				timer_cb(timer_temp->arguments);
-				// kick timer from list
+				unregister_timer(timer_temp);
 			}
 			timer_temp = timer_temp->next;
 		}
