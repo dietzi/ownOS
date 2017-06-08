@@ -16,15 +16,14 @@ bool register_timer(void* callback, uint32_t timeout, void *arguments) {
 	struct timer* timer_temp;
 	if(timers == NULL) {
 		timers = pmm_alloc();
-		timer_temp->callback = callback;
-		timer_temp->ticks = 0;
-		timer_temp->timeout = timeout;
-		timer_temp->arguments = arguments;
-		if(timer_temp->callback == NULL) {
+		timers->callback = callback;
+		timers->ticks = 0;
+		timers->timeout = timeout;
+		timers->arguments = arguments;
+		timers->next = NULL;
+		if(timers->callback == NULL) {
 			kprintf("Error setting callback\n");
 			return false;
-		} else {
-			kprintf("Callback set: 0x%x\n",timer_temp->callback);
 		}
 		return true;
 	}
@@ -38,11 +37,10 @@ bool register_timer(void* callback, uint32_t timeout, void *arguments) {
 	timer_temp->ticks = 0;
 	timer_temp->timeout = timeout;
 	timer_temp->arguments = arguments;
+	timer_temp->next = NULL;
 	if(timer_temp->callback == NULL) {
 		kprintf("Error setting callback\n");
 		return false;
-	} else {
-		kprintf("Callback set: 0x%x\n",timer_temp->callback);
 	}
 	return true;
 }
