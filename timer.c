@@ -63,7 +63,7 @@ void handle_timer(void) {
 			if(timer_temp->ticks >= timer_temp->timeout) {
 				timer_cb = timer_temp->callback;
 				last_message = "timer callback";
-				kprintf("Raising Timer Callback: 0x%x\n",timer_cb);
+				kprintf("Raising Timer Callback: 0x%x\n",timer_temp->callback);
 				sleep(2000);
 				timer_cb(timer_temp->arguments);
 				last_message = "timer callback done";
