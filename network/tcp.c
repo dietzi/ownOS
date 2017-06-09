@@ -154,6 +154,7 @@ uint8_t convert_flags(struct tcp_flags flags) {
 }
 
 void retry_send(void* arguments) {
+	kprintf("Retrying...\n");
 	struct tcp_timer_args* args_temp = temp_args;
 	while(args_temp != NULL) {
 		if(args_temp == arguments) {
@@ -280,6 +281,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 								tempb = tempa;
 							}
 						}
+						kprintf("Registering Timer...\n");
 						unregister_timer_by_arguments(tempb);
 						
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
