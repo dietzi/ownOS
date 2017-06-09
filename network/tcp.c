@@ -272,14 +272,15 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						sendTCPpacket(ether, ip, tcp, tcp->options, 0, listeners[HTONS(temp_port)].tcp_listener.data, 0);
 						
 						struct tcp_timer_args* tempa = temp_args;
+						struct tcp_timer_args* tempb;
 						while(tempa != NULL) {
 							if(tempa->tcp == tcp &&
 									tempa->ip == ip &&
 									tempa->ether == ether) {
-								break;
+								tempb = tempa;
 							}
 						}
-						unregister_timer_by_arguments(tempa);
+						unregister_timer_by_arguments(tempb);
 						
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
 						callback_func(listeners[HTONS(temp_port)].tcp_listener);
