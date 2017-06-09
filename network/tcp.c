@@ -271,6 +271,16 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						client->last_ack = HTONL(tcp->ack_number);
 						sendTCPpacket(ether, ip, tcp, tcp->options, 0, listeners[HTONS(temp_port)].tcp_listener.data, 0);
 						
+						struct tcp_timer_args* tempa = temp_args;
+						while(tempa != NULL) {
+							if(tempa->tcp == tcp &&
+									tempa->ip == ip &&
+									tempa->ether == ether) {
+								break;
+							}
+						}
+						unregister_timer_by_arguments(tempa);
+						
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
 						callback_func(listeners[HTONS(temp_port)].tcp_listener);
 						break;
