@@ -167,7 +167,9 @@ void retry_send(void* arguments) {
 									checksum(args_temp->tcp->destination_port,2);
 				struct clients *client = find_client(socketID,HTONS(args_temp->tcp->destination_port));
 				del_client(client->client_id, HTONS(args_temp->tcp->destination_port));
+				unregister_timer_by_arguments(arguments);
 			} else {
+				//set ack and seq number
 				sendTCPpacket(args_temp->ether, args_temp->ip, args_temp->tcp, args_temp->tcp->options, 0, args_temp->tcp->data, 0);
 				args_temp->retry++;
 			}
@@ -453,6 +455,21 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	}
 	//pos--;
 	sendPacket(ether,buffer,pos);
+	struct tcp_timer_args* args = pmm_alloc();
+	args->retry = 0;
+	args->ether = ether;
+	args->ip = ip;
+	args->tcp = tcp;
+	struct tcp_timer_args* tempa = temp_args;
+	if(tempa != NULL) {
+		while(tempa->next != NULL) {
+			tempa = tempa->next;
+		}
+		tempa->next = args;
+	} else {
+		temp_args = args;
+	}
+	register_timer(retry_send, 2000, false, args);
 	pmm_free(buffer);
 }
 

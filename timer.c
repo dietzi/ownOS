@@ -65,6 +65,24 @@ void unregister_timer(struct timer* timer) {
 	}
 }
 
+void unregister_timer_by_arguments(void* arguments) {
+	struct timer* timer_temp = timers;
+	if(timer_temp->arguments == arguments) {
+		pmm_free(timers->arguments);
+		pmm_free(timers);
+		timers = timers->next;
+		return;
+	}
+	while(timer_temp != NULL) {
+		if(timer_temp->next->arguments == arguments) {
+			pmm_free(timers->next->arguments);
+			pmm_free(timers->next);
+			timer_temp->next = timer_temp->next->next;
+			return;
+		}
+	}
+}
+
 void handle_timer(void) {
 	struct timer* timer_temp = timers;
 	if(timer_temp != NULL) {
