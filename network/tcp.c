@@ -17,14 +17,10 @@ uint32_t last_ack = 0;
 bool con_est = false;
 
 struct tcp_timer_args {
-	uint32_t socketID;
-	uint8_t buffer_pos;
 	uint8_t retry;
-	struct ether_header ether;
-	struct ip_header ip;
-	struct tcp_header tcp;
-	uint8_t* data;
-	int data_length;
+	struct ether_header* ether;
+	struct ip_header* ip;
+	struct tcp_header* tcp;
 	struct tcp_timer_args* next;
 };
 
@@ -63,10 +59,6 @@ struct server_con connections[65536];
 //struct tcp_callback tcp_listeners[65536][51];
 
 void (*callback_func)(struct tcp_callback);
-
-void retry_send(void* arguments) {
-	struct tcp_timer_args* args_temp = arguments;
-}
 
 struct clients *find_client(uint32_t client_id, uint16_t port) {
 	struct clients *client = listeners[port].clients;
@@ -159,6 +151,29 @@ uint8_t convert_flags(struct tcp_flags flags) {
 	flags1 |= flags.ece << 6;
 	flags1 |= flags.cwr << 7;
 	return flags1;
+}
+
+void retry_send(void* arguments) {
+	struct tcp_timer_args* args_temp = temp_args;
+	while(args_temp != NULL) {
+		if(args_temp == arguments) {
+			if(args_temp->retry >= 2) {
+				uint32_t socketID = (args_temp->ip->sourceIP.ip1) +
+									(args_temp->ip->sourceIP.ip2) +
+									(args_temp->ip->sourceIP.ip3) +
+									(args_temp->ip->sourceIP.ip4) +
+									(HTONS(args_temp->tcp->destination_port)) +
+									checksum(args_temp->ip->sourceIP,4) +
+									checksum(args_temp->tcp->destination_port,2);
+				struct clients *client = find_client(socketID,HTONS(args_temp->tcp->destination_port));
+				del_client(client->client_id, HTONS(args_temp->tcp->destination_port));
+			} else {
+				sendTCPpacket(args_temp->ether, args_temp->ip, args_temp->tcp, args_temp->tcp->options, 0, args_temp->tcp->data, 0);
+				args_temp->retry++;
+			}
+		}
+		args_temp = args_temp->next;
+	}
 }
 
 int con_id = 0;
