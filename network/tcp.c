@@ -18,7 +18,17 @@ bool con_est = false;
 
 struct tcp_timer_args {
 	uint32_t socketID;
+	uint8_t buffer_pos;
+	uint8_t retry;
+	struct ether_header ether;
+	struct ip_header ip;
+	struct tcp_header tcp;
+	uint8_t* data;
+	int data_length;
+	struct tcp_timer_args* next;
 };
+
+struct tcp_timer_args* temp_args;
 
 struct clients {
 	uint32_t client_id;
@@ -53,6 +63,10 @@ struct server_con connections[65536];
 //struct tcp_callback tcp_listeners[65536][51];
 
 void (*callback_func)(struct tcp_callback);
+
+void retry_send(void* arguments) {
+	struct tcp_timer_args* args_temp = arguments;
+}
 
 struct clients *find_client(uint32_t client_id, uint16_t port) {
 	struct clients *client = listeners[port].clients;
