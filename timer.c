@@ -75,11 +75,12 @@ void unregister_timer_by_arguments(void* arguments) {
 	}
 	while(timer_temp != NULL) {
 		if(timer_temp->next->arguments == arguments) {
-			pmm_free(timers->next->arguments);
-			pmm_free(timers->next);
+			pmm_free(timer_temp->next->arguments);
+			pmm_free(timer_temp->next);
 			timer_temp->next = timer_temp->next->next;
 			return;
 		}
+		timer_temp = timer_temp->next;
 	}
 }
 
