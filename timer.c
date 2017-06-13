@@ -12,7 +12,7 @@ void pit_init(void) {
 	outb(0x40,counter >> 8);
 }
 
-bool register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
+void register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
 	kprintf("d\n");
 	struct timer* timer_temp;
 	if(timers == NULL) {
@@ -43,10 +43,8 @@ bool register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 	timer_temp->next = NULL;
 	if(timer_temp->callback == NULL) {
 		kprintf("Error setting callback\n");
-		return false;
 	}
 	kprintf("e\n");
-	return true;
 }
 
 void unregister_timer(struct timer* timer) {
