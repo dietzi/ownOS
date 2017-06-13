@@ -107,7 +107,9 @@ void handle_timer(void) {
 				}
 				kprintf("c\n");
 			}
+			last_message = "next timer";
 			timer_temp = timer_temp->next;
 		}
 	}
+	last_message = "end timer_handle";
 }
