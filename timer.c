@@ -90,7 +90,6 @@ void handle_timer(void) {
 	struct timer* timer_temp = timers;
 	if(timer_temp != NULL) {
 		while(timer_temp != NULL) {
-			kprintf("a\n");
 			timer_temp->ticks++;
 			if(timer_temp->ticks >= timer_temp->timeout) {
 				kprintf("b\n");sleep(100);
