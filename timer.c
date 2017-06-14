@@ -1,6 +1,6 @@
 #include "includes.h"
 
-struct timer* timers = NULL;
+struct timer* timers;
 
 void (*timer_cb)(void *arguments);
 
@@ -10,6 +10,8 @@ void pit_init(void) {
 	outb(0x43, 0x34);
 	outb(0x40,counter & 0xFF);
 	outb(0x40,counter >> 8);
+	timers = NULL;
+	timers->next = NULL;
 }
 
 void register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {

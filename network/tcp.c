@@ -484,7 +484,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	} else {
 		temp_args = args;
 	}
-	register_timer(retry_send, 2000, false, NULL);
+	register_timer(retry_send, 2000, false, args);
 	pmm_free(buffer);
 }
 
