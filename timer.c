@@ -48,6 +48,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 }
 
 void unregister_timer(struct timer* timer) {
+	kprintf("Unregistering Timer\n");
 	struct timer* timer_temp = timers;
 	if(timer_temp == timer) {
 		pmm_free(timers->arguments);
@@ -63,6 +64,7 @@ void unregister_timer(struct timer* timer) {
 			return;
 		}
 	}
+	kprintf("Unregistering Timer done\n");
 }
 
 void unregister_timer_by_arguments(void* arguments) {
