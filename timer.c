@@ -66,6 +66,7 @@ void unregister_timer(struct timer* timer) {
 }
 
 void unregister_timer_by_arguments(void* arguments) {
+	kprintf("Unregistering Timer\n");
 	struct timer* timer_temp = timers;
 	if(timer_temp->arguments == arguments) {
 		pmm_free(timers->arguments);
@@ -82,6 +83,7 @@ void unregister_timer_by_arguments(void* arguments) {
 		}
 		timer_temp = timer_temp->next;
 	}
+	kprintf("Unregistering Timer done\n");
 }
 
 void handle_timer(void) {
