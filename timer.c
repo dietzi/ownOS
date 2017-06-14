@@ -26,9 +26,9 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 		timers->next = NULL;
 		if(timers->callback == NULL) {
 			kprintf("Error setting callback\n");
-			return false;
+			return;
 		}
-		return true;
+		return;
 	}
 	timer_temp = timers;
 	while(timer_temp->next != NULL) {
