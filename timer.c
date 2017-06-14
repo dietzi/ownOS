@@ -80,28 +80,26 @@ void unregister_timer_by_arguments(void* arguments) {
 
 void handle_timer(void) {
 	struct timer* timer_temp = timers;
-	if(timer_temp != NULL) {
-		while(timer_temp != NULL) {
-			timer_temp->ticks++;
-			if(timer_temp->ticks >= timer_temp->timeout) {
-				kprintf("a\n");
-				timer_cb = timer_temp->callback;
-				last_message = "timer callback";
-				kprintf("b\n");
-				timer_cb(timer_temp->arguments);
-				last_message = "timer callback done";
-				if(timer_temp->remove_after_event) {
-					last_message = "unregister timer";
-					unregister_timer(timer_temp);
-				} else {
-					last_message = "reset timer";
-					timer_temp->ticks = 0;
-				}
-				kprintf("c\n");
+	while(timer_temp != NULL) {
+		timer_temp->ticks++;
+		if(timer_temp->ticks >= timer_temp->timeout) {
+			kprintf("a\n");sleep(100);
+			timer_cb = timer_temp->callback;
+			last_message = "timer callback";
+			kprintf("b\n");sleep(100);
+			timer_cb(timer_temp->arguments);
+			last_message = "timer callback done";
+			if(timer_temp->remove_after_event) {
+				last_message = "unregister timer";
+				unregister_timer(timer_temp);
+			} else {
+				last_message = "reset timer";
+				timer_temp->ticks = 0;
 			}
-			last_message = "next timer";
-			timer_temp = timer_temp->next;
+			kprintf("c\n");sleep(100);
 		}
+		last_message = "next timer";
+		timer_temp = timer_temp->next;
 	}
 	last_message = "end timer_handle";
 }
