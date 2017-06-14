@@ -129,7 +129,9 @@ void update_status(void) {
 @brief dieser Task wird ausgeführt wenn kein anderer Thread geladen ist
 */
 void idle(void) {
-	while(1);
+	while(1) {
+		__asm__ __volatile__("sti");
+	}
 }
 struct task* v86_task;
 
