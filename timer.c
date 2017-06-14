@@ -30,7 +30,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 	if(timer_temp->callback == NULL) {
 		kprintf("Error setting callback\n");
 	}
-	kprintf("Registering Timer done\n");
+	kprintf("Registering Timer done: 0x%x\n",timer_temp);
 	kprintf("Timers: ");
 	timer_temp = timers;
 	while(timer_temp != NULL) {
