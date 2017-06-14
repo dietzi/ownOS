@@ -93,7 +93,6 @@ void handle_timer(void) {
 	if(timer_temp != NULL) {
 		while(timer_temp != NULL) {
 			timer_temp->ticks++;
-			kprintf("Ticks++\n");
 			if(timer_temp->ticks >= timer_temp->timeout) {
 				kprintf("a\n");
 				timer_cb = timer_temp->callback;

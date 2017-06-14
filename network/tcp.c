@@ -178,6 +178,7 @@ void retry_send(void* arguments) {
 		}
 		args_temp = args_temp->next;
 	}
+	kprintf("Retry end\n");
 }
 
 int con_id = 0;
