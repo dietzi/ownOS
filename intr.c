@@ -494,5 +494,6 @@ struct cpu_state* handle_interrupt(struct cpu_state* cpu)
 		}
 	}*/
 	//last_message = "Returning new_cpu";
+	__asm__ __volatile__("sti");
     return new_cpu;
 }
