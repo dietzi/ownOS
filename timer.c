@@ -93,11 +93,12 @@ void handle_timer(void) {
 	if(timer_temp != NULL) {
 		while(timer_temp != NULL) {
 			timer_temp->ticks++;
+			kprintf("Ticks++\n");
 			if(timer_temp->ticks >= timer_temp->timeout) {
-				kprintf("a\n");sleep(100);
+				kprintf("a\n");
 				timer_cb = timer_temp->callback;
 				last_message = "timer callback";
-				kprintf("b\n");sleep(100);
+				kprintf("b\n");
 				timer_cb(timer_temp->arguments);
 				last_message = "timer callback done";
 				if(timer_temp->remove_after_event) {
@@ -107,7 +108,7 @@ void handle_timer(void) {
 					last_message = "reset timer";
 					timer_temp->ticks = 0;
 				}
-				kprintf("c\n");sleep(100);
+				kprintf("c\n");
 			}
 			last_message = "next timer";
 			timer_temp = timer_temp->next;
