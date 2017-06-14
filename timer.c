@@ -55,7 +55,7 @@ void unregister_timer(struct timer* timer) {
 		timers = timers->next;
 		return;
 	}
-	while(timer_temp != NULL) {
+	while(timer_temp->next != NULL) {
 		if(timer_temp->next == timer) {
 			pmm_free(timers->next->arguments);
 			pmm_free(timers->next);
@@ -74,7 +74,7 @@ void unregister_timer_by_arguments(void* arguments) {
 		timers = timers->next;
 		return;
 	}
-	while(timer_temp != NULL) {
+	while(timer_temp->next != NULL) {
 		if(timer_temp->next->arguments == arguments) {
 			pmm_free(timer_temp->next->arguments);
 			pmm_free(timer_temp->next);
