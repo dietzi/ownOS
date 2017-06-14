@@ -17,14 +17,15 @@ void pit_init(void) {
 void register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
 	kprintf("Registering Timer\n");
 	struct timer* timer_temp = timers;
-	if(timer_temp == NULL) {
+	if(timers == NULL) {
 		timers = pmm_alloc();
 		timer_temp = timers;
 	} else {
-		while(timer_temp != NULL) {
+		while(timer_temp->next != NULL) {
 			timer_temp = timer_temp->next;
 		}
-		timer_temp = pmm_alloc();
+		timer_temp->next = pmm_alloc();
+		timer_temp = timer_temp->next;
 	}
 	timer_temp->callback = callback;
 	timer_temp->ticks = 0;
