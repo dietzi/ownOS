@@ -22,15 +22,18 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 		timers = pmm_alloc();
 		timer_temp = timers;
 	} else {
+		kprintf("timer.c: 25\n");
 		timer_temp = timers;
+		kprintf("timer.c: 27\n");
 		while(timer_temp->next != NULL) {
+			kprintf("timer.c: 29\n");
 			timer_temp = timer_temp->next;
 		}
-		kprintf("timer.c: 29\n");
+		kprintf("timer.c: 32\n");
 		timer_temp->next = pmm_alloc();
 		timer_temp = timer_temp->next;
 	}
-	kprintf("timer.c: 33\n");
+	kprintf("timer.c: 36\n");
 	timer_temp->callback = callback;
 	timer_temp->ticks = 0;
 	timer_temp->timeout = timeout;
@@ -40,7 +43,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 	if(timer_temp->callback == NULL) {
 		kprintf("Error setting callback\n");
 	}
-	kprintf("timer.c: 43\n");
+	kprintf("timer.c: 46\n");
 }
 
 void unregister_timer(struct timer* timer) {
