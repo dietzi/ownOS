@@ -92,7 +92,7 @@ void handle_timer(void) {
 			kprintf("Timer: 0x%x\n",timer_temp);
 			timer_cb = timer_temp->callback;
 			last_message = "timer callback";
-			//timer_cb(timer_temp->arguments);
+			timer_cb(timer_temp->arguments);
 			last_message = "timer callback done";
 			if(timer_temp->remove_after_event) {
 				last_message = "unregister timer";

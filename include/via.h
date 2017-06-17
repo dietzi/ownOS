@@ -49,7 +49,6 @@ enum intr_status_bits {
 
 void via_init(pci_bdf_t device);
 void via_handle_intr(void);
-void dhcp_get_ip(void);
 void via_send(uint8_t data[], int data_length);
 
 #endif
