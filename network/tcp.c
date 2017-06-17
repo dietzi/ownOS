@@ -283,7 +283,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 								tempb = tempa;
 							}
 						}
-						kprintf("Unregistering Timer...\n");sleep(100);
+						kprintf("Unregistering Timer...\n");//sleep(100);
 						last_message = "abc";
 						unregister_timer_by_arguments(tempb);
 						
