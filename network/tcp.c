@@ -159,7 +159,9 @@ void retry_send(void* arguments) {
 	struct tcp_timer_args* args_temp = temp_args;
 	while(args_temp != NULL) {
 		if(args_temp == arguments) {
+			kprintf("tcp.c: 162\n");
 			if(args_temp->retry >= 2) {
+				kprintf("tcp.c: 164\n");
 				uint32_t socketID = (args_temp->ip->sourceIP.ip1) +
 									(args_temp->ip->sourceIP.ip2) +
 									(args_temp->ip->sourceIP.ip3) +
@@ -169,6 +171,7 @@ void retry_send(void* arguments) {
 									checksum(args_temp->tcp->destination_port,2);
 				struct clients *client = find_client(socketID,HTONS(args_temp->tcp->destination_port));
 				del_client(client->client_id, HTONS(args_temp->tcp->destination_port));
+				kprintf("tcp.c: 172\n");
 				unregister_timer_by_arguments(arguments);
 			} else {
 				//set ack and seq number
@@ -283,7 +286,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 								tempb = tempa;
 							}
 						}
-						kprintf("Unregistering Timer...\n");//sleep(100);
+						kprintf("tcp.c: 287\n");//sleep(100);
 						last_message = "abc";
 						unregister_timer_by_arguments(tempb);
 						
@@ -485,6 +488,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	} else {
 		temp_args = args;
 	}
+	kprintf("tcp.c: 488\n");
 	register_timer(retry_send, 2000, false, args);
 	pmm_free(buffer);
 }
