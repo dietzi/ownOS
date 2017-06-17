@@ -491,7 +491,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		temp_args = args;
 	}
 	kprintf("tcp.c: 492\n");
-	if(tcp->flags.ack != 1) register_timer(retry_send, 2000, false, args);
+	register_timer(retry_send, 2000, false, args);
 	pmm_free(buffer);
 	kprintf("tcp.c: 495\n");
 }
