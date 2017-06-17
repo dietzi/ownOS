@@ -223,7 +223,8 @@ void realtek_handle_intr(void) {
 			else kprintf("Half-duplex\n");
 			dhcp_status = 0;
 			dhcp_timer = 0;
-			dhcp_get_ip();
+			register_timer(dhcp_discover, 1000, true, NULL);
+			//dhcp_get_ip();
 		} else {
 			kprintf("Link is down\n");
 		}
