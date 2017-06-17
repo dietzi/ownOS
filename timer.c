@@ -107,6 +107,7 @@ void handle_timer(void) {
 			//kprintf("c\n");sleep(100);
 		}
 		last_message = "next timer";
+		if(timer_temp->next == NULL) break;
 		timer_temp = timer_temp->next;
 	}
 	last_message = "end timer_handle";
