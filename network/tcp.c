@@ -473,7 +473,6 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		pos++;
 	}
 	//pos--;
-	sendPacket(ether,buffer,pos);
 	struct tcp_timer_args* args = pmm_alloc();
 	args->retry = 0;
 	args->ether = ether;
@@ -491,6 +490,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		temp_args = args;
 	}
 	kprintf("tcp.c: 492\n");
+	sendPacket(ether,buffer,pos);
 	register_timer(retry_send, 2000, false, args);
 	pmm_free(buffer);
 	kprintf("tcp.c: 495\n");
