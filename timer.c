@@ -50,17 +50,18 @@ void unregister_timer(struct timer* timer) {
 		pmm_free(timers->arguments);
 		pmm_free(timers);
 		timers = timers->next;
+		kprintf("timer.c: Unregistering Timer done\n");
 		return;
 	}
 	while(timer_temp->next != NULL) {
 		if(timer_temp->next == timer) {
-			pmm_free(timers->next->arguments);
-			pmm_free(timers->next);
+			pmm_free(timer_temp->next->arguments);
+			pmm_free(timer_temp->next);
 			timer_temp->next = timer_temp->next->next;
+			kprintf("timer.c: Unregistering Timer done\n");
 			return;
 		}
 	}
-	kprintf("timer.c: Unregistering Timer done\n");
 }
 
 void unregister_timer_by_arguments(void* arguments) {
@@ -70,6 +71,7 @@ void unregister_timer_by_arguments(void* arguments) {
 		pmm_free(timers->arguments);
 		pmm_free(timers);
 		timers = timers->next;
+		kprintf("timer.c: Unregistering Timer by arguments done\n");
 		return;
 	}
 	while(timer_temp->next != NULL) {
@@ -81,7 +83,6 @@ void unregister_timer_by_arguments(void* arguments) {
 		}
 		timer_temp = timer_temp->next;
 	}
-	kprintf("timer.c: Unregistering Timer by arguments done\n");
 }
 
 void handle_timer(void) {
