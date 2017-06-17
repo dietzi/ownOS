@@ -27,11 +27,6 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 		kprintf("timer.c: 27\n");
 		while(timer_temp->next != NULL) {
 			kprintf("timer.c: 29     0x%x   0x%x\n",timer_temp,timer_temp->next);
-			if(timer_temp->next == NULL) break;
-			if(timer_temp == timer_temp->next->next) {
-				kprintf("Fatal Error. Timer-List....\n");sleep(1000);
-				asm("cli;hlt");
-			}
 			timer_temp = timer_temp->next;
 		}
 		kprintf("timer.c: 32\n");
@@ -54,39 +49,48 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 void unregister_timer(struct timer* timer) {
 	kprintf("timer.c: Unregistering Timer\n");
 	struct timer* timer_temp = timers;
+	struct timer* timer_del;
+	if(timer_temp == NULL) return;
 	if(timer_temp == timer) {
-		pmm_free(timers->arguments);
-		pmm_free(timers);
+		timer_del = timers;
 		timers = timers->next;
+		pmm_free(timer_del->arguments);
+		pmm_free(timer_del);
 		kprintf("timer.c: Unregistering Timer done\n");
 		return;
 	}
 	while(timer_temp->next != NULL) {
 		if(timer_temp->next == timer) {
-			pmm_free(timer_temp->next->arguments);
-			pmm_free(timer_temp->next);
+			timer_del = timer_temp->next;
 			timer_temp->next = timer_temp->next->next;
+			pmm_free(timer_del->arguments);
+			pmm_free(timer_del);
 			kprintf("timer.c: Unregistering Timer done\n");
 			return;
 		}
+		timer_temp = timer_temp->next;
 	}
 }
 
 void unregister_timer_by_arguments(void* arguments) {
 	kprintf("timer.c: Unregistering Timer by arguments\n");
 	struct timer* timer_temp = timers;
+	struct timer* timer_del;
+	if(timer_temp == NULL) return;
 	if(timer_temp->arguments == arguments) {
-		pmm_free(timers->arguments);
-		pmm_free(timers);
+		timer_del = timers;
 		timers = timers->next;
+		pmm_free(timer_del->arguments);
+		pmm_free(timer_del);
 		kprintf("timer.c: Unregistering Timer by arguments done\n");
 		return;
 	}
 	while(timer_temp->next != NULL) {
 		if(timer_temp->next->arguments == arguments) {
-			pmm_free(timer_temp->next->arguments);
-			pmm_free(timer_temp->next);
+			timer_del = timer_temp->next;
 			timer_temp->next = timer_temp->next->next;
+			pmm_free(timer_del->arguments);
+			pmm_free(timer_del);
 			return;
 		}
 		timer_temp = timer_temp->next;
