@@ -27,6 +27,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 		kprintf("timer.c: 27\n");
 		while(timer_temp->next != NULL) {
 			kprintf("timer.c: 29\n");
+			if(timer_temp->next == NULL) break;
 			timer_temp = timer_temp->next;
 		}
 		kprintf("timer.c: 32\n");
