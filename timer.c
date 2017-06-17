@@ -15,17 +15,22 @@ void pit_init(void) {
 }
 
 void register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
-	struct timer* timer_temp = timers;
+	kprintf("timer.c: 18\n");
+	struct timer* timer_temp;
 	if(timers == NULL) {
+		kprintf("timer.c: 21\n");
 		timers = pmm_alloc();
 		timer_temp = timers;
 	} else {
+		kprintf("timer.c: 25\n");
+		timer_temp = timers;
 		while(timer_temp->next != NULL) {
 			timer_temp = timer_temp->next;
 		}
 		timer_temp->next = pmm_alloc();
 		timer_temp = timer_temp->next;
 	}
+	kprintf("timer.c: 33\n");
 	timer_temp->callback = callback;
 	timer_temp->ticks = 0;
 	timer_temp->timeout = timeout;
@@ -35,6 +40,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 	if(timer_temp->callback == NULL) {
 		kprintf("Error setting callback\n");
 	}
+	kprintf("timer.c: 43\n");
 }
 
 void unregister_timer(struct timer* timer) {
