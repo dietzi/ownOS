@@ -154,7 +154,7 @@ uint8_t convert_flags(struct tcp_flags flags) {
 }
 
 void retry_send(void* arguments) {
-	kprintf("Retrying...\n");sleep(1000);
+	kprintf("Retrying...\n");
 	last_message = "def";
 	struct tcp_timer_args* args_temp = temp_args;
 	while(args_temp != NULL) {
