@@ -90,13 +90,9 @@ void handle_timer(void) {
 		timer_temp->ticks++;
 		if(timer_temp->ticks >= timer_temp->timeout) {
 			kprintf("Timer: 0x%x\n",timer_temp);
-			//kprintf("a\n");sleep(100);
-			//kprintf("Setting Callback: ");sleep(100);
-			//kprintf("0x%x\n",timer_temp->callback);sleep(100);
 			timer_cb = timer_temp->callback;
 			last_message = "timer callback";
-			//kprintf("b\n");sleep(100);
-			timer_cb(timer_temp->arguments);
+			//timer_cb(timer_temp->arguments);
 			last_message = "timer callback done";
 			if(timer_temp->remove_after_event) {
 				last_message = "unregister timer";
@@ -105,7 +101,6 @@ void handle_timer(void) {
 				last_message = "reset timer";
 				timer_temp->ticks = 0;
 			}
-			//kprintf("c\n");sleep(100);
 		}
 		last_message = "next timer";
 		if(timer_temp->next == NULL) break;
