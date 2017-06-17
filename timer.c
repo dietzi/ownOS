@@ -84,7 +84,8 @@ void handle_timer(void) {
 		timer_temp->ticks++;
 		if(timer_temp->ticks >= timer_temp->timeout) {
 			kprintf("a\n");sleep(100);
-			kprintf("Setting Callback: 0x%x\n",timer_temp->callback);
+			kprintf("Setting Callback: ");sleep(100);
+			kprintf("0x%x\n",timer_temp->callback);sleep(100);
 			timer_cb = timer_temp->callback;
 			last_message = "timer callback";
 			kprintf("b\n");sleep(100);
