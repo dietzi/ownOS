@@ -19,4 +19,5 @@
 #include "include/pci.h"
 #include "include/realtek.h"
 #include "include/via.h"
-#include "network/include/declerations.h"
+#include "include/network/declerations.h"
+#include "include/network/dhcp.h"

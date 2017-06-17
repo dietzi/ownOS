@@ -223,27 +223,6 @@ struct cpu_state* syscall(struct cpu_state* cpu) {
         case 0: /* putc */
             kprintf("%c", cpu->ebx);
             break;
-		case 1: // dhcp_request
-			kprintf("");
-			struct ip_addr server_ip;
-			struct ip_addr own_ip;
-			union cpu1 {
-				uint32_t value;
-				struct ip_addr ip;
-			};
-			union cpu1 c1;
-			c1.value = cpu->ebx;
-			server_ip = c1.ip;
-			
-			union cpu1 c2;
-			c2.value = cpu->ecx;
-			own_ip = c2.ip;
-			
-			kprintf("Server-IP: %d.%d.%d.%d\n", server_ip.ip1, server_ip.ip2, server_ip.ip3, server_ip.ip4);
-			kprintf("Own-IP: %d.%d.%d.%d\n", own_ip.ip1, own_ip.ip2, own_ip.ip3, own_ip.ip4);
-			
-			dhcp_request(server_ip, own_ip);
-			break;
     }
 
     return cpu;

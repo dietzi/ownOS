@@ -1,14 +1,15 @@
 #include "includes.h"
 
-uint32_t connection_id = 0x33224411;
-
-//struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet);
 void dhcp_discover(void);
 void dhcp_offer(struct dhcp_packet dhcp);
 void dhcp_request(struct ip_addr server_ip, struct ip_addr own_ip);
 void dhcp_ack(struct dhcp_packet dhcp);
 void dhcp_get_ip(void);
 void handle_dhcp(struct ether_header* ether, struct udp_header* udp1);
+
+uint32_t connection_id = 0x33224411;
+
+//struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet);
 
 int dhcp_status = 0;
 int dhcp_timer = 0;

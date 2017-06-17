@@ -67,6 +67,7 @@ int realtek_next_tx = 0;
 
 extern int dhcp_timer;
 extern int dhcp_status;
+extern void dhcp_discover(void);
 
 void init_buffers(void) {
 	rx_descs = pmm_alloc();
@@ -131,6 +132,7 @@ void realtek_init(pci_bdf_t device) {
 	//sleep(1000);
 	kprintf("Realtek init complete\n");
 	//realtek_send_packet();
+	register_timer(dhcp_discover, 1000, true, NULL);
 }
 
 void realtek_send_packet(uint8_t *data, int data_length) {
@@ -192,10 +194,10 @@ void realtek_handle_intr(void) {
 	if(status & 0x0001) {
 		//kprintf("Receive succesfull\n");
 		got_packet();
-		if(dhcp_timer <= 0 && dhcp_status == 5) {
+		/*if(dhcp_timer <= 0 && dhcp_status == 5) {
 			dhcp_status = 0;
 		}
-		dhcp_get_ip();
+		dhcp_get_ip();*/
 	}
 	if(status & 0x0002) kprintf("Receive error\n");
 	if((status & 0x0004) && (status & 0x0080)) {
