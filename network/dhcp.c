@@ -196,7 +196,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 }
 
 void dhcp_discover(void) {
-	//kprintf("DHCP-DISCOVER...\n");
+	kprintf("DHCP-DISCOVER...\n");
 	dhcp_status = 1;	
 	struct ip_addr ip11;
 	struct ip_addr ip22;
