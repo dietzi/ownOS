@@ -403,7 +403,6 @@ void sendData(struct tcp_callback cb) {
 }
 
 void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_header* tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
-	kprintf("tcp.c: 406\n");
 	uint16_t packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
 	int pos1 = 0;
@@ -474,12 +473,14 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		pos++;
 	}
 	//pos--;
+	kprintf("tcp.c: 476\n");
 	sendPacket(ether,buffer,pos);
 	struct tcp_timer_args* args = pmm_alloc();
 	args->retry = 0;
 	args->ether = ether;
 	args->ip = ip;
 	args->tcp = tcp;
+	args->next = NULL;
 	struct tcp_timer_args* tempa = temp_args;
 	if(tempa != NULL) {
 		while(tempa->next != NULL) {
