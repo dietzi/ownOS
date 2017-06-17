@@ -134,17 +134,17 @@ void realtek_init(pci_bdf_t device) {
 }
 
 void realtek_send_packet(uint8_t *data, int data_length) {
-	tx_descs[realtek_next_tx].fs = 1;
-	tx_descs[realtek_next_tx].ls = 1;
-	tx_descs[realtek_next_tx].own = 1;
-	tx_descs[realtek_next_tx].frame_length = data_length;
-	tx_descs[realtek_next_tx].addr_low = tx_buf[realtek_next_tx];
 	last_message = "memcpy";
 	//memcpy(&tx_buf[realtek_next_tx],data,data_length);
 	for(int i = 0; i < data_length; i++) {
 		tx_buf[realtek_next_tx][i] = data[i];
 	}
 	last_message = "memcpy done";
+	tx_descs[realtek_next_tx].fs = 1;
+	tx_descs[realtek_next_tx].ls = 1;
+	tx_descs[realtek_next_tx].own = 1;
+	tx_descs[realtek_next_tx].frame_length = data_length;
+	tx_descs[realtek_next_tx].addr_low = tx_buf[realtek_next_tx];
 	//kprintf("Poll Packet %d: %d\n",realtek_next_tx,tx_descs[realtek_next_tx].frame_length);
 	pci_write_register_8(addr,0,0x38,0x40);
 	//kprintf("Waiting for transmit...\n");
