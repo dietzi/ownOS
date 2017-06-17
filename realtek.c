@@ -186,6 +186,8 @@ void got_packet(void) {
 	last_message = "end got_packet";
 }
 
+int intr_counter = 0;
+
 void realtek_handle_intr(void) {
 	uint16_t status = pci_read_register_16(addr,0,0x3E);
 	//kprintf("Status: %b\n",status);
@@ -198,7 +200,7 @@ void realtek_handle_intr(void) {
 		dhcp_get_ip();
 	}
 	if(status & 0x0002) kprintf("Receive error\n");
-	if(status & 0x0004) kprintf("Transmit succesfull\n");
+	if(status & 0x0004) kprintf("%d: Transmit succesfull\n",intr_counter);
 	if(status & 0x0008) kprintf("Transmit error\n");
 	if(status & 0x0010) {
 		if(printed == false) {
@@ -227,7 +229,7 @@ void realtek_handle_intr(void) {
 			printed1 = true;
 		}
 	}
-	if(status & 0x0080) kprintf("Transmit descriptor unavailable\n");
+	if(status & 0x0080) kprintf("%d: Transmit descriptor unavailable\n",intr_counter);
 	if(status & 0x0100) kprintf("Software Interrupt\n");
 	if(status & 0x0200) kprintf("Receive FIFO empty\n");
 	if(status & 0x0400) kprintf("Unknown Status (reserved Bit 11)\n");
@@ -236,7 +238,7 @@ void realtek_handle_intr(void) {
 	if(status & 0x2000) kprintf("Unknown Status (reserved Bit 14)\n");
 	//if(status & 0x4000) kprintf("Timeout\n");
 	if(status & 0x8000) kprintf("Unknown Status (reserved Bit 16)\n");
-
+intr_counter++;
 	last_message = "resetting interrupt-mask";
 	pci_write_register_16(addr,0,0x3E,pci_read_register_16(addr,0,0x3E));
 	last_message = "end realtek_handle_intr";
