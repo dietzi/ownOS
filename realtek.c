@@ -148,7 +148,7 @@ void realtek_send_packet(uint8_t *data, int data_length) {
 	//kprintf("Poll Packet %d: %d\n",realtek_next_tx,tx_descs[realtek_next_tx].frame_length);
 	pci_write_register_8(addr,0,0x38,0x40);
 	//kprintf("Waiting for transmit...\n");
-	while(pci_read_register_8(addr,0,0x38) != 0);
+	//while(pci_read_register_8(addr,0,0x38) != 0);
 	//kprintf("Transmit done\n");
 	last_message = "set poll bit";
 	realtek_next_tx++;
