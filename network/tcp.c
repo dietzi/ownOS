@@ -403,6 +403,7 @@ void sendData(struct tcp_callback cb) {
 }
 
 void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_header* tcp, uint32_t options[], int options_count, uint8_t *data, int data_length) {
+	kprintf("tcp.c: 406\n");
 	uint16_t packetsize = 20 + 20 + options_count + data_length;
 	int pos = 0;
 	int pos1 = 0;
@@ -488,10 +489,10 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	} else {
 		temp_args = args;
 	}
-	kprintf("tcp.c: 491\n");
+	kprintf("tcp.c: 492\n");
 	if(tcp->flags.ack != 1) register_timer(retry_send, 2000, false, args);
 	pmm_free(buffer);
-	kprintf("tcp.c: 494\n");
+	kprintf("tcp.c: 495\n");
 }
 
 /*bool tcp_open_con(int port, void *callback_pointer) {
