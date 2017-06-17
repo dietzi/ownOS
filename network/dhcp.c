@@ -369,6 +369,7 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 								dhcp.options[51].data[2] >> 8 |
 								(dhcp.options[51].data[3] & 0x000000FF);
 			dhcp_timer = timer * 1000;
+			register_timer(dhcp_discover, timer * 1000, true, NULL);
 			kprintf("IP: %d.%d.%d.%d\n",my_ip.ip1,my_ip.ip2,my_ip.ip3,my_ip.ip4);
 			dhcp_status = 5;
 		} else {
@@ -379,7 +380,7 @@ void dhcp_ack(struct dhcp_packet dhcp) {
 
 void dhcp_get_ip(void) {
 	if(dhcp_timer <= 0 && dhcp_status == 5) {
-		dhcp_status = 0;
+		//dhcp_status = 0;
 	}
 	switch(dhcp_status) {
 		case 0:
