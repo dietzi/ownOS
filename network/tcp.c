@@ -491,6 +491,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	kprintf("tcp.c: 491\n");
 	register_timer(retry_send, 2000, false, args);
 	pmm_free(buffer);
+	kprintf("tcp.c: 494\n");
 }
 
 /*bool tcp_open_con(int port, void *callback_pointer) {
