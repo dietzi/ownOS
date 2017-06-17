@@ -196,7 +196,7 @@ struct dhcp_packet_created create_dhcp_packet(struct dhcp_packet dhcp) {
 }
 
 void dhcp_discover(void) {
-	kprintf("DHCP-DISCOVER...\n");
+	//kprintf("DHCP-DISCOVER...\n");
 	dhcp_status = 1;	
 	struct ip_addr ip11;
 	struct ip_addr ip22;
@@ -353,7 +353,7 @@ void dhcp_offer(struct dhcp_packet dhcp1) {
 		own_ip.ip2 = dhcp1.own_ip.ip2;
 		own_ip.ip3 = dhcp1.own_ip.ip3;
 		own_ip.ip4 = dhcp1.own_ip.ip4;
-		//dhcp_request(server_ip, own_ip);
+		dhcp_request(server_ip, own_ip);
 	}
 }
 
