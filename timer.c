@@ -87,9 +87,9 @@ void unregister_timer_by_arguments(void* arguments) {
 void handle_timer(void) {
 	struct timer* timer_temp = timers;
 	while(timer_temp != NULL) {
-		kprintf("Timer: 0x%x\n",timer_temp);
 		timer_temp->ticks++;
 		if(timer_temp->ticks >= timer_temp->timeout) {
+			kprintf("Timer: 0x%x\n",timer_temp);
 			//kprintf("a\n");sleep(100);
 			//kprintf("Setting Callback: ");sleep(100);
 			//kprintf("0x%x\n",timer_temp->callback);sleep(100);
