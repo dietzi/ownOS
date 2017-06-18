@@ -20,7 +20,6 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 	if(timers == NULL) {
 		kprintf("timer.c: 21\n");
 		timers = pmm_alloc();
-		kprintf("timer1: 0x%x\n",timers);
 		timers->next = NULL;
 		timer_temp = timers;
 	} else {
