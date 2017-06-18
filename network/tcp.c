@@ -170,8 +170,8 @@ void retry_send(void* arguments) {
 									(HTONS(args_temp->tcp->destination_port)) +
 									checksum(args_temp->ip->sourceIP,4) +
 									checksum(args_temp->tcp->destination_port,2);
-				struct clients *client = find_client(socketID,(args_temp->tcp->destination_port));
-				if(del_client(client->client_id, (args_temp->tcp->destination_port))) {
+				struct clients *client = find_client(socketID,HTONS(args_temp->tcp->destination_port));
+				if(del_client(client->client_id, HTONS(args_temp->tcp->destination_port))) {
 					kprintf("Delete OK\n");
 				} else {
 					kprintf("Delete Error\n");
