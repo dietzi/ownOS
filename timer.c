@@ -50,7 +50,6 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 }
 
 void unregister_timer(struct timer* timer) {
-	kprintf("timer.c: Unregistering Timer\n");
 	struct timer* timer_temp = timers;
 	struct timer* timer_del = NULL;
 	if(timer_temp == NULL) return;
@@ -76,16 +75,15 @@ void unregister_timer(struct timer* timer) {
 }
 
 void unregister_timer_by_arguments(void* arguments) {
-	kprintf("timer.c: Unregistering Timer by arguments\n");
 	struct timer* timer_temp = timers;
 	struct timer* timer_del = NULL;
 	if(timer_temp == NULL) return;
 	if(timer_temp->arguments == arguments) {
-		timer_del = timers;
-		timers = timers->next;
+		timer_del = timer_temp;
+		timers = timer_temp->next;
 		pmm_free(timer_del->arguments);
 		pmm_free(timer_del);
-		kprintf("timer.c: Unregistering Timer by arguments done\n");
+		kprintf("timer.c: 86 Unregistering Timer by arguments done\n");
 		return;
 	}
 	while(timer_temp->next != NULL) {
@@ -94,6 +92,7 @@ void unregister_timer_by_arguments(void* arguments) {
 			timer_temp->next = timer_temp->next->next;
 			pmm_free(timer_del->arguments);
 			pmm_free(timer_del);
+			kprintf("timer.c: 95 Unregistering Timer by arguments done\n");
 			return;
 		}
 		timer_temp = timer_temp->next;
@@ -105,7 +104,6 @@ void handle_timer(void) {
 	while(timer_temp != NULL) {
 		timer_temp->ticks++;
 		if(timer_temp->ticks >= timer_temp->timeout) {
-			kprintf("Timer: 0x%x\n",timer_temp);
 			timer_cb = timer_temp->callback;
 			last_message = "timer callback";
 			timer_cb(timer_temp->arguments);
