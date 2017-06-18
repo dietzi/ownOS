@@ -18,6 +18,7 @@ bool con_est = false;
 
 struct tcp_timer_args {
 	uint8_t retry;
+	
 	struct ether_header* ether;
 	struct ip_header* ip;
 	struct tcp_header* tcp;
@@ -169,8 +170,12 @@ void retry_send(void* arguments) {
 									(HTONS(args_temp->tcp->destination_port)) +
 									checksum(args_temp->ip->sourceIP,4) +
 									checksum(args_temp->tcp->destination_port,2);
-				struct clients *client = find_client(socketID,HTONS(args_temp->tcp->destination_port));
-				del_client(client->client_id, HTONS(args_temp->tcp->destination_port));
+				struct clients *client = find_client(socketID,(args_temp->tcp->destination_port));
+				if(del_client(client->client_id, (args_temp->tcp->destination_port))) {
+					kprintf("Delete OK\n");
+				} else {
+					kprintf("Delete Error\n");
+				}
 				kprintf("tcp.c: 172\n");
 				unregister_timer_by_arguments(arguments);
 			} else {
