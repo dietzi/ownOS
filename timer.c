@@ -61,7 +61,7 @@ void unregister_timer(struct timer* timer) {
 		timers = timers->next;
 		pmm_free(timer->arguments);
 		pmm_free(timer);
-		kprintf("timer.c: Unregistering Timer done\n");
+		kprintf("timer.c: 64 Unregistering Timer done\n");sleep(500);
 		return;
 	}
 	while(timer_temp->next != NULL) {
@@ -70,7 +70,7 @@ void unregister_timer(struct timer* timer) {
 			timer_temp->next = timer_temp->next->next;
 			pmm_free(timer->arguments);
 			pmm_free(timer);
-			kprintf("timer.c: Unregistering Timer done\n");
+			kprintf("timer.c: 73 Unregistering Timer done\n");sleep(500);
 			return;
 		}
 		timer_temp = timer_temp->next;
