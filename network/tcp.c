@@ -183,6 +183,7 @@ void retry_send(void* arguments) {
 				}
 				kprintf("tcp.c: 172\n");
 				kprintf("Trying to unregister Timer at 0x%x\n",args_temp->timer);
+					show_timers();
 				if(unregister_timer(args_temp->timer)) {
 					kprintf("Unregister OK\n");
 				} else {
