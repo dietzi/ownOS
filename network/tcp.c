@@ -521,6 +521,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	sendPacket(ether,buffer,pos);
 	
 	args->timer = register_timer(retry_send, 2000, false, args);
+	temp_args = args;
 	pmm_free(buffer);
 	kprintf("tcp.c: 495\n");
 }
