@@ -23,6 +23,7 @@ struct tcp_timer_args {
 	struct ether_header* ether;
 	struct ip_header* ip;
 	struct tcp_header* tcp;
+	struct timer* timer;
 	struct tcp_timer_args* next;
 };
 
@@ -182,7 +183,7 @@ void retry_send(void* arguments) {
 					sleep(100);
 				}
 				kprintf("tcp.c: 172\n");
-				if(unregister_timer_by_arguments(arguments)) {
+				if(unregister_timer(args_temp->timer)) {
 					kprintf("Unregister OK\n");
 				} else {
 					kprintf("Unregister Error\n");
@@ -298,11 +299,12 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 									tempa->ip == ip &&
 									tempa->ether == ether) {
 								tempb = tempa;
+								break;
 							}
 						}
 						kprintf("tcp.c: 287\n");//sleep(100);
 						last_message = "abc";
-						unregister_timer_by_arguments(tempb);
+						unregister_timer(tempb->timer);
 						
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
 						callback_func(listeners[HTONS(temp_port)].tcp_listener);
@@ -503,7 +505,8 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		temp_args = args;
 	}
 	sendPacket(ether,buffer,pos);
-	register_timer(retry_send, 2000, false, args);
+	
+	args->timer = register_timer(retry_send, 2000, false, args);
 	pmm_free(buffer);
 	kprintf("tcp.c: 495\n");
 }

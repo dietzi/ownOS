@@ -13,7 +13,7 @@ void pit_init(void) {
 	timers = NULL;
 }
 
-void register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
+struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
 	kprintf("timer.c: 18\n");
 	struct timer* timer_temp;
 	/*if(timers == NULL) {
@@ -47,6 +47,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 	}
 	timers = timer_temp;
 	kprintf("timer.c: 46\n");
+	return timer_temp;
 }
 
 void unregister_timer(struct timer* timer) {
