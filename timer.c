@@ -28,8 +28,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 		timer_temp = timers;
 		kprintf("timer.c: 27\n");
 		while(timer_temp != NULL) {
-			__asm__ __volatile__("sti");
-			kprintf("timer.c: 29     0x%x   0x%x\n",timer_temp,timer_temp->next);
+			kprintf("timer.c: 29     0x%x   0x%x   0x%x\n",timers,timer_temp,timer_temp->next);
 			if(timer_temp->next == NULL) break;
 			timer_temp = timer_temp->next;
 		}
