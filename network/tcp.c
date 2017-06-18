@@ -157,10 +157,8 @@ uint8_t convert_flags(struct tcp_flags flags) {
 }
 
 void retry_send(void* arguments) {
-	kprintf("Retrying...\n");
 	last_message = "def";
 	struct tcp_timer_args* args_temp = temp_args;
-	struct tcp_timer_args* prev_args;
 	while(args_temp != NULL) {
 		if(args_temp == arguments) {
 			kprintf("tcp.c: 162\n");
@@ -198,6 +196,7 @@ void retry_send(void* arguments) {
 					while(temp1->next != NULL) {
 						if(temp1->next == args_temp) {
 							temp1->next = temp1->next->next;
+							pmm_free(args_temp);
 							break;
 						}
 						temp1 = temp1->next;
@@ -210,10 +209,8 @@ void retry_send(void* arguments) {
 				args_temp->retry++;
 			}
 		}
-		prev_args = args_temp;
 		args_temp = args_temp->next;
 	}
-	kprintf("Retry end\n");
 }
 
 int con_id = 0;
