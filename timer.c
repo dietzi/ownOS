@@ -59,8 +59,8 @@ void unregister_timer(struct timer* timer) {
 	if(timer_temp == timer) {
 		timer_del = timers;
 		timers = timers->next;
-		pmm_free(timer_del->arguments);
-		pmm_free(timer_del);
+		pmm_free(timer->arguments);
+		pmm_free(timer);
 		kprintf("timer.c: Unregistering Timer done\n");
 		return;
 	}
@@ -68,8 +68,8 @@ void unregister_timer(struct timer* timer) {
 		if(timer_temp->next == timer) {
 			timer_del = timer_temp->next;
 			timer_temp->next = timer_temp->next->next;
-			pmm_free(timer_del->arguments);
-			pmm_free(timer_del);
+			pmm_free(timer->arguments);
+			pmm_free(timer);
 			kprintf("timer.c: Unregistering Timer done\n");
 			return;
 		}
@@ -114,7 +114,7 @@ void handle_timer(void) {
 			last_message = "timer callback done";
 			if(timer_temp->remove_after_event) {
 				last_message = "unregister timer";
-				//unregister_timer(timer_temp);
+				unregister_timer(timer_temp);
 			} else {
 				last_message = "reset timer";
 				timer_temp->ticks = 0;
