@@ -4,6 +4,7 @@
 void pit_init(void);
 struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments);
 void handle_timer(void);
+bool unregister_timer(struct timer* timer);
 bool unregister_timer_by_arguments(void* arguments);
 int timer_ticks;
 

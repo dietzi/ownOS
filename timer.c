@@ -50,17 +50,17 @@ struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after
 	return timer_temp;
 }
 
-void unregister_timer(struct timer* timer) {
+bool unregister_timer(struct timer* timer) {
 	struct timer* timer_temp = timers;
 	struct timer* timer_del = NULL;
-	if(timer_temp == NULL) return;
+	if(timer_temp == NULL) return false;
 	if(timer_temp == timer) {
 		timer_del = timers;
 		timers = timers->next;
 		pmm_free(timer->arguments);
 		pmm_free(timer);
 		kprintf("timer.c: 64 Unregistering Timer done\n");
-		return;
+		return true;
 	}
 	while(timer_temp->next != NULL) {
 		if(timer_temp->next == timer) {
@@ -69,10 +69,11 @@ void unregister_timer(struct timer* timer) {
 			pmm_free(timer->arguments);
 			pmm_free(timer);
 			kprintf("timer.c: 73 Unregistering Timer done\n");
-			return;
+			return true;
 		}
 		timer_temp = timer_temp->next;
 	}
+	return false;
 }
 
 bool unregister_timer_by_arguments(void* arguments) {
