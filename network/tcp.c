@@ -18,7 +18,8 @@ bool con_est = false;
 
 struct tcp_timer_args {
 	uint8_t retry;
-	
+	uint32_t client_id;
+	uint16_t port;
 	struct ether_header* ether;
 	struct ip_header* ip;
 	struct tcp_header* tcp;
@@ -175,6 +176,9 @@ void retry_send(void* arguments) {
 					kprintf("Delete OK\n");
 				} else {
 					kprintf("Delete Error\n");
+					kprintf("Client-ID: 0x%x\n", client->client_id);
+					kprintf("Dest-Port: %d\n", HTONS(args_temp->tcp->destination_port));
+					show_clients(HTONS(args_temp->tcp->destination_port));
 				}
 				kprintf("tcp.c: 172\n");
 				unregister_timer_by_arguments(arguments);
