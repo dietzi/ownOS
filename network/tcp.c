@@ -204,6 +204,7 @@ void retry_send(void* arguments) {
 					}
 				}
 			} else {
+				kprintf("tcp.c: 207\n");
 				//set ack and seq number
 				sendTCPpacket(args_temp->ether, args_temp->ip, args_temp->tcp, args_temp->tcp->options, 0, args_temp->tcp->data, 0);
 				args_temp->retry++;
