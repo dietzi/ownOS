@@ -480,7 +480,6 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	args->tcp = tcp;
 	args->next = NULL;
 	struct tcp_timer_args* tempa = temp_args;
-	kprintf("tcp.c: 484\n");
 	if(tempa != NULL) {
 		while(tempa->next != NULL) {
 			tempa = tempa->next;
@@ -489,9 +488,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	} else {
 		temp_args = args;
 	}
-	kprintf("tcp.c: 492\n");
 	sendPacket(ether,buffer,pos);
-	kprintf("Args at 0x%x\n",args);
 	register_timer(retry_send, 2000, false, args);
 	pmm_free(buffer);
 	kprintf("tcp.c: 495\n");
