@@ -25,24 +25,6 @@ void show_timers(void) {
 struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
 	kprintf("timer.c: 18\n");
 	struct timer* timer_temp;
-	/*if(timers == NULL) {
-		kprintf("timer.c: 21\n");
-		timers = pmm_alloc();
-		timers->next = NULL;
-		timer_temp = timers;
-	} else {
-		kprintf("timer.c: 25\n");
-		timer_temp = timers;
-		kprintf("timer.c: 27\n");
-		while(timer_temp->next != NULL) {
-			kprintf("timer.c: 29     0x%x   0x%x   0x%x\n",timers,timer_temp,timer_temp->next);
-			timer_temp = timer_temp->next;
-		}
-		kprintf("timer.c: 32\n");
-		timer_temp->next = pmm_alloc();
-		kprintf("timer2: 0x%x\n",timer_temp->next);
-		timer_temp = timer_temp->next;
-	}*/
 	kprintf("timer.c: 36\n");
 	timer_temp = pmm_alloc();
 	timer_temp->callback = callback;
@@ -62,7 +44,10 @@ struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after
 bool unregister_timer(struct timer* timer) {
 	struct timer* timer_temp = timers;
 	struct timer* timer_del = NULL;
-	if(timer_temp == NULL) return false;
+	if(timer_temp == NULL) {
+		kprintf("No timers available\n");
+		return false;
+	}
 	if(timer_temp == timer) {
 		timer_del = timers;
 		timers = timers->next;
@@ -82,6 +67,7 @@ bool unregister_timer(struct timer* timer) {
 		}
 		timer_temp = timer_temp->next;
 	}
+	kprintf("Timer not found\n");
 	return false;
 }
 
