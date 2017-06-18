@@ -75,8 +75,6 @@ void unregister_timer(struct timer* timer) {
 }
 
 bool unregister_timer_by_arguments(void* arguments) {
-	kprintf("Arguments: 0x%x\n",arguments);
-	kprintf("Args: 0x%x\n",timers->arguments);
 	struct timer* timer_temp = timers;
 	struct timer* timer_del = NULL;
 	if(timer_temp == NULL) return false;
