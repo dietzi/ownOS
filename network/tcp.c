@@ -179,6 +179,7 @@ void retry_send(void* arguments) {
 					kprintf("Client-ID: 0x%x\n", client->client_id);
 					kprintf("Dest-Port: %d\n", HTONS(args_temp->tcp->destination_port));
 					show_clients(HTONS(args_temp->tcp->destination_port));
+					sleep(100);
 				}
 				kprintf("tcp.c: 172\n");
 				unregister_timer_by_arguments(arguments);
