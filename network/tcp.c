@@ -27,7 +27,7 @@ struct tcp_timer_args {
 	struct tcp_timer_args* next;
 };
 
-struct tcp_timer_args* temp_args;
+struct tcp_timer_args* temp_args = NULL;
 
 struct clients {
 	uint32_t client_id;
@@ -511,8 +511,8 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	args->ether = ether;
 	args->ip = ip;
 	args->tcp = tcp;
-	args->next = NULL;
-	struct tcp_timer_args* tempa = temp_args;
+	args->next = temp_args;
+	/*struct tcp_timer_args* tempa = temp_args;
 	if(tempa != NULL) {
 		while(tempa->next != NULL) {
 			tempa = tempa->next;
@@ -520,7 +520,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 		tempa->next = args;
 	} else {
 		temp_args = args;
-	}
+	}*/
 	sendPacket(ether,buffer,pos);
 	
 	args->timer = register_timer(retry_send, 2000, false, args);
