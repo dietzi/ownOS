@@ -114,7 +114,7 @@ void handle_timer(void) {
 			last_message = "timer callback done";
 			if(timer_temp->remove_after_event) {
 				last_message = "unregister timer";
-				unregister_timer(timer_temp);
+				//unregister_timer(timer_temp);
 			} else {
 				last_message = "reset timer";
 				timer_temp->ticks = 0;
