@@ -2,6 +2,7 @@
 #define TIMER_H
 
 void pit_init(void);
+void show_timers(void);
 struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments);
 void handle_timer(void);
 bool unregister_timer(struct timer* timer);

@@ -183,10 +183,12 @@ void retry_send(void* arguments) {
 					sleep(100);
 				}
 				kprintf("tcp.c: 172\n");
+				kprintf("Trying to unregister Timer at 0x%x\n",args_temp->timer);
 				if(unregister_timer(args_temp->timer)) {
 					kprintf("Unregister OK\n");
 				} else {
 					kprintf("Unregister Error\n");
+					show_timers();
 				}
 			} else {
 				//set ack and seq number

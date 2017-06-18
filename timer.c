@@ -13,6 +13,15 @@ void pit_init(void) {
 	timers = NULL;
 }
 
+void show_timers(void) {
+	struct timer* timer_temp = timers;
+	while(timer_temp != NULL) {
+		kprintf("0x%x -> ",timer_temp);
+		timer_temp = timer_temp->next;
+	}
+	kprintf("\n");
+}
+
 struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
 	kprintf("timer.c: 18\n");
 	struct timer* timer_temp;
