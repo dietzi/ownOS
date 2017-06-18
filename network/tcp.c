@@ -160,6 +160,7 @@ void retry_send(void* arguments) {
 	kprintf("Retrying...\n");
 	last_message = "def";
 	struct tcp_timer_args* args_temp = temp_args;
+	struct tcp_timer_args* prev_args;
 	while(args_temp != NULL) {
 		if(args_temp == arguments) {
 			kprintf("tcp.c: 162\n");
@@ -190,12 +191,25 @@ void retry_send(void* arguments) {
 					kprintf("Unregister Error\n");
 					show_timers();
 				}
+				if(args_temp == temp_args) {
+					temp_args = temp_args->next;
+				} else {
+					struct tcp_timer_args* temp1 = temp_args;
+					while(temp1->next != NULL) {
+						if(temp1->next == args_temp) {
+							temp1->next = temp1->next->next;
+							break;
+						}
+						temp1 = temp1->next;
+					}
+				}
 			} else {
 				//set ack and seq number
 				sendTCPpacket(args_temp->ether, args_temp->ip, args_temp->tcp, args_temp->tcp->options, 0, args_temp->tcp->data, 0);
 				args_temp->retry++;
 			}
 		}
+		prev_args = args_temp;
 		args_temp = args_temp->next;
 	}
 	kprintf("Retry end\n");
