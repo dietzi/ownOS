@@ -1,6 +1,6 @@
 #include "includes.h"
 
-struct timer* timers;
+struct timer* timers = NULL;
 
 void (*timer_cb)(void *arguments);
 
@@ -54,7 +54,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 void unregister_timer(struct timer* timer) {
 	kprintf("timer.c: Unregistering Timer\n");
 	struct timer* timer_temp = timers;
-	struct timer* timer_del;
+	struct timer* timer_del = NULL;
 	if(timer_temp == NULL) return;
 	if(timer_temp == timer) {
 		timer_del = timers;
@@ -80,7 +80,7 @@ void unregister_timer(struct timer* timer) {
 void unregister_timer_by_arguments(void* arguments) {
 	kprintf("timer.c: Unregistering Timer by arguments\n");
 	struct timer* timer_temp = timers;
-	struct timer* timer_del;
+	struct timer* timer_del = NULL;
 	if(timer_temp == NULL) return;
 	if(timer_temp->arguments == arguments) {
 		timer_del = timers;
