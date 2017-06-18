@@ -75,6 +75,8 @@ void unregister_timer(struct timer* timer) {
 }
 
 bool unregister_timer_by_arguments(void* arguments) {
+	kprintf("Arguments: 0x%x\n",arguments);
+	kprintf("Args: 0x%x\n",timers->arguments);
 	struct timer* timer_temp = timers;
 	struct timer* timer_del = NULL;
 	if(timer_temp == NULL) return false;
@@ -87,6 +89,7 @@ bool unregister_timer_by_arguments(void* arguments) {
 		return true;
 	}
 	while(timer_temp->next != NULL) {
+		kprintf("Args: 0x%x\n",timer_temp->next->arguments);
 		if(timer_temp->next->arguments == arguments) {
 			timer_del = timer_temp->next;
 			timer_temp->next = timer_temp->next->next;
