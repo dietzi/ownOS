@@ -182,7 +182,11 @@ void retry_send(void* arguments) {
 					sleep(100);
 				}
 				kprintf("tcp.c: 172\n");
-				unregister_timer_by_arguments(arguments);
+				if(unregister_timer_by_arguments(arguments)) {
+					kprintf("Unregister OK\n");
+				} else {
+					kprintf("Unregister Error\n");
+				}
 			} else {
 				//set ack and seq number
 				sendTCPpacket(args_temp->ether, args_temp->ip, args_temp->tcp, args_temp->tcp->options, 0, args_temp->tcp->data, 0);
