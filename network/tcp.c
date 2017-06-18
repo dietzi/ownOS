@@ -172,7 +172,7 @@ void retry_send(void* arguments) {
 				struct clients *client = find_client(socketID,HTONS(args_temp->tcp->destination_port));
 				del_client(client->client_id, HTONS(args_temp->tcp->destination_port));
 				kprintf("tcp.c: 172\n");
-				unregister_timer_by_arguments(arguments);
+				//unregister_timer_by_arguments(arguments);
 			} else {
 				//set ack and seq number
 				sendTCPpacket(args_temp->ether, args_temp->ip, args_temp->tcp, args_temp->tcp->options, 0, args_temp->tcp->data, 0);
@@ -288,7 +288,7 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 						}
 						kprintf("tcp.c: 287\n");//sleep(100);
 						last_message = "abc";
-						unregister_timer_by_arguments(tempb);
+						//unregister_timer_by_arguments(tempb);
 						
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
 						callback_func(listeners[HTONS(temp_port)].tcp_listener);
