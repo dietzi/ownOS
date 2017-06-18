@@ -26,7 +26,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 		timer_temp = timers;
 		kprintf("timer.c: 27\n");
 		while(timer_temp->next != NULL) {
-			//kprintf("timer.c: 29     0x%x   0x%x   0x%x\n",timers,timer_temp,timer_temp->next);
+			kprintf("timer.c: 29     0x%x   0x%x   0x%x\n",timers,timer_temp,timer_temp->next);
 			timer_temp = timer_temp->next;
 		}
 		kprintf("timer.c: 32\n");
@@ -42,7 +42,7 @@ void register_timer(void* callback, uint32_t timeout, bool remove_after_event, v
 	timer_temp->remove_after_event = remove_after_event;
 	timer_temp->next = NULL;
 	if(timer_temp->next != NULL) {
-		kprintf("Timer Error....\n");sleep(1000);
+		kprintf("Timer Error....\n");
 		asm("cli;hlt");
 	}
 	if(timer_temp->callback == NULL) {
