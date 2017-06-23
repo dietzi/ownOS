@@ -36,6 +36,7 @@ struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after
 	}
 	timers = timer_temp;
 	kprintf("timer.c: 46 0x%x\n",timer_temp);
+	show_timers();
 	return timer_temp;
 }
 
