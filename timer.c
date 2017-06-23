@@ -34,20 +34,19 @@ struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after
 		kprintf("Error setting callback\n");
 	}
 	timers = timer_temp;
-	kprintf("timer.c: 46 0x%x\n",timer_temp);
+	kprintf("timer.c: 37 0x%x\n",timer_temp);
 	show_timers();
 	return timer_temp;
 }
 
 bool unregister_timer(struct timer* timer) {
+	kprintf("timer.c: 43 unregister at 0x%x   0x%x\n",timer,timers);
 	struct timer* timer_temp = timers;
-	struct timer* timer_del = NULL;
 	if(timer_temp == NULL) {
 		kprintf("No timers available\n");
 		return false;
 	}
-	if(timer_temp == timer) {
-		timer_del = timers;
+	if(timers == timer) {
 		timers = timers->next;
 		pmm_free(timer->arguments);
 		pmm_free(timer);
@@ -56,7 +55,6 @@ bool unregister_timer(struct timer* timer) {
 	}
 	while(timer_temp->next != NULL) {
 		if(timer_temp->next == timer) {
-			timer_del = timer_temp->next;
 			timer_temp->next = timer_temp->next->next;
 			pmm_free(timer->arguments);
 			pmm_free(timer);
