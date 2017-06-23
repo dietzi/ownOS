@@ -18,6 +18,7 @@ void show_timers(void) {
 	while(timer_temp != NULL) {
 		kprintf("0x%x -> ",timer_temp);
 		timer_temp = timer_temp->next;
+		sleep(100);
 	}
 	kprintf("\n");
 }
