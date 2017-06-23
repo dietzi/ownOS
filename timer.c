@@ -26,6 +26,14 @@ void show_timers(void) {
 
 struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
 	struct timer* timer_temp = pmm_alloc();
+	struct timer* timer_temp1 = timers;
+	while(timer_temp1 != NULL) {
+		if(timer_temp1 == timer_temp) {
+			timer_temp = pmm_alloc();
+			break;
+		}
+		timer_temp1 = timer_temp1->next;
+	}
 	timer_temp->callback = callback;
 	timer_temp->ticks = 0;
 	timer_temp->timeout = timeout;
