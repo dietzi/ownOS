@@ -15,8 +15,9 @@ void pit_init(void) {
 
 void show_timers(void) {
 	struct timer* timer_temp = timers;
+	kprintf("0x%x -> ",timer_temp);
 	while(timer_temp != NULL) {
-		kprintf("0x%x -> ",timer_temp);
+		kprintf("0x%x -> ",timer_temp->next);
 		timer_temp = timer_temp->next;
 		sleep(100);
 	}
