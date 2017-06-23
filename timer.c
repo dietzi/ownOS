@@ -23,9 +23,7 @@ void show_timers(void) {
 }
 
 struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after_event, void *arguments) {
-	kprintf("timer.c: 18\n");
 	struct timer* timer_temp;
-	kprintf("timer.c: 36\n");
 	timer_temp = pmm_alloc();
 	timer_temp->callback = callback;
 	timer_temp->ticks = 0;
@@ -37,7 +35,7 @@ struct timer* register_timer(void* callback, uint32_t timeout, bool remove_after
 		kprintf("Error setting callback\n");
 	}
 	timers = timer_temp;
-	kprintf("timer.c: 46\n");
+	kprintf("timer.c: 46 0x%x\n",timer_temp);
 	return timer_temp;
 }
 

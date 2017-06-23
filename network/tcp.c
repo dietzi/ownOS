@@ -161,9 +161,9 @@ void retry_send(void* arguments) {
 	struct tcp_timer_args* args_temp = temp_args;
 	while(args_temp != NULL) {
 		if(args_temp == arguments) {
-			kprintf("tcp.c: 162\n");
+			//kprintf("tcp.c: 162\n");
 			if(args_temp->retry >= 2) {
-				kprintf("tcp.c: 164\n");
+				//kprintf("tcp.c: 164\n");
 				uint32_t socketID = (args_temp->ip->sourceIP.ip1) +
 									(args_temp->ip->sourceIP.ip2) +
 									(args_temp->ip->sourceIP.ip3) +
@@ -181,7 +181,7 @@ void retry_send(void* arguments) {
 					show_clients(HTONS(args_temp->tcp->destination_port));
 					sleep(100);
 				}
-				kprintf("tcp.c: 172\n");
+				//kprintf("tcp.c: 172\n");
 				kprintf("Trying to unregister Timer at 0x%x\n",args_temp->timer);
 					show_timers();
 				if(unregister_timer(args_temp->timer)) {
@@ -204,7 +204,7 @@ void retry_send(void* arguments) {
 					}
 				}
 			} else {
-				kprintf("tcp.c: 207\n");
+				//kprintf("tcp.c: 207\n");
 				//set ack and seq number
 				sendTCPpacket(args_temp->ether, args_temp->ip, args_temp->tcp, args_temp->tcp->options, 0, args_temp->tcp->data, 0);
 				args_temp->retry++;
@@ -316,10 +316,16 @@ void tcp_handle(struct ip_header* ip, struct ether_header* ether) {
 								tempb = tempa;
 								break;
 							}
+							tempa = tempa->next;
 						}
-						kprintf("tcp.c: 287\n");//sleep(100);
+						//kprintf("tcp.c: 287\n");//sleep(100);
 						last_message = "abc";
-						unregister_timer(tempb->timer);
+						if(unregister_timer(tempa->timer)) {
+							kprintf("Unregister OK\n");
+						} else {
+							kprintf("Unregister Error\n");
+							show_timers();
+						}
 						
 						callback_func = listeners[HTONS(temp_port)].tcp_listener.callback_pointer;
 						callback_func(listeners[HTONS(temp_port)].tcp_listener);
@@ -524,7 +530,7 @@ void sendTCPpacket(struct ether_header* ether, struct ip_header* ip, struct tcp_
 	args->timer = register_timer(retry_send, 2000, false, args);
 	temp_args = args;
 	pmm_free(buffer);
-	kprintf("tcp.c: 495\n");
+	//kprintf("tcp.c: 495\n");
 }
 
 /*bool tcp_open_con(int port, void *callback_pointer) {
